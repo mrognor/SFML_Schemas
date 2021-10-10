@@ -15,7 +15,6 @@ private:
 	/// Вектор из всех элементов виджета(DropDownListElement)
 	std::vector<DropDownListElement*> DropDownListElementsVector;
 
-
 public:
 	///
 	DropDownList(sf::RenderWindow* mainWindow, int sizeX, int sizeY);
@@ -25,6 +24,13 @@ public:
 
 	/// 
 	void Tick();
+
+	/// Функция для открытия DropDownListElement
+	void OpenDropDownListElement(DropDownListElement* elementToOpen);
+	/// Функция для закрытия DropDownListElement
+	void CloseDropDownListElement(DropDownListElement* elementToClose);
+	
+	void FindDropDownListElementIndexes();
 
 	~DropDownList();
 };

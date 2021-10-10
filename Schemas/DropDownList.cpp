@@ -52,6 +52,66 @@ void DropDownList::Tick()
 	}
 }
 
+void DropDownList::FindDropDownListElementIndexes()
+{
+	int count = 0;
+	for (DropDownListElement* element : DropDownListElementsVector)
+	{
+		if (element->getIsRendering())
+		{
+			element->setNumberInDropDownList(count);
+			count++;
+		}
+		else element->setIsRendering(false);
+	}
+}
+
+void DropDownList::OpenDropDownListElement(DropDownListElement* elementToOpen)
+{
+	std::vector<DropDownListElement*> ElementsToClose;
+	for (DropDownListElement* element : DropDownListElementsVector)
+	{
+		if (element->getFullPath().find(elementToOpen->getFullPath() + "/") != -1)
+		{
+			element->setIsRendering(true);
+			if (element->getIsDropDownListElementOpen() == false)
+			{
+				ElementsToClose.push_back(element);
+			}
+		}
+	}
+
+	for (DropDownListElement* element : ElementsToClose)
+	{
+		CloseDropDownListElement(element);
+	}
+
+	FindDropDownListElementIndexes();
+
+	for (DropDownListElement* element : DropDownListElementsVector)
+	{
+		element->UpdateDropDownListElementPosition();
+	}
+}
+
+void DropDownList::CloseDropDownListElement(DropDownListElement* elementToClose)
+{
+	for (DropDownListElement* element : DropDownListElementsVector)
+	{
+		if (element->getFullPath().find(elementToClose->getFullPath() + "/") != -1)
+		{
+			element->setIsRendering(false);
+		}
+	}
+
+	FindDropDownListElementIndexes();
+
+	for (DropDownListElement* element : DropDownListElementsVector)
+	{
+		element->UpdateDropDownListElementPosition();
+	}
+}
+
 DropDownList::~DropDownList()
 {
 	for (DropDownListElement* folder : DropDownListElementsVector)

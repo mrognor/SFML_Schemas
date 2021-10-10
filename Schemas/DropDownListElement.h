@@ -33,10 +33,20 @@ private:
 
 	/// Позиция данного элемента в списке(DropDownList). Множитель y координаты для данного виджета 
 	int NumberInDropDownList;
+	
+	/// Данная переменная служит для определения состояния папки.
+	/// False - данный объект не должен отрисовываться на окне 
+	/// True - данный объект не должен отрисовываться на окне
+	bool IsRendering = true;
+
+	/// Данная переменная служит для определения состояния папки. 
+	/// False - все дети не должны отрисовываться(IsRendering = false)
+	/// True - все дети должны отрисовываться(IsRendering = true)
+	bool IsDropDownListElementOpen = true;
 
 public:
-	/// Создает объект RectangleShape для тела данного виджета. Вызывает функцию SetDropDownListElementPosition.
-	/// SetDropDownListElementPosition перемещает тело виджета и текст в правильную позицию. Позиция устанавливается 
+	/// Создает объект RectangleShape для тела данного виджета. Вызывает функцию UpdateDropDownListElementPosition.
+	/// UpdateDropDownListElementPosition перемещает тело виджета и текст в правильную позицию. Позиция устанавливается 
 	/// из DropDownList.
 	DropDownListElement(DropDownList* dropDownListParent, sf::RenderWindow* window, std::string name, std::string path, int numberInDropDownList);
 
@@ -50,10 +60,25 @@ public:
 	// Геттер для имени
 	std::string getName() { return Name; }
 
+	/// Устанавливает позицию данного объекта в списке DropDownList
+	void setNumberInDropDownList(int numberInList) { NumberInDropDownList = numberInList; }
+	/// Получает позицию данного объекта в списке DropDownList
+	int getNumberInDropDownList() { return NumberInDropDownList; }
+
+	/// Сеттер для переменной для отрисовки объекта(DropDownListElement)
+	void setIsRendering(bool f) { IsRendering = f; }
+	// Геттер для переменной для отрисовки объекта(DropDownListElement)
+	bool getIsRendering() { return IsRendering; }
+
+	/// Сеттер для переменной для закрытия папки 
+	void setIsDropDownListElementOpen(bool f) { IsDropDownListElementOpen = f; }
+	// Геттер для переменной для закрытия папки
+	bool getIsDropDownListElementOpen() { return IsDropDownListElementOpen; }
+
 	/// Данная функция перемещает тело виджета(DropDownListElement) и текст в нужную позицию
 	/// Для определения позиция есть переменная NumberInDropDownList
 	/// Эта переменная устанавливается из DropDownList.
-	void SetDropDownListElementPosition();
+	void UpdateDropDownListElementPosition();
 
 	/// Функция, работающая каждый такт 
 	void Tick();

@@ -13,10 +13,10 @@ DropDownListElement::DropDownListElement(DropDownList* dropDownListParent, sf::R
 	MainDropDownListElementText->setString(sf::String(Name));
 	MainDropDownListElementText->setFillColor(sf::Color::Black);
 	
-	SetDropDownListElementPosition();
+	UpdateDropDownListElementPosition();
 }
 
-void DropDownListElement::SetDropDownListElementPosition()
+void DropDownListElement::UpdateDropDownListElementPosition()
 {
 	MainDropDownListElementShape->setPosition(10 + 20 * CountInStr(FullPath, "/"), 10 + NumberInDropDownList * 50);
 
@@ -39,39 +39,45 @@ bool DropDownListElement::operator!=(const DropDownListElement& Obj)
 
 void DropDownListElement::Tick()
 {
-	Window->draw(*MainDropDownListElementShape);
-	Window->draw(*MainDropDownListElementText);
+	if (IsRendering)
+	{
+		Window->draw(*MainDropDownListElementShape);
+		Window->draw(*MainDropDownListElementText);
+	}
 }
 
 void DropDownListElement::InputHandler(sf::Event event)
 {
-	// OnHovered
-	if (MainDropDownListElementShape->getGlobalBounds().contains
-	(Window->mapPixelToCoords(sf::Vector2i(sf::Mouse::getPosition(*Window).x, sf::Mouse::getPosition(*Window).y)).x,
-		Window->mapPixelToCoords(sf::Vector2i(sf::Mouse::getPosition(*Window).x, sf::Mouse::getPosition(*Window).y)).y))
+	if (IsRendering)
 	{
-		IsMouseOnShape = true;
-		MainDropDownListElementShape->setFillColor(sf::Color::Blue);
+		// OnHovered
+		if (MainDropDownListElementShape->getGlobalBounds().contains
+		(Window->mapPixelToCoords(sf::Vector2i(sf::Mouse::getPosition(*Window).x, sf::Mouse::getPosition(*Window).y)).x,
+			Window->mapPixelToCoords(sf::Vector2i(sf::Mouse::getPosition(*Window).x, sf::Mouse::getPosition(*Window).y)).y))
+		{
+			IsMouseOnShape = true;
+			MainDropDownListElementShape->setFillColor(sf::Color::Blue);
+		}
+		else
+		{
+			IsMouseOnShape = false;
+			MainDropDownListElementShape->setFillColor(sf::Color::White);
+		}
+		// OnClicked
+		if (event.type == event.MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left && IsMouseOnShape)
+		{
+			if (IsDropDownListElementOpen)
+			{
+				IsDropDownListElementOpen = false;
+				DropDownListParent->CloseDropDownListElement(this);
+			}
+			else
+			{
+				IsDropDownListElementOpen = true;
+				DropDownListParent->OpenDropDownListElement(this);
+			}
+		}
 	}
-	else
-	{
-		IsMouseOnShape = false;
-		MainDropDownListElementShape->setFillColor(sf::Color::White);
-	}
-	// OnClicked
-	//if (event.type == event.MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left && IsMouseOnShape)
-	//{
-	//	if (IsElementOpen)
-	//	{
-	//		IsElementOpen = false;
-	//		DropDownListParent->CloseFolder(Name, FullPath);
-	//	}
-	//	else
-	//	{
-	//		IsElementOpen = true;
-	//		DropDownListParent->OpenFolder(Name, FullPath);
-	//	}
-	//}
 }
 
 DropDownListElement::~DropDownListElement()
