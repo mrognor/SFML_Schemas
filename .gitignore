@@ -1,0 +1,14 @@
+.vs
+Debug
+Schemas/Debug
+Schemas/openal32.dll
+Schemas/sfml-audio-2.dll
+Schemas/sfml-audio-d-2.dll
+Schemas/sfml-graphics-2.dll
+Schemas/sfml-graphics-d-2.dll
+Schemas/sfml-network-2.dll
+Schemas/sfml-network-d-2.dll
+Schemas/sfml-system-2.dll
+Schemas/sfml-system-d-2.dll
+Schemas/sfml-window-2.dll
+Schemas/sfml-window-d-2.dll
