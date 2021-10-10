@@ -26,10 +26,15 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DropDownList.h">
+    <Text Include="Nodes.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="SchemasFunctions.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="SchemasFunctions.h">
+    <ClInclude Include="DropDownList.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="DropDownListElement.h">
@@ -38,10 +43,5 @@
     <ClInclude Include="SchemasClasses.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="Nodes.txt">
-      <Filter>Файлы ресурсов</Filter>
-    </Text>
   </ItemGroup>
 </Project>
