@@ -30,7 +30,9 @@ public:
 	/// Функция для закрытия DropDownListElement
 	void CloseDropDownListElement(DropDownListElement* elementToClose);
 	
-	void FindDropDownListElementIndexes();
+	/// Функция для нахождения индекса элементов(DropDownElement)
+	/// Находит номер и устанавливает элементу нужное значение
+	void FindAndSetDropDownListElementIndexes();
 
 	~DropDownList();
 };

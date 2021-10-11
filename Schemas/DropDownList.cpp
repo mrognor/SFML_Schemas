@@ -52,7 +52,7 @@ void DropDownList::Tick()
 	}
 }
 
-void DropDownList::FindDropDownListElementIndexes()
+void DropDownList::FindAndSetDropDownListElementIndexes()
 {
 	int count = 0;
 	for (DropDownListElement* element : DropDownListElementsVector)
@@ -86,7 +86,7 @@ void DropDownList::OpenDropDownListElement(DropDownListElement* elementToOpen)
 		CloseDropDownListElement(element);
 	}
 
-	FindDropDownListElementIndexes();
+	FindAndSetDropDownListElementIndexes();
 
 	for (DropDownListElement* element : DropDownListElementsVector)
 	{
@@ -104,7 +104,7 @@ void DropDownList::CloseDropDownListElement(DropDownListElement* elementToClose)
 		}
 	}
 
-	FindDropDownListElementIndexes();
+	FindAndSetDropDownListElementIndexes();
 
 	for (DropDownListElement* element : DropDownListElementsVector)
 	{
