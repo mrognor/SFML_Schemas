@@ -1,6 +1,6 @@
 #include "DropDownList.h"
 
-DropDownList::DropDownList(sf::RenderWindow* mainWindow, int sizeX, int sizeY) : Window(mainWindow)
+DropDownList::DropDownList(sf::RenderWindow* mainWindow, int sizeX, int sizeY) : ListElementWindow(mainWindow)
 {
 	std::ifstream NodesTXT;
 	sf::Font font;
@@ -22,7 +22,7 @@ DropDownList::DropDownList(sf::RenderWindow* mainWindow, int sizeX, int sizeY) :
 			for (int i = 0; i < vec.size(); i++)
 			{
 				FilePath += vec[i];
-				DropDownListElement* F = new DropDownListElement(this, Window, vec[i], FilePath, DropDownListElementsVector.size());
+				DropDownListElement* F = new DropDownListElement(this, ListElementWindow, vec[i], FilePath, DropDownListElementsVector.size());
 				if (IsInVector(DropDownListElementsVector, F) == false)
 				{
 					DropDownListElementsVector.push_back(F);
@@ -44,7 +44,7 @@ void DropDownList::InputHandler(sf::Event event)
 
 void DropDownList::Tick()
 {
-	Window->draw(WidgetBody);
+	ListElementWindow->draw(WidgetBody);
 
 	for (DropDownListElement* element : DropDownListElementsVector)
 	{

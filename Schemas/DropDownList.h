@@ -7,7 +7,7 @@ class DropDownList
 {
 private:
 	/// Указатель на главное окно приложения 
-	sf::RenderWindow* Window;
+	sf::RenderWindow* ListElementWindow;
 
 	/// RectangleShape. Прямоугольник, служащий главным телом виджета списка
 	sf::RectangleShape WidgetBody;

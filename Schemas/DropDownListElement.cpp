@@ -1,7 +1,7 @@
 #include "DropDownListElement.h"
 
 DropDownListElement::DropDownListElement(DropDownList* dropDownListParent, sf::RenderWindow* window, std::string name, std::string path, int numberInDropDownList)
-	: DropDownListParent(dropDownListParent), Name(name), FullPath(path), Window(window), NumberInDropDownList(numberInDropDownList)
+	: DropDownListParent(dropDownListParent), Name(name), FullPath(path), ListElementWindow(window), NumberInDropDownList(numberInDropDownList)
 {
 	font.loadFromFile("Font.ttf");
 
@@ -12,7 +12,7 @@ DropDownListElement::DropDownListElement(DropDownList* dropDownListParent, sf::R
 	MainDropDownListElementText->setFont(font);
 	MainDropDownListElementText->setString(sf::String(Name));
 	MainDropDownListElementText->setFillColor(sf::Color::Black);
-	
+
 	UpdateDropDownListElementPosition();
 }
 
@@ -41,8 +41,8 @@ void DropDownListElement::Tick()
 {
 	if (IsRendering)
 	{
-		Window->draw(*MainDropDownListElementShape);
-		Window->draw(*MainDropDownListElementText);
+		ListElementWindow->draw(*MainDropDownListElementShape);
+		ListElementWindow->draw(*MainDropDownListElementText);
 	}
 }
 
@@ -50,10 +50,11 @@ void DropDownListElement::InputHandler(sf::Event event)
 {
 	if (IsRendering)
 	{
+		/// Локальная переменная для отслеживания позиции курсора в окне
+		sf::Vector2f CurrentMouseCoords= FindMouseCoords(ListElementWindow);
+
 		// OnHovered
-		if (MainDropDownListElementShape->getGlobalBounds().contains
-		(Window->mapPixelToCoords(sf::Vector2i(sf::Mouse::getPosition(*Window).x, sf::Mouse::getPosition(*Window).y)).x,
-			Window->mapPixelToCoords(sf::Vector2i(sf::Mouse::getPosition(*Window).x, sf::Mouse::getPosition(*Window).y)).y))
+		if (MainDropDownListElementShape->getGlobalBounds().contains(CurrentMouseCoords.x, CurrentMouseCoords.y))
 		{
 			IsMouseOnShape = true;
 			MainDropDownListElementShape->setFillColor(sf::Color::Blue);
@@ -63,6 +64,7 @@ void DropDownListElement::InputHandler(sf::Event event)
 			IsMouseOnShape = false;
 			MainDropDownListElementShape->setFillColor(sf::Color::White);
 		}
+
 		// OnClicked
 		if (event.type == event.MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left && IsMouseOnShape)
 		{

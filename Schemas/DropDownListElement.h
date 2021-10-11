@@ -3,6 +3,7 @@
 #include "SchemasClasses.h"
 #include "DropDownList.h"
 
+
 ///  ласс дл€ элемента DropDownList 
 class DropDownListElement
 {
@@ -11,7 +12,7 @@ private:
 	DropDownList* DropDownListParent;
 
 	/// ”казатель на окно приложени€ в котором находитс€ виджет(DropDownList)
-	sf::RenderWindow* Window;
+	sf::RenderWindow* ListElementWindow;
 
 	/// ”казатель на RectangleShape, €вл€ющийс€ главным пр€моугольником виджета(DropDownListElement)
 	sf::RectangleShape* MainDropDownListElementShape;
