@@ -45,6 +45,19 @@ private:
 	/// True - все дети должны отрисовываться(IsRendering = true)
 	bool IsDropDownListElementOpen = true;
 
+	/// Переменная-указатель(RectangleShape) для отображения объекта при перетаскивании папок
+	sf::RectangleShape* DragNDropListElementShape;
+
+	/// Переменная-указатель(Text) для отображения объекта при перетаскивании папок
+	sf::Text* DragNDropListElementText;
+
+	/// Логическая переменная для определения состояния объекта(DropDownListElement).
+	/// Переменная показывает идет ли операция перетаскивания 
+	bool IsDragListElementInProcess = false;
+
+	/// Координаты начала перетаскивания 
+	sf::Vector2f DragStartListElementCoords;
+
 public:
 	/// Создает объект RectangleShape для тела данного виджета. Вызывает функцию UpdateDropDownListElementPosition.
 	/// UpdateDropDownListElementPosition перемещает тело виджета и текст в правильную позицию. Позиция устанавливается 

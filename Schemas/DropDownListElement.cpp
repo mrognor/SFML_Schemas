@@ -13,6 +13,15 @@ DropDownListElement::DropDownListElement(DropDownList* dropDownListParent, sf::R
 	MainDropDownListElementText->setString(sf::String(Name));
 	MainDropDownListElementText->setFillColor(sf::Color::Black);
 
+
+	DragNDropListElementText = new sf::Text;
+	DragNDropListElementText->setFont(font);
+	DragNDropListElementText->setString(sf::String(Name) + "DRAG");
+	DragNDropListElementText->setFillColor(sf::Color::Black);
+
+	DragNDropListElementShape = new sf::RectangleShape();
+	DragNDropListElementShape->setSize(sf::Vector2f(DragNDropListElementText->getGlobalBounds().width, DragNDropListElementText->getGlobalBounds().height*2));
+
 	UpdateDropDownListElementPosition();
 }
 
@@ -41,8 +50,19 @@ void DropDownListElement::Tick()
 {
 	if (IsRendering)
 	{
+		/// Локальная переменная для отслеживания позиции курсора в окне
+		sf::Vector2f CurrentMouseCoords = FindMouseCoords(ListElementWindow);
+
 		ListElementWindow->draw(*MainDropDownListElementShape);
 		ListElementWindow->draw(*MainDropDownListElementText);
+
+		if (IsDragListElementInProcess && DragStartListElementCoords != CurrentMouseCoords)
+		{
+			DragNDropListElementShape->setPosition(CurrentMouseCoords.x, CurrentMouseCoords.y);
+			DragNDropListElementText->setPosition(CurrentMouseCoords.x, CurrentMouseCoords.y);
+			ListElementWindow->draw(*DragNDropListElementShape);
+			ListElementWindow->draw(*DragNDropListElementText);
+		}
 	}
 }
 
@@ -66,19 +86,34 @@ void DropDownListElement::InputHandler(sf::Event event)
 		}
 
 		// OnClicked
-		if (event.type == event.MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left && IsMouseOnShape)
+		if (event.type == event.MouseButtonReleased)
 		{
-			if (IsDropDownListElementOpen)
+			if (event.mouseButton.button == sf::Mouse::Left)
 			{
-				IsDropDownListElementOpen = false;
-				DropDownListParent->CloseDropDownListElement(this);
-			}
-			else
-			{
-				IsDropDownListElementOpen = true;
-				DropDownListParent->OpenDropDownListElement(this);
+				if (IsMouseOnShape && IsDragListElementInProcess == true)
+				{
+					if (IsDropDownListElementOpen)
+					{
+						IsDropDownListElementOpen = false;
+						DropDownListParent->CloseDropDownListElement(this);
+					}
+					else
+					{
+						IsDropDownListElementOpen = true;
+						DropDownListParent->OpenDropDownListElement(this);
+					}
+				}
+
+				IsDragListElementInProcess = false;
 			}
 		}
+
+		if (event.type == event.MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left && IsMouseOnShape)
+		{
+			DragStartListElementCoords = CurrentMouseCoords;
+			IsDragListElementInProcess = true;
+		}
+
 	}
 }
 
