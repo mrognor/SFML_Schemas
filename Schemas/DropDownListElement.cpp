@@ -1,7 +1,7 @@
 #include "DropDownListElement.h"
 
-DropDownListElement::DropDownListElement(DropDownList* dropDownListParent, sf::RenderWindow* window, std::string name, std::string path, int numberInDropDownList)
-	: DropDownListParent(dropDownListParent), Name(name), FullPath(path), ListElementWindow(window), NumberInDropDownList(numberInDropDownList)
+DropDownListElement::DropDownListElement(DropDownList* dropDownListParent, sf::RenderWindow* window, DragAndDropWidget* dropDownListElementWindowDragAndDropWidget, std::string name, std::string path, int numberInDropDownList)
+	: DropDownListParent(dropDownListParent), ListElementWindow(window), DropDownListElementWindowDragAndDropWidget(dropDownListElementWindowDragAndDropWidget),Name(name), FullPath(path),  NumberInDropDownList(numberInDropDownList)
 {
 	font.loadFromFile("Font.ttf");
 
@@ -12,15 +12,6 @@ DropDownListElement::DropDownListElement(DropDownList* dropDownListParent, sf::R
 	MainDropDownListElementText->setFont(font);
 	MainDropDownListElementText->setString(sf::String(Name));
 	MainDropDownListElementText->setFillColor(sf::Color::Black);
-
-
-	DragNDropListElementText = new sf::Text;
-	DragNDropListElementText->setFont(font);
-	DragNDropListElementText->setString(sf::String(Name) + "DRAG");
-	DragNDropListElementText->setFillColor(sf::Color::Black);
-
-	DragNDropListElementShape = new sf::RectangleShape();
-	DragNDropListElementShape->setSize(sf::Vector2f(DragNDropListElementText->getGlobalBounds().width, DragNDropListElementText->getGlobalBounds().height*2));
 
 	UpdateDropDownListElementPosition();
 }
@@ -50,19 +41,8 @@ void DropDownListElement::Tick()
 {
 	if (IsRendering)
 	{
-		/// Локальная переменная для отслеживания позиции курсора в окне
-		sf::Vector2f CurrentMouseCoords = FindMouseCoords(ListElementWindow);
-
 		ListElementWindow->draw(*MainDropDownListElementShape);
 		ListElementWindow->draw(*MainDropDownListElementText);
-
-		if (IsDragListElementInProcess && DragStartListElementCoords != CurrentMouseCoords)
-		{
-			DragNDropListElementShape->setPosition(CurrentMouseCoords.x, CurrentMouseCoords.y);
-			DragNDropListElementText->setPosition(CurrentMouseCoords.x, CurrentMouseCoords.y);
-			ListElementWindow->draw(*DragNDropListElementShape);
-			ListElementWindow->draw(*DragNDropListElementText);
-		}
 	}
 }
 
@@ -71,7 +51,7 @@ void DropDownListElement::InputHandler(sf::Event event)
 	if (IsRendering)
 	{
 		/// Локальная переменная для отслеживания позиции курсора в окне
-		sf::Vector2f CurrentMouseCoords= FindMouseCoords(ListElementWindow);
+		sf::Vector2f CurrentMouseCoords = FindMouseCoords(ListElementWindow);
 
 		// OnHovered
 		if (MainDropDownListElementShape->getGlobalBounds().contains(CurrentMouseCoords.x, CurrentMouseCoords.y))
@@ -85,12 +65,18 @@ void DropDownListElement::InputHandler(sf::Event event)
 			MainDropDownListElementShape->setFillColor(sf::Color::White);
 		}
 
+		if (event.type == event.MouseButtonPressed && IsMouseOnShape)
+		{
+
+			DropDownListElementWindowDragAndDropWidget->StartDragAndDropOperation(this, CurrentMouseCoords);
+		}
+
 		// OnClicked
 		if (event.type == event.MouseButtonReleased)
 		{
 			if (event.mouseButton.button == sf::Mouse::Left)
 			{
-				if (IsMouseOnShape && IsDragListElementInProcess == true)
+				if (IsMouseOnShape)
 				{
 					if (IsDropDownListElementOpen)
 					{
@@ -103,17 +89,8 @@ void DropDownListElement::InputHandler(sf::Event event)
 						DropDownListParent->OpenDropDownListElement(this);
 					}
 				}
-
-				IsDragListElementInProcess = false;
 			}
 		}
-
-		if (event.type == event.MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left && IsMouseOnShape)
-		{
-			DragStartListElementCoords = CurrentMouseCoords;
-			IsDragListElementInProcess = true;
-		}
-
 	}
 }
 

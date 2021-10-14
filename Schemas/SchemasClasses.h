@@ -10,3 +10,4 @@
 
 class DropDownList;
 class DropDownListElement;
+class DragAndDropWidget;

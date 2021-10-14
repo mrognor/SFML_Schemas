@@ -2,6 +2,7 @@
 
 #include "SchemasClasses.h"
 #include "DropDownListElement.h"
+#include "DragAndDropWidget.h"
 
 class DropDownList
 {
@@ -15,9 +16,13 @@ private:
 	/// Вектор из всех элементов виджета(DropDownListElement)
 	std::vector<DropDownListElement*> DropDownListElementsVector;
 
+	/// Переменная для отслеживания объекта(DragAndDropWidget)
+	DragAndDropWidget* DropDownListWindowDragAndDropWidget;
+
 public:
 	///
-	DropDownList(sf::RenderWindow* mainWindow, int sizeX, int sizeY);
+	DropDownList(sf::RenderWindow* mainWindow, DragAndDropWidget* dropDownListWindowDragAndDropWidget,
+		int sizeX, int sizeY);
 
 	/// Функция обработки ввода пользователя. Передает ивент всем элементам виджета(DropDownListElement)
 	void InputHandler(sf::Event event);

@@ -1,6 +1,7 @@
 #include "DropDownList.h"
 
-DropDownList::DropDownList(sf::RenderWindow* mainWindow, int sizeX, int sizeY) : ListElementWindow(mainWindow)
+DropDownList::DropDownList(sf::RenderWindow* mainWindow, DragAndDropWidget* dropDownListWindowDragAndDropWidget,
+	int sizeX, int sizeY) : ListElementWindow(mainWindow), DropDownListWindowDragAndDropWidget(dropDownListWindowDragAndDropWidget)
 {
 	std::ifstream NodesTXT;
 	sf::Font font;
@@ -22,7 +23,7 @@ DropDownList::DropDownList(sf::RenderWindow* mainWindow, int sizeX, int sizeY) :
 			for (int i = 0; i < vec.size(); i++)
 			{
 				FilePath += vec[i];
-				DropDownListElement* F = new DropDownListElement(this, ListElementWindow, vec[i], FilePath, DropDownListElementsVector.size());
+				DropDownListElement* F = new DropDownListElement(this, ListElementWindow, DropDownListWindowDragAndDropWidget, vec[i], FilePath, DropDownListElementsVector.size());
 				if (IsInVector(DropDownListElementsVector, F) == false)
 				{
 					DropDownListElementsVector.push_back(F);
@@ -32,6 +33,7 @@ DropDownList::DropDownList(sf::RenderWindow* mainWindow, int sizeX, int sizeY) :
 			}
 		}
 	}
+	NodesTXT.close();
 }
 
 void DropDownList::InputHandler(sf::Event event)

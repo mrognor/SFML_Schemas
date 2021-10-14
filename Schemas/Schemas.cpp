@@ -6,14 +6,16 @@
 #include "SchemasFunctions.h"
 #include "DropDownList.h"
 #include "DropDownListElement.h"
-
+#include "DragAndDropWidget.h"
 
 int main()
 {
 	sf::RenderWindow window(sf::VideoMode(1200, 800), "SFML Works!");
 	window.setFramerateLimit(60);
 
-	DropDownList f(&window, 400, 800);
+	DragAndDropWidget d(&window);
+	DropDownList f(&window, &d, 400, 800);
+	
 
 	while (window.isOpen())
 	{
@@ -25,9 +27,11 @@ int main()
 			if (event.type == sf::Event::Closed)
 				window.close();
 			f.InputHandler(event);
+			d.InputHandler(event);
 		}
 
 		f.Tick();
+		d.Tick();
 		window.display();
 	}
 

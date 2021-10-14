@@ -144,6 +144,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="DragAndDropWidget.cpp" />
     <ClCompile Include="DropDownList.cpp" />
     <ClCompile Include="DropDownListElement.cpp" />
     <ClCompile Include="Schemas.cpp" />
@@ -152,6 +153,7 @@
     <Text Include="Nodes.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DragAndDropWidget.h" />
     <ClInclude Include="DropDownList.h" />
     <ClInclude Include="DropDownListElement.h" />
     <ClInclude Include="SchemasClasses.h" />

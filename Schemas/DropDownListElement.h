@@ -2,7 +2,7 @@
 
 #include "SchemasClasses.h"
 #include "DropDownList.h"
-
+#include "DragAndDropWidget.h"
 
 /// Класс для элемента DropDownList 
 class DropDownListElement
@@ -11,17 +11,20 @@ private:
 	/// Указатель на родительский виджет(DropDownList)
 	DropDownList* DropDownListParent;
 
+	/// Переменная для отслеживания объекта(DragAndDropWidget)
+	DragAndDropWidget* DropDownListElementWindowDragAndDropWidget;
+
 	/// Указатель на окно приложения в котором находится виджет(DropDownList)
 	sf::RenderWindow* ListElementWindow;
 
 	/// Указатель на RectangleShape, являющийся главным прямоугольником виджета(DropDownListElement)
 	sf::RectangleShape* MainDropDownListElementShape;
 
-	/// Указатель на Text, являющийся главным текстом виджета(DropDownListElement)
-	sf::Text* MainDropDownListElementText;
-	 
 	/// Шрифт 
 	sf::Font font;
+
+	/// Указатель на Text, являющийся главным текстом виджета(DropDownListElement)
+	sf::Text* MainDropDownListElementText;
 
 	/// Полный путь данного элемента(DropDownListElement)
 	std::string FullPath;
@@ -45,24 +48,12 @@ private:
 	/// True - все дети должны отрисовываться(IsRendering = true)
 	bool IsDropDownListElementOpen = true;
 
-	/// Переменная-указатель(RectangleShape) для отображения объекта при перетаскивании папок
-	sf::RectangleShape* DragNDropListElementShape;
-
-	/// Переменная-указатель(Text) для отображения объекта при перетаскивании папок
-	sf::Text* DragNDropListElementText;
-
-	/// Логическая переменная для определения состояния объекта(DropDownListElement).
-	/// Переменная показывает идет ли операция перетаскивания 
-	bool IsDragListElementInProcess = false;
-
-	/// Координаты начала перетаскивания 
-	sf::Vector2f DragStartListElementCoords;
-
 public:
 	/// Создает объект RectangleShape для тела данного виджета. Вызывает функцию UpdateDropDownListElementPosition.
 	/// UpdateDropDownListElementPosition перемещает тело виджета и текст в правильную позицию. Позиция устанавливается 
 	/// из DropDownList.
-	DropDownListElement(DropDownList* dropDownListParent, sf::RenderWindow* window, std::string name, std::string path, int numberInDropDownList);
+	DropDownListElement(DropDownList* dropDownListParent, sf::RenderWindow* window, DragAndDropWidget* dropDownListElementWindowDragAndDropWidget,
+		std::string name, std::string path, int numberInDropDownList);
 
 	/// Сеттер для полного пути 
 	void setFullPath(std::string path) { FullPath = path; }
