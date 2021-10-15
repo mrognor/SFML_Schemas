@@ -65,7 +65,7 @@ void DropDownListElement::InputHandler(sf::Event event)
 			MainDropDownListElementShape->setFillColor(sf::Color::White);
 		}
 
-		if (event.type == event.MouseButtonPressed && IsMouseOnShape)
+		if (event.type == event.MouseButtonPressed && IsMouseOnShape && event.mouseButton.button == sf::Mouse::Left)
 		{
 
 			DropDownListElementWindowDragAndDropWidget->StartDragAndDropOperation(this, CurrentMouseCoords);
@@ -76,7 +76,7 @@ void DropDownListElement::InputHandler(sf::Event event)
 		{
 			if (event.mouseButton.button == sf::Mouse::Left)
 			{
-				if (IsMouseOnShape)
+				if (IsMouseOnShape && DropDownListElementWindowDragAndDropWidget->getIsDragAndDropInProcess() == false)
 				{
 					if (IsDropDownListElementOpen)
 					{

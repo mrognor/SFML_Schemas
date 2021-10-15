@@ -41,7 +41,9 @@ public:
 
 	void StartDragAndDropOperation(DropDownListElement* currentDropDownListElement, sf::Vector2f dragStartCoords);
 	
-	~DragAndDropWidget();
+	bool getIsDragAndDropInProcess() { return IsDragAndDropInProcess; }
+
+	~DragAndDropWidget(); 
 	/*
 	void setCurrentDropDownListElement(DropDownListElement* currentDropDownListElement) 
 	{ CurrentDropDownListElement = currentDropDownListElement; }
