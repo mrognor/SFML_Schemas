@@ -65,18 +65,14 @@ void DropDownListElement::InputHandler(sf::Event event)
 			MainDropDownListElementShape->setFillColor(sf::Color::White);
 		}
 
-		if (event.type == event.MouseButtonPressed && IsMouseOnShape && event.mouseButton.button == sf::Mouse::Left)
-		{
-
-			DropDownListElementWindowDragAndDropWidget->StartDragAndDropOperation(this, CurrentMouseCoords);
-		}
-
 		// OnClicked
 		if (event.type == event.MouseButtonReleased)
 		{
 			if (event.mouseButton.button == sf::Mouse::Left)
 			{
-				if (IsMouseOnShape && DropDownListElementWindowDragAndDropWidget->getIsDragAndDropInProcess() == false)
+				// Тут делается сравнение координат. Так как при нажатии начинается операция Drag and drop 
+				// в классе DragAndDroр. Операция началась, но перетаскивания не было. Поэтому нам надо сравнивать координаты
+				if (IsMouseOnShape && DropDownListElementWindowDragAndDropWidget->getDragStartCoords() == CurrentMouseCoords)
 				{
 					if (IsDropDownListElementOpen)
 					{
@@ -91,6 +87,12 @@ void DropDownListElement::InputHandler(sf::Event event)
 				}
 			}
 		}
+
+		if (event.type == event.MouseButtonPressed && IsMouseOnShape && event.mouseButton.button == sf::Mouse::Left)
+		{
+			DropDownListElementWindowDragAndDropWidget->StartDragAndDropOperation(this, CurrentMouseCoords);
+		}
+
 	}
 }
 
