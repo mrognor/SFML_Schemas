@@ -92,9 +92,9 @@ inline bool operator>(std::string stra, std::string strb)
 	{
 		for (int i = 0; i < strb.size(); i++)
 		{
-			if (tolower(stra[0]) > tolower(strb[0]))
+			if (tolower(stra[i]) > tolower(strb[i]))
 				return true;
-			if (tolower(stra[0]) < tolower(strb[0]))
+			if (tolower(stra[i]) < tolower(strb[i]))
 				return false;
 		}
 		return true;
@@ -104,9 +104,9 @@ inline bool operator>(std::string stra, std::string strb)
 	{
 		for (int i = 0; i < stra.size(); i++)
 		{
-			if (tolower(stra[0]) > tolower(strb[0]))
+			if (tolower(stra[i]) > tolower(strb[i]))
 				return true;
-			if (tolower(stra[0]) < tolower(strb[0]))
+			if (tolower(stra[i]) < tolower(strb[i]))
 				return false;
 		}
 		return false;
@@ -119,9 +119,9 @@ inline bool operator<(std::string stra, std::string strb)
 	{
 		for (int i = 0; i < strb.size(); i++)
 		{
-			if (tolower(stra[0]) > tolower(strb[0]))
+			if (tolower(stra[i]) > tolower(strb[i]))
 				return false;
-			if (tolower(stra[0]) < tolower(strb[0]))
+			if (tolower(stra[i]) < tolower(strb[i]))
 				return true;
 		}
 		return true;
@@ -131,9 +131,9 @@ inline bool operator<(std::string stra, std::string strb)
 	{
 		for (int i = 0; i < stra.size(); i++)
 		{
-			if (tolower(stra[0]) > tolower(strb[0]))
+			if (tolower(stra[i]) > tolower(strb[i]))
 				return false;
-			if (tolower(stra[0]) < tolower(strb[0]))
+			if (tolower(stra[i]) < tolower(strb[i]))
 				return true;
 		}
 		return true;
