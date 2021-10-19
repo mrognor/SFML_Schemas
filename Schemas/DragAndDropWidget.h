@@ -30,31 +30,35 @@ private:
 	/// Указывает на объект для которого в данный момент выполняется операция DragAndDrop
 	DropDownListElement* CurrentDropDownListElement;
 
-	
+	/// Переменная для отслеживания объекта(DropDownList)
+	/// Указывает на объект который является списком данного окна в данный момент времени
+	DropDownList* WindowDropDownList;
+
 public:
+	/// Одного только конструктора не достаточно для работы программы. Требуется использовать
+	/// setWindowDropDownList для корректной работы программы
 	DragAndDropWidget(sf::RenderWindow* dragAndDropWidgetWindow);
 
 	void Tick();
 
-	// Обработчик ввода 
+	/// Обработчик ввода 
 	void InputHandler(sf::Event event);
 
-	void StartDragAndDropOperation(DropDownListElement* currentDropDownListElement, sf::Vector2f dragStartCoords);
+	/// Функция для установки WindowDropDownList
+	void setWindowDropDownList(DropDownList* windowDropDownList) { WindowDropDownList = windowDropDownList; }
+
+	/// Функция для старта DragAndDrop операции. Принимает DropDownListElement для которого происходит операция
+	void StartDragAndDropOperation(DropDownListElement* currentDropDownListElement);
 	
+	/// Функция для получения состояния перетаскивания
 	bool getIsDragAndDropInProcess() { return IsDragAndDropInProcess; }
 
+	/// Функция для получения координат начала перетаскивания
 	sf::Vector2f getDragStartCoords() { return DragStartCoords; }
 
+	/// Функция для возврата DropDownListElement для которого выполняется операция перетаскивания 
+	DropDownListElement* getCurrentDropDownListElement() { return CurrentDropDownListElement;}
+
 	~DragAndDropWidget(); 
-	/*
-	void setCurrentDropDownListElement(DropDownListElement* currentDropDownListElement) 
-	{ CurrentDropDownListElement = currentDropDownListElement; }
-
-	void setIsDragListElementInProcess(bool f) { IsDragNDropInProcess = f; }
-
-	bool getIsDragListElementInProcess() { return IsDragNDropInProcess; }
-
-	void setDragStartListElementCoords(sf::Vector2f coords) { DragStartCoords = coords; }
-	*/
 };
 

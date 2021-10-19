@@ -65,8 +65,9 @@ inline std::vector<std::string> Split(std::string stringToSplit, std::string str
 			SplitterPositionVector[i + 1] - SplitterPositionVector[i] - 1));
 	}
 
-	FinalVector.push_back(stringToSplit.substr(SplitterPositionVector[SplitterPositionVector.size() - 1] + 1,
-		stringToSplit.size() - SplitterPositionVector[SplitterPositionVector.size() - 1]));
+	if (stringToSplit[stringToSplit.size() - 1] != *stringSplitter.c_str())
+		FinalVector.push_back(stringToSplit.substr(SplitterPositionVector[SplitterPositionVector.size() - 1] + 1,
+			stringToSplit.size() - SplitterPositionVector[SplitterPositionVector.size() - 1]));
 
 	return FinalVector;
 }
@@ -83,4 +84,58 @@ inline sf::Vector2f FindMouseCoords(sf::RenderWindow* windowToFindCursorPosition
 		(sf::Mouse::getPosition(*windowToFindCursorPosition).x,
 			sf::Mouse::getPosition(*windowToFindCursorPosition).y)
 		).y);
+}
+
+inline bool operator>(std::string stra, std::string strb)
+{
+	if (stra.size() >= strb.size())
+	{
+		for (int i = 0; i < strb.size(); i++)
+		{
+			if (tolower(stra[0]) > tolower(strb[0]))
+				return true;
+			if (tolower(stra[0]) < tolower(strb[0]))
+				return false;
+		}
+		return true;
+	}
+
+	if (strb.size() > stra.size())
+	{
+		for (int i = 0; i < stra.size(); i++)
+		{
+			if (tolower(stra[0]) > tolower(strb[0]))
+				return true;
+			if (tolower(stra[0]) < tolower(strb[0]))
+				return false;
+		}
+		return false;
+	}
+}
+
+inline bool operator<(std::string stra, std::string strb)
+{
+	if (stra.size() > strb.size())
+	{
+		for (int i = 0; i < strb.size(); i++)
+		{
+			if (tolower(stra[0]) > tolower(strb[0]))
+				return false;
+			if (tolower(stra[0]) < tolower(strb[0]))
+				return true;
+		}
+		return true;
+	}
+
+	if (strb.size() > stra.size())
+	{
+		for (int i = 0; i < stra.size(); i++)
+		{
+			if (tolower(stra[0]) > tolower(strb[0]))
+				return false;
+			if (tolower(stra[0]) < tolower(strb[0]))
+				return true;
+		}
+		return true;
+	}
 }

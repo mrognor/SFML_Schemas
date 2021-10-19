@@ -24,6 +24,9 @@ public:
 	DropDownList(sf::RenderWindow* mainWindow, DragAndDropWidget* dropDownListWindowDragAndDropWidget,
 		int sizeX, int sizeY);
 
+	/// Данная функция нужна для загрузки папок из файла
+	void LoadElementsFromFile();
+
 	/// Функция обработки ввода пользователя. Передает ивент всем элементам виджета(DropDownListElement)
 	void InputHandler(sf::Event event);
 
@@ -38,6 +41,8 @@ public:
 	/// Функция для нахождения индекса элементов(DropDownElement)
 	/// Находит номер и устанавливает элементу нужное значение
 	void FindAndSetDropDownListElementIndexes();
+
+	void ReplaceDropDownListElement(DropDownListElement* elementToMove, DropDownListElement* destinationElement);
 
 	~DropDownList();
 };

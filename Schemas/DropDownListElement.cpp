@@ -85,12 +85,20 @@ void DropDownListElement::InputHandler(sf::Event event)
 						DropDownListParent->OpenDropDownListElement(this);
 					}
 				}
+				// Отработка отпускания клавиши на нашем элементе
+				if (IsMouseOnShape && DropDownListElementWindowDragAndDropWidget->getIsDragAndDropInProcess()
+					&& DropDownListElementWindowDragAndDropWidget->getCurrentDropDownListElement() != this)
+				{
+					DropDownListParent->ReplaceDropDownListElement(
+						DropDownListElementWindowDragAndDropWidget->getCurrentDropDownListElement(),
+						this);
+				} 
 			}
 		}
 
 		if (event.type == event.MouseButtonPressed && IsMouseOnShape && event.mouseButton.button == sf::Mouse::Left)
 		{
-			DropDownListElementWindowDragAndDropWidget->StartDragAndDropOperation(this, CurrentMouseCoords);
+			DropDownListElementWindowDragAndDropWidget->StartDragAndDropOperation(this);
 		}
 
 	}

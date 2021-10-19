@@ -15,7 +15,7 @@ int main()
 
 	DragAndDropWidget d(&window);
 	DropDownList f(&window, &d, 400, 800);
-	
+	d.setWindowDropDownList(&f);
 
 	while (window.isOpen())
 	{

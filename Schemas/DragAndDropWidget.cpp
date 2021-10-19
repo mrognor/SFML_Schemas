@@ -35,19 +35,18 @@ void DragAndDropWidget::InputHandler(sf::Event event)
 	if (event.type == event.MouseButtonReleased)
 	{
 		IsDragAndDropInProcess = false;
+		CurrentDropDownListElement = nullptr;
 	}
 }
 
-void DragAndDropWidget::StartDragAndDropOperation(DropDownListElement* currentDropDownListElement,
-	sf::Vector2f dragStartCoords)
+void DragAndDropWidget::StartDragAndDropOperation(DropDownListElement* currentDropDownListElement)
 {
-
 	IsDragAndDropInProcess = true;
-	DragStartCoords = dragStartCoords;
+	DragStartCoords = FindMouseCoords(DragAndDropWidgetWindow);
 	CurrentDropDownListElement = currentDropDownListElement;
-	DragAndDropWidgetText->setString(CurrentDropDownListElement->getName() + "DRAG");
-	DragAndDropWidgetShape->setSize(sf::Vector2f(DragAndDropWidgetText->getGlobalBounds().width,
-		DragAndDropWidgetText->getGlobalBounds().height));
+	DragAndDropWidgetText->setString(CurrentDropDownListElement->getName());
+	DragAndDropWidgetShape->setSize(sf::Vector2f(DragAndDropWidgetText->getGlobalBounds().width + 5,
+		DragAndDropWidgetText->getGlobalBounds().height * 2));
 }
 
 DragAndDropWidget::~DragAndDropWidget()
