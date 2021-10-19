@@ -13,6 +13,10 @@ DropDownListElement::DropDownListElement(DropDownList* dropDownListParent, sf::R
 	MainDropDownListElementText->setString(sf::String(Name));
 	MainDropDownListElementText->setFillColor(sf::Color::Black);
 
+	DropDownListElementOpenClosedConditionTriangle = new sf::CircleShape(10.f, 3);
+	DropDownListElementOpenClosedConditionTriangle->setFillColor(sf::Color::Blue);
+	DropDownListElementOpenClosedConditionTriangle->setRotation(180);
+
 	UpdateDropDownListElementPosition();
 }
 
@@ -21,6 +25,8 @@ void DropDownListElement::UpdateDropDownListElementPosition()
 	MainDropDownListElementShape->setPosition(10 + 20 * CountInStr(FullPath, "/"), 10 + NumberInDropDownList * 50);
 
 	MainDropDownListElementText->setPosition(15 + 20 * CountInStr(FullPath, "/"), 15 + NumberInDropDownList * 50);
+
+	DropDownListElementOpenClosedConditionTriangle->setPosition(10 + 20 * CountInStr(FullPath, "/"), 40 + NumberInDropDownList * 50);
 }
 
 bool DropDownListElement::operator==(const DropDownListElement& Obj)
@@ -43,6 +49,7 @@ void DropDownListElement::Tick()
 	{
 		ListElementWindow->draw(*MainDropDownListElementShape);
 		ListElementWindow->draw(*MainDropDownListElementText);
+		ListElementWindow->draw(*DropDownListElementOpenClosedConditionTriangle);
 	}
 }
 
@@ -78,11 +85,13 @@ void DropDownListElement::InputHandler(sf::Event event)
 					{
 						IsDropDownListElementOpen = false;
 						DropDownListParent->CloseDropDownListElement(this);
+						DropDownListElementOpenClosedConditionTriangle->setRotation(90);
 					}
 					else
 					{
 						IsDropDownListElementOpen = true;
 						DropDownListParent->OpenDropDownListElement(this);
+						DropDownListElementOpenClosedConditionTriangle->setRotation(180);
 					}
 				}
 				// Отработка отпускания клавиши на нашем элементе
@@ -108,4 +117,5 @@ DropDownListElement::~DropDownListElement()
 {
 	delete MainDropDownListElementShape;
 	delete MainDropDownListElementText;
+	delete DropDownListElementOpenClosedConditionTriangle;
 }

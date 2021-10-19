@@ -20,6 +20,10 @@ private:
 	/// ”казатель на RectangleShape, €вл€ющийс€ главным пр€моугольником виджета(DropDownListElement)
 	sf::RectangleShape* MainDropDownListElementShape;
 
+	/// ”казатель на CircleShape, €вл€ющийс€ графическим представление состо€ни€ 
+	// открытости папки
+	sf::CircleShape* DropDownListElementOpenClosedConditionTriangle;
+
 	/// Ўрифт 
 	sf::Font font;
 
