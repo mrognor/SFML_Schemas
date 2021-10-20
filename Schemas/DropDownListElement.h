@@ -80,7 +80,7 @@ public:
 	bool getIsRendering() { return IsRendering; }
 
 	/// Сеттер для переменной для закрытия папки 
-	void setIsDropDownListElementOpen(bool f) { IsDropDownListElementOpen = f; }
+	void setIsDropDownListElementOpen(bool f);
 	// Геттер для переменной для закрытия папки
 	bool getIsDropDownListElementOpen() { return IsDropDownListElementOpen; }
 

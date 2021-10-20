@@ -1,12 +1,13 @@
-A/ A
-A/B/ B
-A/B/C/ C
-A/B/C/Baba/ Baba
-A/B/C/Baba/FFFFFFFFFF/ FFFFFFFFFF
-A/B/C/D/ D
-A/B/C/F/ F
-A/B/C/GGGF/ GGGF
-A/B/C/GGGF/FFG/ FFG
-A/B/C/GGGF/FFG/hhfgag/ hhfgag
-A/B/C/GGGF/FFG/hhfgag/ghshgsdgh/ ghshgsdgh
-A/B/C/T/ T
+A/ A true
+A/B/ B true
+A/B/C/ C true
+A/B/C/Baba/ Baba true
+A/B/C/Baba/FFFFFFFFFF/ FFFFFFFFFF true
+A/B/C/D/ D true
+A/B/C/F/ F true
+A/B/T/ T true
+A/GGGF/ GGGF true
+A/GGGF/FFG/ FFG true
+A/hhfgag/ hhfgag false
+A/hhfgag/ghshgsdgh/ ghshgsdgh false
+A/Z/ Z true

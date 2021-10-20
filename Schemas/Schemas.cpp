@@ -24,10 +24,12 @@ int main()
 
 		while (window.pollEvent(event))
 		{
-			if (event.type == sf::Event::Closed)
-				window.close();
 			f.InputHandler(event);
 			d.InputHandler(event);
+
+			if (event.type == sf::Event::Closed)
+				window.close();
+			
 		}
 
 		f.Tick();

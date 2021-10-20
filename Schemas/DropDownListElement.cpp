@@ -20,6 +20,15 @@ DropDownListElement::DropDownListElement(DropDownList* dropDownListParent, sf::R
 	UpdateDropDownListElementPosition();
 }
 
+void DropDownListElement::setIsDropDownListElementOpen(bool f)
+{
+	IsDropDownListElementOpen = f; 
+	if (f)
+		DropDownListElementOpenClosedConditionTriangle->setRotation(180);
+	else
+		DropDownListElementOpenClosedConditionTriangle->setRotation(90);
+}
+
 void DropDownListElement::UpdateDropDownListElementPosition()
 {
 	MainDropDownListElementShape->setPosition(10 + 20 * CountInStr(FullPath, "/"), 10 + NumberInDropDownList * 50);
