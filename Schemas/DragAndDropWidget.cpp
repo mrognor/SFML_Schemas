@@ -39,7 +39,7 @@ void DragAndDropWidget::InputHandler(sf::Event event)
 	}
 }
 
-void DragAndDropWidget::StartDragAndDropOperation(DropDownListElement* currentDropDownListElement)
+void DragAndDropWidget::StartDragAndDropOperation(DropDownListElementWidget* currentDropDownListElement)
 {
 	IsDragAndDropInProcess = true;
 	DragStartCoords = FindMouseCoords(DragAndDropWidgetWindow);

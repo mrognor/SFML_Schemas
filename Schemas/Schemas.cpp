@@ -4,8 +4,8 @@
 #include <SFML/Graphics.hpp>
 
 #include "SchemasFunctions.h"
-#include "DropDownList.h"
-#include "DropDownListElement.h"
+#include "DropDownListWidget.h"
+#include "DropDownListElementWidget.h"
 #include "DragAndDropWidget.h"
 
 int main()
@@ -14,7 +14,7 @@ int main()
 	window.setFramerateLimit(60);
 
 	DragAndDropWidget d(&window);
-	DropDownList f(&window, &d, 400, 800);
+	DropDownListWidget f(&window, &d, 400, 800);
 	d.setWindowDropDownList(&f);
 
 	while (window.isOpen())

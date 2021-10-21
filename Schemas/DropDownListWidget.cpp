@@ -1,6 +1,6 @@
-#include "DropDownList.h"
+#include "DropDownListWidget.h"
 
-DropDownList::DropDownList(sf::RenderWindow* mainWindow, DragAndDropWidget* dropDownListWindowDragAndDropWidget,
+DropDownListWidget::DropDownListWidget(sf::RenderWindow* mainWindow, DragAndDropWidget* dropDownListWindowDragAndDropWidget,
 	int sizeX, int sizeY) : ListElementWindow(mainWindow), DropDownListWindowDragAndDropWidget(dropDownListWindowDragAndDropWidget)
 {
 
@@ -10,7 +10,7 @@ DropDownList::DropDownList(sf::RenderWindow* mainWindow, DragAndDropWidget* drop
 	LoadElementsFromFile();
 }
 
-void DropDownList::LoadElementsFromFile()
+void DropDownListWidget::LoadElementsFromFile()
 {
 	std::ifstream NodesTXT;
 
@@ -21,12 +21,12 @@ void DropDownList::LoadElementsFromFile()
 	{
 		DropDownListElementsVector.clear();
 
-		std::vector<DropDownListElement*> ElementsToClose;
+		std::vector<DropDownListElementWidget*> ElementsToClose;
 
 		while (getline(NodesTXT, Line))
 		{
 			std::vector<std::string> ParsedLine = Split(Line, " ");
-			DropDownListElement* F = new DropDownListElement(this, ListElementWindow, 
+			DropDownListElementWidget* F = new DropDownListElementWidget(this, ListElementWindow, 
 				DropDownListWindowDragAndDropWidget, ParsedLine[1], ParsedLine[0],
 				DropDownListElementsVector.size());
 
@@ -42,7 +42,7 @@ void DropDownList::LoadElementsFromFile()
 			DropDownListElementsVector.push_back(F);
 		}
 
-		for (DropDownListElement* elem : ElementsToClose)
+		for (DropDownListElementWidget* elem : ElementsToClose)
 		{
 			CloseDropDownListElement(elem);
 		}
@@ -50,9 +50,9 @@ void DropDownList::LoadElementsFromFile()
 	NodesTXT.close();
 }
 
-void DropDownList::InputHandler(sf::Event event)
+void DropDownListWidget::InputHandler(sf::Event event)
 {
-	for (DropDownListElement* element : DropDownListElementsVector)
+	for (DropDownListElementWidget* element : DropDownListElementsVector)
 	{
 		element->InputHandler(event);
 	}
@@ -63,7 +63,7 @@ void DropDownList::InputHandler(sf::Event event)
 
 		if (NodesTXTOut.is_open())
 		{
-			for (DropDownListElement* element : DropDownListElementsVector)
+			for (DropDownListElementWidget* element : DropDownListElementsVector)
 			{
 				NodesTXTOut << element->getFullPath() << " " << element->getName() << " ";
 
@@ -78,20 +78,20 @@ void DropDownList::InputHandler(sf::Event event)
 	}
 }
 
-void DropDownList::Tick()
+void DropDownListWidget::Tick()
 {
 	ListElementWindow->draw(WidgetBody);
 
-	for (DropDownListElement* element : DropDownListElementsVector)
+	for (DropDownListElementWidget* element : DropDownListElementsVector)
 	{
 		element->Tick();
 	}
 }
 
-void DropDownList::FindAndSetDropDownListElementIndexes()
+void DropDownListWidget::FindAndSetDropDownListElementIndexes()
 {
 	int count = 0;
-	for (DropDownListElement* element : DropDownListElementsVector)
+	for (DropDownListElementWidget* element : DropDownListElementsVector)
 	{
 		if (element->getIsRendering())
 		{
@@ -102,10 +102,10 @@ void DropDownList::FindAndSetDropDownListElementIndexes()
 }
 
 
-void DropDownList::OpenDropDownListElement(DropDownListElement* elementToOpen)
+void DropDownListWidget::OpenDropDownListElement(DropDownListElementWidget* elementToOpen)
 {
-	std::vector<DropDownListElement*> ElementsToClose;
-	for (DropDownListElement* element : DropDownListElementsVector)
+	std::vector<DropDownListElementWidget*> ElementsToClose;
+	for (DropDownListElementWidget* element : DropDownListElementsVector)
 	{
 		if (element->getFullPath().find(elementToOpen->getFullPath()) != -1)
 		{
@@ -117,22 +117,22 @@ void DropDownList::OpenDropDownListElement(DropDownListElement* elementToOpen)
 		}
 	}
 
-	for (DropDownListElement* element : ElementsToClose)
+	for (DropDownListElementWidget* element : ElementsToClose)
 	{
 		CloseDropDownListElement(element);
 	}
 
 	FindAndSetDropDownListElementIndexes();
 
-	for (DropDownListElement* element : DropDownListElementsVector)
+	for (DropDownListElementWidget* element : DropDownListElementsVector)
 	{
 		element->UpdateDropDownListElementPosition();
 	}
 }
 
-void DropDownList::CloseDropDownListElement(DropDownListElement* elementToClose)
+void DropDownListWidget::CloseDropDownListElement(DropDownListElementWidget* elementToClose)
 {
-	for (DropDownListElement* element : DropDownListElementsVector)
+	for (DropDownListElementWidget* element : DropDownListElementsVector)
 	{
 		//std::cout << element->getFullPath() << std::endl;
 		if (element->getFullPath().find(elementToClose->getFullPath()) != -1 && 
@@ -144,13 +144,13 @@ void DropDownList::CloseDropDownListElement(DropDownListElement* elementToClose)
 
 	FindAndSetDropDownListElementIndexes();
 
-	for (DropDownListElement* element : DropDownListElementsVector)
+	for (DropDownListElementWidget* element : DropDownListElementsVector)
 	{
 		element->UpdateDropDownListElementPosition();
 	}
 }
 
-void DropDownList::ReplaceDropDownListElement(DropDownListElement* elementToMove, DropDownListElement* destinationElement)
+void DropDownListWidget::ReplaceDropDownListElement(DropDownListElementWidget* elementToMove, DropDownListElementWidget* destinationElement)
 {
 	if (destinationElement->getFullPath().find(elementToMove->getFullPath()) != -1)
 		return;
@@ -158,7 +158,7 @@ void DropDownList::ReplaceDropDownListElement(DropDownListElement* elementToMove
 	std::vector<std::string> StaticPaths;
 	std::vector<std::string> MovingPaths;
 
-	for (DropDownListElement* elem : DropDownListElementsVector)
+	for (DropDownListElementWidget* elem : DropDownListElementsVector)
 	{
 		std::string StringToWrite;
 		if (elem->getFullPath().find(elementToMove->getFullPath()) != -1)
@@ -251,9 +251,9 @@ void DropDownList::ReplaceDropDownListElement(DropDownListElement* elementToMove
 	LoadElementsFromFile();
 }
 
-DropDownList::~DropDownList()
+DropDownListWidget::~DropDownListWidget()
 {
-	for (DropDownListElement* folder : DropDownListElementsVector)
+	for (DropDownListElementWidget* folder : DropDownListElementsVector)
 	{
 		delete folder;
 	}

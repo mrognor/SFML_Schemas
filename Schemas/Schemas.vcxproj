@@ -144,18 +144,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ContextMenuWidget.cpp" />
     <ClCompile Include="DragAndDropWidget.cpp" />
-    <ClCompile Include="DropDownList.cpp" />
-    <ClCompile Include="DropDownListElement.cpp" />
+    <ClCompile Include="DropDownListWidget.cpp" />
+    <ClCompile Include="DropDownListElementWidget.cpp" />
     <ClCompile Include="Schemas.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Nodes.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ContextMenuWidget.h" />
     <ClInclude Include="DragAndDropWidget.h" />
-    <ClInclude Include="DropDownList.h" />
-    <ClInclude Include="DropDownListElement.h" />
+    <ClInclude Include="DropDownListWidget.h" />
+    <ClInclude Include="DropDownListElementWidget.h" />
     <ClInclude Include="SchemasClasses.h" />
     <ClInclude Include="SchemasFunctions.h" />
   </ItemGroup>

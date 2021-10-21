@@ -1,6 +1,6 @@
-#include "DropDownListElement.h"
+#include "DropDownListElementWidget.h"
 
-DropDownListElement::DropDownListElement(DropDownList* dropDownListParent, sf::RenderWindow* window, DragAndDropWidget* dropDownListElementWindowDragAndDropWidget, std::string name, std::string path, int numberInDropDownList)
+DropDownListElementWidget::DropDownListElementWidget(DropDownListWidget* dropDownListParent, sf::RenderWindow* window, DragAndDropWidget* dropDownListElementWindowDragAndDropWidget, std::string name, std::string path, int numberInDropDownList)
 	: DropDownListParent(dropDownListParent), ListElementWindow(window), DropDownListElementWindowDragAndDropWidget(dropDownListElementWindowDragAndDropWidget),Name(name), FullPath(path),  NumberInDropDownList(numberInDropDownList)
 {
 	font.loadFromFile("Font.ttf");
@@ -20,7 +20,7 @@ DropDownListElement::DropDownListElement(DropDownList* dropDownListParent, sf::R
 	UpdateDropDownListElementPosition();
 }
 
-void DropDownListElement::setIsDropDownListElementOpen(bool f)
+void DropDownListElementWidget::setIsDropDownListElementOpen(bool f)
 {
 	IsDropDownListElementOpen = f; 
 	if (f)
@@ -29,7 +29,7 @@ void DropDownListElement::setIsDropDownListElementOpen(bool f)
 		DropDownListElementOpenClosedConditionTriangle->setRotation(90);
 }
 
-void DropDownListElement::UpdateDropDownListElementPosition()
+void DropDownListElementWidget::UpdateDropDownListElementPosition()
 {
 	MainDropDownListElementShape->setPosition(10 + 20 * CountInStr(FullPath, "/"), 10 + NumberInDropDownList * 50);
 
@@ -38,21 +38,21 @@ void DropDownListElement::UpdateDropDownListElementPosition()
 	DropDownListElementOpenClosedConditionTriangle->setPosition(10 + 20 * CountInStr(FullPath, "/"), 40 + NumberInDropDownList * 50);
 }
 
-bool DropDownListElement::operator==(const DropDownListElement& Obj)
+bool DropDownListElementWidget::operator==(const DropDownListElementWidget& Obj)
 {
 	if (FullPath == Obj.FullPath && Name == Obj.Name)
 		return true;
 	return false;
 }
 
-bool DropDownListElement::operator!=(const DropDownListElement& Obj)
+bool DropDownListElementWidget::operator!=(const DropDownListElementWidget& Obj)
 {
 	if (FullPath == Obj.FullPath && Name == Obj.Name)
 		return false;
 	return true;
 }
 
-void DropDownListElement::Tick()
+void DropDownListElementWidget::Tick()
 {
 	if (IsRendering)
 	{
@@ -62,7 +62,7 @@ void DropDownListElement::Tick()
 	}
 }
 
-void DropDownListElement::InputHandler(sf::Event event)
+void DropDownListElementWidget::InputHandler(sf::Event event)
 {
 	if (IsRendering)
 	{
@@ -122,7 +122,7 @@ void DropDownListElement::InputHandler(sf::Event event)
 	}
 }
 
-DropDownListElement::~DropDownListElement()
+DropDownListElementWidget::~DropDownListElementWidget()
 {
 	delete MainDropDownListElementShape;
 	delete MainDropDownListElementText;

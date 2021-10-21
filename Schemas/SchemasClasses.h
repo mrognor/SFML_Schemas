@@ -9,6 +9,7 @@
 #include "SchemasFunctions.h"
 
 
-class DropDownList;
-class DropDownListElement;
+class DropDownListWidget;
+class DropDownListElementWidget;
 class DragAndDropWidget;
+class ContextMenuWidget;

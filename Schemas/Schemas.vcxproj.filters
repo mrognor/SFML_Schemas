@@ -18,13 +18,16 @@
     <ClCompile Include="Schemas.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="DropDownList.cpp">
+    <ClCompile Include="DropDownListWidget.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="DropDownListElement.cpp">
+    <ClCompile Include="DropDownListElementWidget.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="DragAndDropWidget.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="ContextMenuWidget.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
@@ -37,16 +40,19 @@
     <ClInclude Include="SchemasFunctions.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="DropDownList.h">
+    <ClInclude Include="DropDownListWidget.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="DropDownListElement.h">
+    <ClInclude Include="DropDownListElementWidget.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="SchemasClasses.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="DragAndDropWidget.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="ContextMenuWidget.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

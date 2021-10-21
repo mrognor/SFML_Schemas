@@ -1,7 +1,7 @@
 #pragma once
 
 #include "SchemasClasses.h"
-#include "DropDownListElement.h"
+#include "DropDownListElementWidget.h"
 
 class DragAndDropWidget
 {
@@ -21,18 +21,18 @@ private:
 	/// Координаты начала перетаскивания 
 	sf::Vector2f DragStartCoords;
 
-	/// Логическая переменная для определения состояния объекта(DropDownListElement).
+	/// Логическая переменная для определения состояния объекта(DropDownListElementWidget).
 	/// Переменная показывает идет ли операция перетаскивания 
 	bool IsDragAndDropInProcess = false;
 
 	
-	/// Переменная для отслеживания объекта(DropDownListElement)
+	/// Переменная для отслеживания объекта(DropDownListElementWidget)
 	/// Указывает на объект для которого в данный момент выполняется операция DragAndDrop
-	DropDownListElement* CurrentDropDownListElement;
+	DropDownListElementWidget* CurrentDropDownListElement;
 
-	/// Переменная для отслеживания объекта(DropDownList)
+	/// Переменная для отслеживания объекта(DropDownListWidget)
 	/// Указывает на объект который является списком данного окна в данный момент времени
-	DropDownList* WindowDropDownList;
+	DropDownListWidget* WindowDropDownList;
 
 public:
 	/// Одного только конструктора не достаточно для работы программы. Требуется использовать
@@ -45,10 +45,10 @@ public:
 	void InputHandler(sf::Event event);
 
 	/// Функция для установки WindowDropDownList
-	void setWindowDropDownList(DropDownList* windowDropDownList) { WindowDropDownList = windowDropDownList; }
+	void setWindowDropDownList(DropDownListWidget* windowDropDownList) { WindowDropDownList = windowDropDownList; }
 
-	/// Функция для старта DragAndDrop операции. Принимает DropDownListElement для которого происходит операция
-	void StartDragAndDropOperation(DropDownListElement* currentDropDownListElement);
+	/// Функция для старта DragAndDrop операции. Принимает DropDownListElementWidget для которого происходит операция
+	void StartDragAndDropOperation(DropDownListElementWidget* currentDropDownListElement);
 	
 	/// Функция для получения состояния перетаскивания
 	bool getIsDragAndDropInProcess() { return IsDragAndDropInProcess; }
@@ -56,8 +56,8 @@ public:
 	/// Функция для получения координат начала перетаскивания
 	sf::Vector2f getDragStartCoords() { return DragStartCoords; }
 
-	/// Функция для возврата DropDownListElement для которого выполняется операция перетаскивания 
-	DropDownListElement* getCurrentDropDownListElement() { return CurrentDropDownListElement;}
+	/// Функция для возврата DropDownListElementWidget для которого выполняется операция перетаскивания 
+	DropDownListElementWidget* getCurrentDropDownListElement() { return CurrentDropDownListElement;}
 
 	~DragAndDropWidget(); 
 };
