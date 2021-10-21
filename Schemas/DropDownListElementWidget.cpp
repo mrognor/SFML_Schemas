@@ -1,7 +1,14 @@
 #include "DropDownListElementWidget.h"
 
-DropDownListElementWidget::DropDownListElementWidget(DropDownListWidget* dropDownListParent, sf::RenderWindow* window, DragAndDropWidget* dropDownListElementWindowDragAndDropWidget, std::string name, std::string path, int numberInDropDownList)
-	: DropDownListParent(dropDownListParent), ListElementWindow(window), DropDownListElementWindowDragAndDropWidget(dropDownListElementWindowDragAndDropWidget),Name(name), FullPath(path),  NumberInDropDownList(numberInDropDownList)
+DropDownListElementWidget::DropDownListElementWidget(DropDownListWidget* dropDownListParent,
+	sf::RenderWindow* window, DragAndDropWidget * dropDownListElementDragAndDropWidget, 
+	ContextMenuWidget* dropDownListElementContextMenu, std::string name,
+ std::string path, 
+	int numberInDropDownList)
+	: DropDownListParent(dropDownListParent), DropDownListElementWindow(window), 
+	DropDownListElementDragAndDropWidget(dropDownListElementDragAndDropWidget),
+	DropDownListElementContextMenuWidget(dropDownListElementContextMenu), Name(name),
+	FullPath(path),  NumberInDropDownList(numberInDropDownList)
 {
 	font.loadFromFile("Font.ttf");
 
@@ -56,9 +63,9 @@ void DropDownListElementWidget::Tick()
 {
 	if (IsRendering)
 	{
-		ListElementWindow->draw(*MainDropDownListElementShape);
-		ListElementWindow->draw(*MainDropDownListElementText);
-		ListElementWindow->draw(*DropDownListElementOpenClosedConditionTriangle);
+		DropDownListElementWindow->draw(*MainDropDownListElementShape);
+		DropDownListElementWindow->draw(*MainDropDownListElementText);
+		DropDownListElementWindow->draw(*DropDownListElementOpenClosedConditionTriangle);
 	}
 }
 
@@ -67,10 +74,11 @@ void DropDownListElementWidget::InputHandler(sf::Event event)
 	if (IsRendering)
 	{
 		/// Локальная переменная для отслеживания позиции курсора в окне
-		sf::Vector2f CurrentMouseCoords = FindMouseCoords(ListElementWindow);
+		sf::Vector2f CurrentMouseCoords = FindMouseCoords(DropDownListElementWindow);
 
 		// OnHovered
-		if (MainDropDownListElementShape->getGlobalBounds().contains(CurrentMouseCoords.x, CurrentMouseCoords.y))
+		if (MainDropDownListElementShape->getGlobalBounds().contains(CurrentMouseCoords.x, CurrentMouseCoords.y) &&
+			DropDownListElementContextMenuWidget->getIsMouseOnShape() == false)
 		{
 			IsMouseOnShape = true;
 			MainDropDownListElementShape->setFillColor(sf::Color::Blue);
@@ -88,7 +96,7 @@ void DropDownListElementWidget::InputHandler(sf::Event event)
 			{
 				// Тут делается сравнение координат. Так как при нажатии начинается операция Drag and drop 
 				// в классе DragAndDroр. Операция началась, но перетаскивания не было. Поэтому нам надо сравнивать координаты
-				if (IsMouseOnShape && DropDownListElementWindowDragAndDropWidget->getDragStartCoords() == CurrentMouseCoords)
+				if (IsMouseOnShape && DropDownListElementDragAndDropWidget->getDragStartCoords() == CurrentMouseCoords)
 				{
 					if (IsDropDownListElementOpen)
 					{
@@ -104,19 +112,27 @@ void DropDownListElementWidget::InputHandler(sf::Event event)
 					}
 				}
 				// Отработка отпускания клавиши на нашем элементе
-				if (IsMouseOnShape && DropDownListElementWindowDragAndDropWidget->getIsDragAndDropInProcess()
-					&& DropDownListElementWindowDragAndDropWidget->getCurrentDropDownListElement() != this)
+				if (IsMouseOnShape && DropDownListElementDragAndDropWidget->getIsDragAndDropInProcess()
+					&& DropDownListElementDragAndDropWidget->getCurrentDropDownListElement() != this)
 				{
 					DropDownListParent->ReplaceDropDownListElement(
-						DropDownListElementWindowDragAndDropWidget->getCurrentDropDownListElement(),
+						DropDownListElementDragAndDropWidget->getCurrentDropDownListElement(),
 						this);
 				} 
+			}
+
+			if (event.mouseButton.button == sf::Mouse::Right)
+			{
+				if (IsMouseOnShape)
+				{
+					DropDownListElementContextMenuWidget->OpenContextMenu();
+				}
 			}
 		}
 
 		if (event.type == event.MouseButtonPressed && IsMouseOnShape && event.mouseButton.button == sf::Mouse::Left)
 		{
-			DropDownListElementWindowDragAndDropWidget->StartDragAndDropOperation(this);
+			DropDownListElementDragAndDropWidget->StartDragAndDropOperation(this);
 		}
 
 	}

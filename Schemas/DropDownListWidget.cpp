@@ -1,7 +1,9 @@
 #include "DropDownListWidget.h"
 
 DropDownListWidget::DropDownListWidget(sf::RenderWindow* mainWindow, DragAndDropWidget* dropDownListWindowDragAndDropWidget,
-	int sizeX, int sizeY) : ListElementWindow(mainWindow), DropDownListWindowDragAndDropWidget(dropDownListWindowDragAndDropWidget)
+	ContextMenuWidget* dropDownListContextMenuWidget, int sizeX, int sizeY) : 
+	DropDownListElementWindow(mainWindow), DropDownListDragAndDropWidget(dropDownListWindowDragAndDropWidget),
+	DropDownListContextMenuWidget(dropDownListContextMenuWidget)
 {
 
 	WidgetBody.setSize(sf::Vector2f(sizeX, sizeY));
@@ -26,8 +28,8 @@ void DropDownListWidget::LoadElementsFromFile()
 		while (getline(NodesTXT, Line))
 		{
 			std::vector<std::string> ParsedLine = Split(Line, " ");
-			DropDownListElementWidget* F = new DropDownListElementWidget(this, ListElementWindow, 
-				DropDownListWindowDragAndDropWidget, ParsedLine[1], ParsedLine[0],
+			DropDownListElementWidget* F = new DropDownListElementWidget(this, DropDownListElementWindow, 
+				DropDownListDragAndDropWidget, DropDownListContextMenuWidget, ParsedLine[1], ParsedLine[0],
 				DropDownListElementsVector.size());
 
 			
@@ -80,7 +82,7 @@ void DropDownListWidget::InputHandler(sf::Event event)
 
 void DropDownListWidget::Tick()
 {
-	ListElementWindow->draw(WidgetBody);
+	DropDownListElementWindow->draw(WidgetBody);
 
 	for (DropDownListElementWidget* element : DropDownListElementsVector)
 	{

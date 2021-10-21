@@ -1,6 +1,7 @@
 #pragma once
 
 #include "SchemasClasses.h"
+#include "DropDownListWidget.h"
 #include "DropDownListElementWidget.h"
 
 class DragAndDropWidget

@@ -3,6 +3,7 @@
 #include "SchemasClasses.h"
 #include "DropDownListWidget.h"
 #include "DragAndDropWidget.h"
+#include "ContextMenuWidget.h"
 
 /// Класс для элемента DropDownListWidget 
 class DropDownListElementWidget
@@ -12,10 +13,13 @@ private:
 	DropDownListWidget* DropDownListParent;
 
 	/// Переменная для отслеживания объекта(DragAndDropWidget)
-	DragAndDropWidget* DropDownListElementWindowDragAndDropWidget;
+	DragAndDropWidget* DropDownListElementDragAndDropWidget;
 
 	/// Указатель на окно приложения в котором находится виджет(DropDownListWidget)
-	sf::RenderWindow* ListElementWindow;
+	sf::RenderWindow* DropDownListElementWindow;
+
+	/// Переменная для отслеживания объекта(ContextMenuWidget)
+	ContextMenuWidget* DropDownListElementContextMenuWidget;
 
 	/// Указатель на RectangleShape, являющийся главным прямоугольником виджета(DropDownListElementWidget)
 	sf::RectangleShape* MainDropDownListElementShape;
@@ -56,7 +60,8 @@ public:
 	/// Создает объект RectangleShape для тела данного виджета. Вызывает функцию UpdateDropDownListElementPosition.
 	/// UpdateDropDownListElementPosition перемещает тело виджета и текст в правильную позицию. Позиция устанавливается 
 	/// из DropDownListWidget.
-	DropDownListElementWidget(DropDownListWidget* dropDownListParent, sf::RenderWindow* window, DragAndDropWidget* dropDownListElementWindowDragAndDropWidget,
+	DropDownListElementWidget(DropDownListWidget* dropDownListParent, sf::RenderWindow* window, DragAndDropWidget * dropDownListElementDragAndDropWidget,
+ ContextMenuWidget* dropDownListElementContextMenu,
 		std::string name, std::string path, int numberInDropDownList);
 
 	/// Сеттер для полного пути 

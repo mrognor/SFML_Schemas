@@ -7,6 +7,7 @@
 #include "DropDownListWidget.h"
 #include "DropDownListElementWidget.h"
 #include "DragAndDropWidget.h"
+#include "ContextMenuWidget.h"
 
 int main()
 {
@@ -14,7 +15,8 @@ int main()
 	window.setFramerateLimit(60);
 
 	DragAndDropWidget d(&window);
-	DropDownListWidget f(&window, &d, 400, 800);
+	ContextMenuWidget c(&window);
+	DropDownListWidget f(&window, &d, &c, 400, 800);
 	d.setWindowDropDownList(&f);
 
 	while (window.isOpen())
@@ -23,7 +25,8 @@ int main()
 		sf::Event event;
 
 		while (window.pollEvent(event))
-		{
+		{	
+			c.InputHandler(event);
 			f.InputHandler(event);
 			d.InputHandler(event);
 
@@ -33,6 +36,7 @@ int main()
 		}
 
 		f.Tick();
+		c.Tick();
 		d.Tick();
 		window.display();
 	}

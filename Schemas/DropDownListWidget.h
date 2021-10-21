@@ -3,12 +3,13 @@
 #include "SchemasClasses.h"
 #include "DropDownListElementWidget.h"
 #include "DragAndDropWidget.h"
+#include "ContextMenuWidget.h"
 
 class DropDownListWidget
 {
 private:
 	/// Указатель на главное окно приложения 
-	sf::RenderWindow* ListElementWindow;
+	sf::RenderWindow* DropDownListElementWindow;
 
 	/// RectangleShape. Прямоугольник, служащий главным телом виджета списка
 	sf::RectangleShape WidgetBody;
@@ -17,12 +18,15 @@ private:
 	std::vector<DropDownListElementWidget*> DropDownListElementsVector;
 
 	/// Переменная для отслеживания объекта(DragAndDropWidget)
-	DragAndDropWidget* DropDownListWindowDragAndDropWidget;
+	DragAndDropWidget* DropDownListDragAndDropWidget;
+
+	/// Переменная для отслеживания объекта(ContextMenuWidget)
+	ContextMenuWidget* DropDownListContextMenuWidget;
 
 public:
 	///
 	DropDownListWidget(sf::RenderWindow* mainWindow, DragAndDropWidget* dropDownListWindowDragAndDropWidget,
-		int sizeX, int sizeY);
+		ContextMenuWidget* dropDownListContextMenuWidget, int sizeX, int sizeY);
 
 	/// Данная функция нужна для загрузки папок из файла
 	void LoadElementsFromFile();
