@@ -32,7 +32,10 @@ int main()
 
 			if (event.type == sf::Event::Closed)
 				window.close();
-			
+			if (event.type == sf::Event::TextEntered && event.text.unicode < 128)
+			{
+				std::cout << char(event.text.unicode) << std::endl;
+			} 
 		}
 
 		f.Tick();

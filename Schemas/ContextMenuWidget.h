@@ -14,6 +14,27 @@ private:
 	/// Переменная-указатель(RectangleShape) для отображения объекта при вызове контекстного меню
 	sf::RectangleShape* ContextMenuWidgetShape;
 
+	/// Переменная-указатель(RectangleShape) для отображения кнопки для добавления нод
+	sf::RectangleShape* ContextMenuWidgetAddButton;
+
+	/// Переменная-указатель(Text) для отображения кнопки для добавления нод
+	sf::Text* ContextMenuWidgetAddButtonText;
+
+	/// Переменная-указатель(RectangleShape) для отображения кнопки для переименования нод
+	sf::RectangleShape* ContextMenuWidgetRenameButton;
+
+	/// Переменная-указатель(Text) для отображения кнопки для переименования нод
+	sf::Text* ContextMenuWidgetRenameButtonText;
+
+	/// Переменная-указатель(RectangleShape) для отображения кнопки для удаления нод
+	sf::RectangleShape* ContextMenuWidgetDeleteButton;
+
+	/// Переменная-указатель(Text)  для отображения кнопки для удаления нод
+	sf::Text* ContextMenuWidgetDeleteButtonText;
+
+	/// Шрифт 
+	sf::Font font;
+
 	bool IsRendering = false;
 	
 	bool IsMouseOnShape = false;
