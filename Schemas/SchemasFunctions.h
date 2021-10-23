@@ -139,3 +139,12 @@ inline bool operator<(std::string stra, std::string strb)
 		return true;
 	}
 }
+
+inline std::ostream& operator<<(std::ostream& stream, sf::FloatRect rect)
+{
+	stream <<"Left coord: " << rect.left 
+		<< " Width: " << rect.width
+		<< " Top coord: " << rect.top 
+		<< " Height: " << rect.height;
+	return stream;
+}

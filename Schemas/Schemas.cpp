@@ -34,7 +34,7 @@ int main()
 				window.close();
 			if (event.type == sf::Event::TextEntered && event.text.unicode < 128)
 			{
-				std::cout << char(event.text.unicode) << std::endl;
+				std::cout << "Char:" << char(event.text.unicode) << " Code:" << event.text.unicode << std::endl;
 			} 
 		}
 

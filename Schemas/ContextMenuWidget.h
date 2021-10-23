@@ -35,9 +35,24 @@ private:
 	/// Шрифт 
 	sf::Font font;
 
+	/// Переменная-указатель(RectangleShape) отображения объекта при вызове меню подтверждения 
+	sf::RectangleShape* ContextMenuWidgetConfirmWidgetShape;
+
+	/// Переменная-указатель(RectangleShape) отображения поля ввода при вызове меню подтверждения
+	sf::RectangleShape* ContextMenuWidgetConfirmWidgetTextInputShape;
+
+	/// Переменная-указатель(RectangleShape) для отображения кнопки "да" при вызове меню подтверждения
+	sf::RectangleShape* ContextMenuWidgetConfirmWidgetAcceptShape;
+
+	/// Переменная-указатель(RectangleShape) для отображения кнопки "нет" при вызове меню подтверждения
+	sf::RectangleShape* ContextMenuWidgetConfirmWidgetDeclineShape;
+
+
 	bool IsRendering = false;
 	
 	bool IsMouseOnShape = false;
+
+	bool IsConfirmWidgetRendering = false;
 
 public:
 	ContextMenuWidget(sf::RenderWindow* contextMenuWidgetWindow);
@@ -52,6 +67,8 @@ public:
 	void CloseContextMenu();
 
 	bool getIsMouseOnShape() { return IsMouseOnShape; }
+
+	void OpenConfirmWidget();
 
 	~ContextMenuWidget();
 };

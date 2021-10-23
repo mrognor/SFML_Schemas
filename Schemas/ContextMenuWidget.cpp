@@ -7,6 +7,7 @@ ContextMenuWidget::ContextMenuWidget(sf::RenderWindow* contextMenuWidgetWindow) 
 
 	font.loadFromFile("Font.ttf");
 
+	/// Кнопка добавления нод
 	ContextMenuWidgetAddButton = new sf::RectangleShape(sf::Vector2f(295, 40));
 	ContextMenuWidgetAddButton->setFillColor(sf::Color::Black);
 
@@ -16,9 +17,7 @@ ContextMenuWidget::ContextMenuWidget(sf::RenderWindow* contextMenuWidgetWindow) 
 	ContextMenuWidgetAddButtonText->setString("Add logical element");
 	ContextMenuWidgetAddButtonText->setCharacterSize(25);
 
-	ContextMenuWidgetDeleteButton = new sf::RectangleShape(sf::Vector2f(295, 40));
-	ContextMenuWidgetDeleteButton->setFillColor(sf::Color::Black);
-
+	/// Кнопка переименования нод
 	ContextMenuWidgetRenameButton = new sf::RectangleShape(sf::Vector2f(295, 40));
 	ContextMenuWidgetRenameButton->setFillColor(sf::Color::Black);
 
@@ -28,11 +27,25 @@ ContextMenuWidget::ContextMenuWidget(sf::RenderWindow* contextMenuWidgetWindow) 
 	ContextMenuWidgetRenameButtonText->setString("Rename logical element");
 	ContextMenuWidgetRenameButtonText->setCharacterSize(25);
 
+	/// Кнопка удаления нод
+	ContextMenuWidgetDeleteButton = new sf::RectangleShape(sf::Vector2f(295, 40));
+	ContextMenuWidgetDeleteButton->setFillColor(sf::Color::Black);
+
 	ContextMenuWidgetDeleteButtonText = new sf::Text;
 	ContextMenuWidgetDeleteButtonText->setFont(font);
 	ContextMenuWidgetDeleteButtonText->setFillColor(sf::Color::Green);
 	ContextMenuWidgetDeleteButtonText->setString("Delete logical element");
 	ContextMenuWidgetDeleteButtonText->setCharacterSize(25);
+
+	/// Меню подтверждения 
+	ContextMenuWidgetConfirmWidgetShape = new sf::RectangleShape(sf::Vector2f(305, 95));
+	ContextMenuWidgetConfirmWidgetShape->setFillColor(sf::Color::Black);
+
+	ContextMenuWidgetConfirmWidgetTextInputShape = new sf::RectangleShape(sf::Vector2f(295, 40));
+
+	ContextMenuWidgetConfirmWidgetAcceptShape = new sf::RectangleShape(sf::Vector2f(145, 40));
+
+	ContextMenuWidgetConfirmWidgetDeclineShape = new sf::RectangleShape(sf::Vector2f(145, 40));
 }
 
 void ContextMenuWidget::Tick()
@@ -48,6 +61,14 @@ void ContextMenuWidget::Tick()
 		ContextMenuWidgetWindow->draw(*ContextMenuWidgetAddButtonText);
 		ContextMenuWidgetWindow->draw(*ContextMenuWidgetRenameButtonText);
 		ContextMenuWidgetWindow->draw(*ContextMenuWidgetDeleteButtonText);
+
+		if (IsConfirmWidgetRendering == true)
+		{
+			ContextMenuWidgetWindow->draw(*ContextMenuWidgetConfirmWidgetShape);
+			ContextMenuWidgetWindow->draw(*ContextMenuWidgetConfirmWidgetTextInputShape);
+			ContextMenuWidgetWindow->draw(*ContextMenuWidgetConfirmWidgetAcceptShape);
+			ContextMenuWidgetWindow->draw(*ContextMenuWidgetConfirmWidgetDeclineShape);
+		}
 	}
 }
 
@@ -68,9 +89,18 @@ void ContextMenuWidget::InputHandler(sf::Event event)
 		CloseContextMenu();
 	}
 
+	if (event.type == event.MouseButtonReleased)
+	{
+		IsConfirmWidgetRendering = false;
+	}
+
 	if (ContextMenuWidgetAddButton->getGlobalBounds().contains(CurrentMouseCoords))
 	{
 		ContextMenuWidgetAddButton->setFillColor(sf::Color::Blue);
+		if (event.type == event.MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left && IsRendering == true)
+		{
+			OpenConfirmWidget();
+		}
 	}
 	else
 	{
@@ -80,6 +110,10 @@ void ContextMenuWidget::InputHandler(sf::Event event)
 	if (ContextMenuWidgetDeleteButton->getGlobalBounds().contains(CurrentMouseCoords))
 	{
 		ContextMenuWidgetDeleteButton->setFillColor(sf::Color::Blue);
+		if (event.type == event.MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left && IsRendering == true)
+		{
+			OpenConfirmWidget();
+		}
 	}
 	else
 	{
@@ -89,6 +123,10 @@ void ContextMenuWidget::InputHandler(sf::Event event)
 	if (ContextMenuWidgetRenameButton->getGlobalBounds().contains(CurrentMouseCoords))
 	{
 		ContextMenuWidgetRenameButton->setFillColor(sf::Color::Blue);
+		if (event.type == event.MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left && IsRendering == true)
+		{
+			OpenConfirmWidget();
+		}
 	}
 	else
 	{
@@ -118,6 +156,19 @@ void ContextMenuWidget::CloseContextMenu()
 	IsRendering = false;
 }
 
+void ContextMenuWidget::OpenConfirmWidget()
+{
+	IsConfirmWidgetRendering = true;
+
+	/// Локальная переменная для отслеживания позиции курсора в окне
+	sf::Vector2f CurrentMouseCoords = FindMouseCoords(ContextMenuWidgetWindow);
+
+	ContextMenuWidgetConfirmWidgetShape->setPosition(CurrentMouseCoords);
+	ContextMenuWidgetConfirmWidgetTextInputShape->setPosition(sf::Vector2f(CurrentMouseCoords.x + 5, CurrentMouseCoords.y + 5));
+	ContextMenuWidgetConfirmWidgetAcceptShape->setPosition(sf::Vector2f(CurrentMouseCoords.x + 5, CurrentMouseCoords.y + 50));
+	ContextMenuWidgetConfirmWidgetDeclineShape->setPosition(sf::Vector2f(CurrentMouseCoords.x + 155, CurrentMouseCoords.y + 50));
+}
+
 ContextMenuWidget::~ContextMenuWidget()
 {
 	delete ContextMenuWidgetShape;
@@ -129,4 +180,9 @@ ContextMenuWidget::~ContextMenuWidget()
 	delete ContextMenuWidgetAddButtonText;
 	delete ContextMenuWidgetDeleteButtonText;
 	delete ContextMenuWidgetRenameButtonText;
+
+	delete ContextMenuWidgetConfirmWidgetShape;
+	delete ContextMenuWidgetConfirmWidgetTextInputShape;
+	delete ContextMenuWidgetConfirmWidgetAcceptShape;
+	delete ContextMenuWidgetConfirmWidgetDeclineShape;
 }
