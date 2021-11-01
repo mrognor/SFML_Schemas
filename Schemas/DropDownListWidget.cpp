@@ -10,6 +10,8 @@ DropDownListWidget::DropDownListWidget(sf::RenderWindow* mainWindow, DragAndDrop
 	WidgetBody.setFillColor(sf::Color::Black);
 
 	LoadElementsFromFile();
+
+	RenameDropDownListElement(DropDownListElementsVector[6], "NewName");
 }
 
 void DropDownListWidget::LoadElementsFromFile()
@@ -250,6 +252,50 @@ void DropDownListWidget::ReplaceDropDownListElement(DropDownListElementWidget* e
 
 	NodesTXTOut.close();
 	
+	LoadElementsFromFile();
+}
+
+void DropDownListWidget::RenameDropDownListElement(DropDownListElementWidget* elementToRename, std::string newname)
+{
+	std::ofstream NodesTXTOut;
+	NodesTXTOut.open("Nodes.txt");
+
+	if (NodesTXTOut.is_open())
+	{
+		for (DropDownListElementWidget* element : DropDownListElementsVector)
+		{
+			std::cout << element->getFullPath().find(elementToRename->getFullPath()) << std::endl;
+			if (element->getFullPath().find(elementToRename->getFullPath()) != -1)
+			{
+				if (element == elementToRename)
+				{
+					NodesTXTOut << element->getFullPath().replace(element->getFullPath().find(element->getName()),
+						element->getName().size(), newname) << " " << newname << " ";
+				}
+				else
+				{
+					NodesTXTOut << element->getFullPath().replace(element->getFullPath().find(elementToRename->getName()),
+						elementToRename->getName().size(), newname) << " " << element->getName() << " ";
+				}
+
+				if (element->getIsDropDownListElementOpen())
+					NodesTXTOut << "true" << std::endl;
+				else
+					NodesTXTOut << "false" << std::endl;
+			}
+			else
+			{
+				NodesTXTOut << element->getFullPath() << " " << element->getName() << " ";
+				if (element->getIsDropDownListElementOpen())
+					NodesTXTOut << "true" << std::endl;
+				else
+					NodesTXTOut << "false" << std::endl;
+			}
+		}
+	}
+
+	NodesTXTOut.close();
+
 	LoadElementsFromFile();
 }
 

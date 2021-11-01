@@ -48,6 +48,8 @@ public:
 
 	void ReplaceDropDownListElement(DropDownListElementWidget* elementToMove, DropDownListElementWidget* destinationElement);
 
+	void RenameDropDownListElement(DropDownListElementWidget* elementToRename, std::string newname);
+
 	~DropDownListWidget();
 };
 

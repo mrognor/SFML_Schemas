@@ -4,10 +4,10 @@ A/FFFFFFFFFF/ FFFFFFFFFF true
 A/FFG/ FFG true
 A/GGGF/ GGGF true
 A/ghshgsdgh/ ghshgsdgh true
-A/hhfgag/ hhfgag true
-A/hhfgag/Baba/ Baba true
-A/hhfgag/Baba/C/ C true
-A/hhfgag/Baba/C/D/ D true
-A/hhfgag/Baba/C/D/F/ F true
+A/NewName/ NewName true
+A/NewName/Baba/ Baba true
+A/NewName/Baba/C/ C true
+A/NewName/Baba/C/D/ D true
+A/NewName/Baba/C/D/F/ F true
 A/T/ T true
 A/Z/ Z true
