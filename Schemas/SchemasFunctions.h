@@ -148,3 +148,50 @@ inline std::ostream& operator<<(std::ostream& stream, sf::FloatRect rect)
 		<< " Height: " << rect.height;
 	return stream;
 }
+
+
+template <class T>
+inline bool IsShapeInSpriteContain(const sf::Sprite& sprite, const T& objectInSprite, sf::Vector2f vectorToCheck)
+{
+	if (vectorToCheck.x > (sprite.getPosition().x + objectInSprite.getGlobalBounds().left) &&
+		vectorToCheck.x < (sprite.getPosition().x + objectInSprite.getGlobalBounds().left + objectInSprite.getGlobalBounds().width) &&
+		vectorToCheck.y >(sprite.getPosition().y + objectInSprite.getGlobalBounds().top) &&
+		vectorToCheck.y < (sprite.getPosition().y + objectInSprite.getGlobalBounds().top + objectInSprite.getGlobalBounds().height)
+		)
+		return true;
+	else return false;
+}
+/// Данная функция нужна для поиска индекса символа в тексте, соответствующей данной позиции курсора
+/// Первый параметр должен показывать позцию курсора относительно начала текста
+inline int FindTextIndexToPosition(float localMousePositionX, sf::Text textToFind, sf::Font font)
+{
+	/// Текст для определения места нажития мышки и установки туда курсора
+	sf::Text TextInputWidgetClickText;
+	TextInputWidgetClickText.setFont(font);
+
+	if (localMousePositionX <= 0)
+	{
+		return 0;
+	}
+
+	for (int i = 0; i <= textToFind.getString().getSize(); i++)
+	{
+		// Определение дистанции до левого символа
+		float LeftDistance = localMousePositionX - (TextInputWidgetClickText.getGlobalBounds().left + TextInputWidgetClickText.getGlobalBounds().width);
+
+		TextInputWidgetClickText.setString(TextInputWidgetClickText.getString() + textToFind.getString()[i]);
+
+		// Определение дистанции до правого символа
+		float RightDistance = localMousePositionX - (TextInputWidgetClickText.getGlobalBounds().left + TextInputWidgetClickText.getGlobalBounds().width);
+
+		// Если левый символ левее, а правый правее, то мы дошли до нужной позиции
+		if (LeftDistance >= 0 && RightDistance < 0)
+		{
+			if (abs(RightDistance) >= abs(LeftDistance))
+				return i;
+			else
+				return i + 1;
+		}
+	}
+	return textToFind.getString().getSize();
+}

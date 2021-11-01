@@ -11,13 +11,16 @@
 
 int main()
 {
-	sf::RenderWindow window(sf::VideoMode(1200, 800), "SFML Works!");
+	sf::RenderWindow window(sf::VideoMode(1920, 1080), "SFML Works!");
 	window.setFramerateLimit(60);
 
 	DragAndDropWidget d(&window);
 	ContextMenuWidget c(&window);
-	DropDownListWidget f(&window, &d, &c, 400, 800);
+	DropDownListWidget f(&window, &d, &c, 400, 8000);
 	d.setWindowDropDownList(&f);
+
+	// create own view
+	sf::View view = window.getDefaultView();
 
 	while (window.isOpen())
 	{
@@ -32,10 +35,12 @@ int main()
 
 			if (event.type == sf::Event::Closed)
 				window.close();
-			if (event.type == sf::Event::TextEntered && event.text.unicode < 128)
+			if (event.type == sf::Event::Resized)
 			{
-				std::cout << "Char:" << char(event.text.unicode) << " Code:" << event.text.unicode << std::endl;
-			} 
+				// resize my view
+				view.setSize(sf::Vector2f(static_cast<float>(event.size.width), static_cast<float>(event.size.height)));
+			}
+
 		}
 
 		f.Tick();

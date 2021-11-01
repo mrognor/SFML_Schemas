@@ -41,6 +41,15 @@ private:
 	/// Переменная-указатель(RectangleShape) отображения поля ввода при вызове меню подтверждения
 	sf::RectangleShape* ContextMenuWidgetConfirmWidgetTextInputShape;
 
+	sf::Text* ContextMenuWidgetConfirmWidgetTextInputText;
+
+	/// Данная текстура нужна для правильного отображения вводимых символов. 
+	/// Если длина строки превысит размер текстуры лишние символы не будут отрисовываться 
+	sf::RenderTexture* ContextMenuWidgetConfirmWidgetTextInputShapeTexture;
+
+	/// Данный спрайт нужен для правильной отрисовки текстуры для ввода символов
+	sf::Sprite* ContextMenuWidgetConfirmWidgetTextInputShapeSprite;
+
 	/// Переменная-указатель(RectangleShape) для отображения кнопки "да" при вызове меню подтверждения
 	sf::RectangleShape* ContextMenuWidgetConfirmWidgetAcceptShape;
 

@@ -13,3 +13,4 @@ class DropDownListWidget;
 class DropDownListElementWidget;
 class DragAndDropWidget;
 class ContextMenuWidget;
+class TextInputWidget;

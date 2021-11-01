@@ -30,6 +30,9 @@
     <ClCompile Include="ContextMenuWidget.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="TextInputWidget.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Nodes.txt">
@@ -53,6 +56,9 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="ContextMenuWidget.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="TextInputWidget.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

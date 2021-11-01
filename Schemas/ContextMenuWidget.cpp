@@ -43,6 +43,20 @@ ContextMenuWidget::ContextMenuWidget(sf::RenderWindow* contextMenuWidgetWindow) 
 
 	ContextMenuWidgetConfirmWidgetTextInputShape = new sf::RectangleShape(sf::Vector2f(295, 40));
 
+	ContextMenuWidgetConfirmWidgetTextInputText = new sf::Text;
+	ContextMenuWidgetConfirmWidgetTextInputText->setFont(font);
+	ContextMenuWidgetConfirmWidgetTextInputText->setFillColor(sf::Color::Green);
+	ContextMenuWidgetConfirmWidgetTextInputText->setString("ABCDEFGHIJKLMNOPQRSTUVXYZW");
+	ContextMenuWidgetConfirmWidgetTextInputText->setCharacterSize(25);
+
+	ContextMenuWidgetConfirmWidgetTextInputShapeTexture = new sf::RenderTexture();
+	ContextMenuWidgetConfirmWidgetTextInputShapeTexture->create(295, 40);
+	ContextMenuWidgetConfirmWidgetTextInputShapeTexture->draw(*ContextMenuWidgetConfirmWidgetTextInputShape);
+	ContextMenuWidgetConfirmWidgetTextInputShapeTexture->draw(*ContextMenuWidgetConfirmWidgetTextInputText);
+	ContextMenuWidgetConfirmWidgetTextInputShapeTexture->display();
+
+	ContextMenuWidgetConfirmWidgetTextInputShapeSprite = new sf::Sprite(ContextMenuWidgetConfirmWidgetTextInputShapeTexture->getTexture());
+
 	ContextMenuWidgetConfirmWidgetAcceptShape = new sf::RectangleShape(sf::Vector2f(145, 40));
 
 	ContextMenuWidgetConfirmWidgetDeclineShape = new sf::RectangleShape(sf::Vector2f(145, 40));
@@ -65,7 +79,7 @@ void ContextMenuWidget::Tick()
 		if (IsConfirmWidgetRendering == true)
 		{
 			ContextMenuWidgetWindow->draw(*ContextMenuWidgetConfirmWidgetShape);
-			ContextMenuWidgetWindow->draw(*ContextMenuWidgetConfirmWidgetTextInputShape);
+			ContextMenuWidgetWindow->draw(*ContextMenuWidgetConfirmWidgetTextInputShapeSprite);
 			ContextMenuWidgetWindow->draw(*ContextMenuWidgetConfirmWidgetAcceptShape);
 			ContextMenuWidgetWindow->draw(*ContextMenuWidgetConfirmWidgetDeclineShape);
 		}
@@ -76,6 +90,7 @@ void ContextMenuWidget::InputHandler(sf::Event event)
 {
 	/// Локальная переменная для отслеживания позиции курсора в окне
 	sf::Vector2f CurrentMouseCoords = FindMouseCoords(ContextMenuWidgetWindow);
+
 	if (ContextMenuWidgetShape->getGlobalBounds().contains(CurrentMouseCoords.x, CurrentMouseCoords.y) && IsRendering)
 	{
 		IsMouseOnShape = true;
@@ -86,17 +101,34 @@ void ContextMenuWidget::InputHandler(sf::Event event)
 	if (event.type == event.MouseButtonReleased && IsRendering == true &&
 		ContextMenuWidgetShape->getGlobalBounds().contains(CurrentMouseCoords) == false)
 	{
-		CloseContextMenu();
+		if (IsConfirmWidgetRendering == false)
+			CloseContextMenu();
+		else
+		{
+			if (ContextMenuWidgetConfirmWidgetShape->getGlobalBounds().contains(CurrentMouseCoords) == false)
+				CloseContextMenu();
+		}
 	}
 
-	if (event.type == event.MouseButtonReleased)
+	if (event.type == event.MouseButtonReleased && ContextMenuWidgetConfirmWidgetShape->getGlobalBounds().contains(CurrentMouseCoords) == false)
 	{
 		IsConfirmWidgetRendering = false;
 	}
 
 	if (ContextMenuWidgetAddButton->getGlobalBounds().contains(CurrentMouseCoords))
 	{
-		ContextMenuWidgetAddButton->setFillColor(sf::Color::Blue);
+		if (IsConfirmWidgetRendering == false)
+			ContextMenuWidgetAddButton->setFillColor(sf::Color::Blue);
+		else
+		{
+			if (ContextMenuWidgetConfirmWidgetShape->getGlobalBounds().contains(CurrentMouseCoords) == false)
+				ContextMenuWidgetAddButton->setFillColor(sf::Color::Blue);
+			else
+			{
+				ContextMenuWidgetAddButton->setFillColor(sf::Color::Black);
+			}
+		}
+		
 		if (event.type == event.MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left && IsRendering == true)
 		{
 			OpenConfirmWidget();
@@ -109,7 +141,18 @@ void ContextMenuWidget::InputHandler(sf::Event event)
 
 	if (ContextMenuWidgetDeleteButton->getGlobalBounds().contains(CurrentMouseCoords))
 	{
-		ContextMenuWidgetDeleteButton->setFillColor(sf::Color::Blue);
+		if (IsConfirmWidgetRendering == false)
+			ContextMenuWidgetDeleteButton->setFillColor(sf::Color::Blue);
+		else
+		{
+			if (ContextMenuWidgetConfirmWidgetShape->getGlobalBounds().contains(CurrentMouseCoords) == false)
+				ContextMenuWidgetDeleteButton->setFillColor(sf::Color::Blue);
+			else
+			{
+				ContextMenuWidgetDeleteButton->setFillColor(sf::Color::Black);
+			}
+		}
+		
 		if (event.type == event.MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left && IsRendering == true)
 		{
 			OpenConfirmWidget();
@@ -122,7 +165,18 @@ void ContextMenuWidget::InputHandler(sf::Event event)
 
 	if (ContextMenuWidgetRenameButton->getGlobalBounds().contains(CurrentMouseCoords))
 	{
-		ContextMenuWidgetRenameButton->setFillColor(sf::Color::Blue);
+		if (IsConfirmWidgetRendering == false)
+			ContextMenuWidgetRenameButton->setFillColor(sf::Color::Blue);
+		else
+		{
+			if (ContextMenuWidgetConfirmWidgetShape->getGlobalBounds().contains(CurrentMouseCoords) == false)
+				ContextMenuWidgetRenameButton->setFillColor(sf::Color::Blue);
+			else
+			{
+				ContextMenuWidgetRenameButton->setFillColor(sf::Color::Black);
+			}
+		}
+		
 		if (event.type == event.MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left && IsRendering == true)
 		{
 			OpenConfirmWidget();
@@ -157,16 +211,18 @@ void ContextMenuWidget::CloseContextMenu()
 }
 
 void ContextMenuWidget::OpenConfirmWidget()
-{
-	IsConfirmWidgetRendering = true;
-
+{	
 	/// Локальная переменная для отслеживания позиции курсора в окне
 	sf::Vector2f CurrentMouseCoords = FindMouseCoords(ContextMenuWidgetWindow);
-
-	ContextMenuWidgetConfirmWidgetShape->setPosition(CurrentMouseCoords);
-	ContextMenuWidgetConfirmWidgetTextInputShape->setPosition(sf::Vector2f(CurrentMouseCoords.x + 5, CurrentMouseCoords.y + 5));
-	ContextMenuWidgetConfirmWidgetAcceptShape->setPosition(sf::Vector2f(CurrentMouseCoords.x + 5, CurrentMouseCoords.y + 50));
-	ContextMenuWidgetConfirmWidgetDeclineShape->setPosition(sf::Vector2f(CurrentMouseCoords.x + 155, CurrentMouseCoords.y + 50));
+	if ((IsConfirmWidgetRendering && ContextMenuWidgetConfirmWidgetShape->getGlobalBounds().contains(CurrentMouseCoords) == false) ||
+		IsConfirmWidgetRendering == false)
+	{
+		IsConfirmWidgetRendering = true;
+		ContextMenuWidgetConfirmWidgetShape->setPosition(CurrentMouseCoords);
+		ContextMenuWidgetConfirmWidgetTextInputShapeSprite->setPosition(sf::Vector2f(CurrentMouseCoords.x + 5, CurrentMouseCoords.y + 5));
+		ContextMenuWidgetConfirmWidgetAcceptShape->setPosition(sf::Vector2f(CurrentMouseCoords.x + 5, CurrentMouseCoords.y + 50));
+		ContextMenuWidgetConfirmWidgetDeclineShape->setPosition(sf::Vector2f(CurrentMouseCoords.x + 155, CurrentMouseCoords.y + 50));
+	}
 }
 
 ContextMenuWidget::~ContextMenuWidget()
@@ -185,4 +241,7 @@ ContextMenuWidget::~ContextMenuWidget()
 	delete ContextMenuWidgetConfirmWidgetTextInputShape;
 	delete ContextMenuWidgetConfirmWidgetAcceptShape;
 	delete ContextMenuWidgetConfirmWidgetDeclineShape;
+
+	delete ContextMenuWidgetConfirmWidgetTextInputShapeTexture;
+	delete ContextMenuWidgetConfirmWidgetTextInputShapeSprite;
 }

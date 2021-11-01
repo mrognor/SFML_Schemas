@@ -149,6 +149,7 @@
     <ClCompile Include="DropDownListWidget.cpp" />
     <ClCompile Include="DropDownListElementWidget.cpp" />
     <ClCompile Include="Schemas.cpp" />
+    <ClCompile Include="TextInputWidget.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Nodes.txt" />
@@ -160,6 +161,7 @@
     <ClInclude Include="DropDownListElementWidget.h" />
     <ClInclude Include="SchemasClasses.h" />
     <ClInclude Include="SchemasFunctions.h" />
+    <ClInclude Include="TextInputWidget.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
