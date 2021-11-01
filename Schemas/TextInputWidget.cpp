@@ -2,7 +2,10 @@
 
 TextInputWidget::TextInputWidget(sf::RenderWindow* textInputWidgetWindow) : TextInputWidgetWindow(textInputWidgetWindow)
 {
-	TextInputWidgetMainShape.setSize(sf::Vector2f(200, 40));
+	TextInputWidgetMainShape.setSize(sf::Vector2f(293, 40));
+
+	TextInputWidgetRightPaddingShape.setPosition(sf::Vector2f(293, 0));
+	TextInputWidgetRightPaddingShape.setSize(sf::Vector2f(2, 40));
 
 	TextInputWidgetCursorShape.setSize(sf::Vector2f(3, 25));
 	TextInputWidgetCursorShape.setFillColor(sf::Color::Green);
@@ -24,7 +27,7 @@ TextInputWidget::TextInputWidget(sf::RenderWindow* textInputWidgetWindow) : Text
 	TextInputWidgetHighlightShape.setFillColor(sf::Color::Blue);
 
 	// Create texture to text input pole
-	TextInputWidgetTexture.create(200, 40);
+	TextInputWidgetTexture.create(295, 40);
 	TextInputWidgetTexture.draw(TextInputWidgetMainShape);
 	// Update texture
 	TextInputWidgetTexture.display();
@@ -255,6 +258,7 @@ void TextInputWidget::InputHandler(sf::Event event)
 	// Подготовка текстуры и отрисовка всего статичного
 	TextInputWidgetTexture.clear();
 	TextInputWidgetTexture.draw(TextInputWidgetMainShape);
+	TextInputWidgetTexture.draw(TextInputWidgetRightPaddingShape);
 
 	// Отрисовка выделителя текста
 	if (IsTextInputStarted && event.type == event.MouseMoved && sf::Mouse::isButtonPressed(sf::Mouse::Left) &&

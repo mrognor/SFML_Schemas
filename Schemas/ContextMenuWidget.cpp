@@ -41,21 +41,7 @@ ContextMenuWidget::ContextMenuWidget(sf::RenderWindow* contextMenuWidgetWindow) 
 	ContextMenuWidgetConfirmWidgetShape = new sf::RectangleShape(sf::Vector2f(305, 95));
 	ContextMenuWidgetConfirmWidgetShape->setFillColor(sf::Color::Black);
 
-	ContextMenuWidgetConfirmWidgetTextInputShape = new sf::RectangleShape(sf::Vector2f(295, 40));
-
-	ContextMenuWidgetConfirmWidgetTextInputText = new sf::Text;
-	ContextMenuWidgetConfirmWidgetTextInputText->setFont(font);
-	ContextMenuWidgetConfirmWidgetTextInputText->setFillColor(sf::Color::Green);
-	ContextMenuWidgetConfirmWidgetTextInputText->setString("ABCDEFGHIJKLMNOPQRSTUVXYZW");
-	ContextMenuWidgetConfirmWidgetTextInputText->setCharacterSize(25);
-
-	ContextMenuWidgetConfirmWidgetTextInputShapeTexture = new sf::RenderTexture();
-	ContextMenuWidgetConfirmWidgetTextInputShapeTexture->create(295, 40);
-	ContextMenuWidgetConfirmWidgetTextInputShapeTexture->draw(*ContextMenuWidgetConfirmWidgetTextInputShape);
-	ContextMenuWidgetConfirmWidgetTextInputShapeTexture->draw(*ContextMenuWidgetConfirmWidgetTextInputText);
-	ContextMenuWidgetConfirmWidgetTextInputShapeTexture->display();
-
-	ContextMenuWidgetConfirmWidgetTextInputShapeSprite = new sf::Sprite(ContextMenuWidgetConfirmWidgetTextInputShapeTexture->getTexture());
+	ContextMenuWidgetRenameButtonTextInputWidget = new TextInputWidget(ContextMenuWidgetWindow);
 
 	ContextMenuWidgetConfirmWidgetAcceptShape = new sf::RectangleShape(sf::Vector2f(145, 40));
 
@@ -79,7 +65,7 @@ void ContextMenuWidget::Tick()
 		if (IsConfirmWidgetRendering == true)
 		{
 			ContextMenuWidgetWindow->draw(*ContextMenuWidgetConfirmWidgetShape);
-			ContextMenuWidgetWindow->draw(*ContextMenuWidgetConfirmWidgetTextInputShapeSprite);
+			ContextMenuWidgetRenameButtonTextInputWidget->Tick();
 			ContextMenuWidgetWindow->draw(*ContextMenuWidgetConfirmWidgetAcceptShape);
 			ContextMenuWidgetWindow->draw(*ContextMenuWidgetConfirmWidgetDeclineShape);
 		}
@@ -91,7 +77,7 @@ void ContextMenuWidget::InputHandler(sf::Event event)
 	/// Локальная переменная для отслеживания позиции курсора в окне
 	sf::Vector2f CurrentMouseCoords = FindMouseCoords(ContextMenuWidgetWindow);
 
-	if (ContextMenuWidgetShape->getGlobalBounds().contains(CurrentMouseCoords.x, CurrentMouseCoords.y) && IsRendering)
+	if (ContextMenuWidgetShape->getGlobalBounds().contains(CurrentMouseCoords) && IsRendering)
 	{
 		IsMouseOnShape = true;
 	}
@@ -186,6 +172,8 @@ void ContextMenuWidget::InputHandler(sf::Event event)
 	{
 		ContextMenuWidgetRenameButton->setFillColor(sf::Color::Black);
 	}
+
+	ContextMenuWidgetRenameButtonTextInputWidget->InputHandler(event);
 }
 
 void ContextMenuWidget::OpenContextMenu()
@@ -219,7 +207,7 @@ void ContextMenuWidget::OpenConfirmWidget()
 	{
 		IsConfirmWidgetRendering = true;
 		ContextMenuWidgetConfirmWidgetShape->setPosition(CurrentMouseCoords);
-		ContextMenuWidgetConfirmWidgetTextInputShapeSprite->setPosition(sf::Vector2f(CurrentMouseCoords.x + 5, CurrentMouseCoords.y + 5));
+		ContextMenuWidgetRenameButtonTextInputWidget->SetPosition(sf::Vector2f(CurrentMouseCoords.x + 5, CurrentMouseCoords.y + 5));
 		ContextMenuWidgetConfirmWidgetAcceptShape->setPosition(sf::Vector2f(CurrentMouseCoords.x + 5, CurrentMouseCoords.y + 50));
 		ContextMenuWidgetConfirmWidgetDeclineShape->setPosition(sf::Vector2f(CurrentMouseCoords.x + 155, CurrentMouseCoords.y + 50));
 	}
@@ -238,10 +226,8 @@ ContextMenuWidget::~ContextMenuWidget()
 	delete ContextMenuWidgetRenameButtonText;
 
 	delete ContextMenuWidgetConfirmWidgetShape;
-	delete ContextMenuWidgetConfirmWidgetTextInputShape;
 	delete ContextMenuWidgetConfirmWidgetAcceptShape;
 	delete ContextMenuWidgetConfirmWidgetDeclineShape;
 
-	delete ContextMenuWidgetConfirmWidgetTextInputShapeTexture;
-	delete ContextMenuWidgetConfirmWidgetTextInputShapeSprite;
+	delete ContextMenuWidgetRenameButtonTextInputWidget;
 }

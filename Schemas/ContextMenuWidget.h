@@ -3,7 +3,7 @@
 #include "SchemasClasses.h"
 #include "DropDownListWidget.h"
 #include "DropDownListElementWidget.h"
-
+#include "TextInputWidget.h"
 
 class ContextMenuWidget
 {
@@ -38,17 +38,7 @@ private:
 	/// Переменная-указатель(RectangleShape) отображения объекта при вызове меню подтверждения 
 	sf::RectangleShape* ContextMenuWidgetConfirmWidgetShape;
 
-	/// Переменная-указатель(RectangleShape) отображения поля ввода при вызове меню подтверждения
-	sf::RectangleShape* ContextMenuWidgetConfirmWidgetTextInputShape;
-
-	sf::Text* ContextMenuWidgetConfirmWidgetTextInputText;
-
-	/// Данная текстура нужна для правильного отображения вводимых символов. 
-	/// Если длина строки превысит размер текстуры лишние символы не будут отрисовываться 
-	sf::RenderTexture* ContextMenuWidgetConfirmWidgetTextInputShapeTexture;
-
-	/// Данный спрайт нужен для правильной отрисовки текстуры для ввода символов
-	sf::Sprite* ContextMenuWidgetConfirmWidgetTextInputShapeSprite;
+	TextInputWidget* ContextMenuWidgetRenameButtonTextInputWidget;
 
 	/// Переменная-указатель(RectangleShape) для отображения кнопки "да" при вызове меню подтверждения
 	sf::RectangleShape* ContextMenuWidgetConfirmWidgetAcceptShape;

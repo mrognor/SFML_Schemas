@@ -39,6 +39,7 @@ int main()
 			{
 				// resize my view
 				view.setSize(sf::Vector2f(static_cast<float>(event.size.width), static_cast<float>(event.size.height)));
+				window.setView(view);
 			}
 
 		}

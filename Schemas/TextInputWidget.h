@@ -15,6 +15,9 @@ private:
 	/// Тело поля ввода 
 	sf::RectangleShape TextInputWidgetMainShape;
 
+	// Фигура для правого отступа поля ввода
+	sf::RectangleShape TextInputWidgetRightPaddingShape;
+
 	/// Тело курсора 
 	sf::RectangleShape TextInputWidgetCursorShape;
 
