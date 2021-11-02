@@ -16,8 +16,11 @@ int main()
 
 	DragAndDropWidget d(&window);
 	ContextMenuWidget c(&window);
+
 	DropDownListWidget f(&window, &d, &c, 400, 8000);
+	
 	d.setWindowDropDownList(&f);
+	c.SetContextMenuWidgetDropDownList(&f);
 
 	// create own view
 	sf::View view = window.getDefaultView();
@@ -39,6 +42,7 @@ int main()
 			{
 				// resize my view
 				view.setSize(sf::Vector2f(static_cast<float>(event.size.width), static_cast<float>(event.size.height)));
+				view.setCenter(sf::Vector2f(view.getSize().x / 2, view.getSize().y / 2));
 				window.setView(view);
 			}
 

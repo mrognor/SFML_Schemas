@@ -74,111 +74,196 @@ void ContextMenuWidget::Tick()
 
 void ContextMenuWidget::InputHandler(sf::Event event)
 {
-	/// Локальная переменная для отслеживания позиции курсора в окне
-	sf::Vector2f CurrentMouseCoords = FindMouseCoords(ContextMenuWidgetWindow);
-
-	if (ContextMenuWidgetShape->getGlobalBounds().contains(CurrentMouseCoords) && IsRendering)
+	if (IsRendering)
 	{
-		IsMouseOnShape = true;
-	}
-	else 
-		IsMouseOnShape = false;
+		/// Локальная переменная для отслеживания позиции курсора в окне
+		sf::Vector2f CurrentMouseCoords = FindMouseCoords(ContextMenuWidgetWindow);
 
-	if (event.type == event.MouseButtonReleased && IsRendering == true &&
-		ContextMenuWidgetShape->getGlobalBounds().contains(CurrentMouseCoords) == false)
-	{
-		if (IsConfirmWidgetRendering == false)
-			CloseContextMenu();
-		else
+		if (ContextMenuWidgetShape->getGlobalBounds().contains(CurrentMouseCoords) && IsRendering)
 		{
-			if (ContextMenuWidgetConfirmWidgetShape->getGlobalBounds().contains(CurrentMouseCoords) == false)
-				CloseContextMenu();
+			IsMouseOnShape = true;
 		}
-	}
-
-	if (event.type == event.MouseButtonReleased && ContextMenuWidgetConfirmWidgetShape->getGlobalBounds().contains(CurrentMouseCoords) == false)
-	{
-		IsConfirmWidgetRendering = false;
-	}
-
-	if (ContextMenuWidgetAddButton->getGlobalBounds().contains(CurrentMouseCoords))
-	{
-		if (IsConfirmWidgetRendering == false)
-			ContextMenuWidgetAddButton->setFillColor(sf::Color::Blue);
 		else
+			IsMouseOnShape = false;
+
+		if (IsConfirmWidgetRendering && ContextMenuWidgetConfirmWidgetShape->getGlobalBounds().contains(CurrentMouseCoords))
 		{
-			if (ContextMenuWidgetConfirmWidgetShape->getGlobalBounds().contains(CurrentMouseCoords) == false)
+			IsMouseOnShape = true;
+		}
+
+		if (event.type == event.MouseButtonReleased && IsRendering == true &&
+			ContextMenuWidgetShape->getGlobalBounds().contains(CurrentMouseCoords) == false)
+		{
+			if (IsConfirmWidgetRendering == false)
+				CloseContextMenu();
+			else
+			{
+				if (ContextMenuWidgetConfirmWidgetShape->getGlobalBounds().contains(CurrentMouseCoords) == false)
+					CloseContextMenu();
+			}
+		}
+
+		if (event.type == event.MouseButtonReleased && ContextMenuWidgetConfirmWidgetShape->getGlobalBounds().contains(CurrentMouseCoords) == false)
+		{
+			IsConfirmWidgetRendering = false;
+			CurrentButton = None;
+		}
+
+		// Обработка кнопки добавить
+		if (ContextMenuWidgetAddButton->getGlobalBounds().contains(CurrentMouseCoords))
+		{
+			if (IsConfirmWidgetRendering == false)
 				ContextMenuWidgetAddButton->setFillColor(sf::Color::Blue);
 			else
 			{
-				ContextMenuWidgetAddButton->setFillColor(sf::Color::Black);
+				if (ContextMenuWidgetConfirmWidgetShape->getGlobalBounds().contains(CurrentMouseCoords) == false)
+					ContextMenuWidgetAddButton->setFillColor(sf::Color::Blue);
+				else
+				{
+					ContextMenuWidgetAddButton->setFillColor(sf::Color::Black);
+				}
+			}
+
+			if (event.type == event.MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left && IsRendering == true)
+			{
+				if (IsConfirmWidgetRendering == false)
+				{
+					ContextMenuWidgetRenameButtonTextInputWidget->SetString("");
+					OpenConfirmWidget();
+					CurrentButton = Add;
+				}
+				else
+				{
+					if (ContextMenuWidgetConfirmWidgetShape->getGlobalBounds().contains(CurrentMouseCoords) != true)
+					{
+						ContextMenuWidgetRenameButtonTextInputWidget->SetString("");
+						OpenConfirmWidget();
+						CurrentButton = Add;
+					}
+				}
 			}
 		}
-		
-		if (event.type == event.MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left && IsRendering == true)
-		{
-			OpenConfirmWidget();
-		}
-	}
-	else
-	{
-		ContextMenuWidgetAddButton->setFillColor(sf::Color::Black);
-	}
-
-	if (ContextMenuWidgetDeleteButton->getGlobalBounds().contains(CurrentMouseCoords))
-	{
-		if (IsConfirmWidgetRendering == false)
-			ContextMenuWidgetDeleteButton->setFillColor(sf::Color::Blue);
 		else
 		{
-			if (ContextMenuWidgetConfirmWidgetShape->getGlobalBounds().contains(CurrentMouseCoords) == false)
+			ContextMenuWidgetAddButton->setFillColor(sf::Color::Black);
+		}
+
+		// Обработка кнопки удалить
+		if (ContextMenuWidgetDeleteButton->getGlobalBounds().contains(CurrentMouseCoords))
+		{
+			if (IsConfirmWidgetRendering == false)
 				ContextMenuWidgetDeleteButton->setFillColor(sf::Color::Blue);
 			else
 			{
-				ContextMenuWidgetDeleteButton->setFillColor(sf::Color::Black);
+				if (ContextMenuWidgetConfirmWidgetShape->getGlobalBounds().contains(CurrentMouseCoords) == false)
+					ContextMenuWidgetDeleteButton->setFillColor(sf::Color::Blue);
+				else
+				{
+					ContextMenuWidgetDeleteButton->setFillColor(sf::Color::Black);
+				}
+			}
+			if (event.type == event.MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left && IsRendering == true)
+			{
+				if (IsConfirmWidgetRendering == false)
+				{
+					OpenConfirmWidget();
+					CurrentButton = Delete;
+				}
+				else
+				{
+					if (ContextMenuWidgetConfirmWidgetShape->getGlobalBounds().contains(CurrentMouseCoords) != true)
+					{
+						OpenConfirmWidget();
+						CurrentButton = Delete;
+					}
+				}
 			}
 		}
-		
-		if (event.type == event.MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left && IsRendering == true)
-		{
-			OpenConfirmWidget();
-		}
-	}
-	else
-	{
-		ContextMenuWidgetDeleteButton->setFillColor(sf::Color::Black);
-	}
-
-	if (ContextMenuWidgetRenameButton->getGlobalBounds().contains(CurrentMouseCoords))
-	{
-		if (IsConfirmWidgetRendering == false)
-			ContextMenuWidgetRenameButton->setFillColor(sf::Color::Blue);
 		else
 		{
-			if (ContextMenuWidgetConfirmWidgetShape->getGlobalBounds().contains(CurrentMouseCoords) == false)
+			ContextMenuWidgetDeleteButton->setFillColor(sf::Color::Black);
+		}
+
+		// Обработка кнопки переименовать
+		if (ContextMenuWidgetRenameButton->getGlobalBounds().contains(CurrentMouseCoords))
+		{
+			if (IsConfirmWidgetRendering == false)
 				ContextMenuWidgetRenameButton->setFillColor(sf::Color::Blue);
 			else
 			{
-				ContextMenuWidgetRenameButton->setFillColor(sf::Color::Black);
+				if (ContextMenuWidgetConfirmWidgetShape->getGlobalBounds().contains(CurrentMouseCoords) == false)
+					ContextMenuWidgetRenameButton->setFillColor(sf::Color::Blue);
+				else
+				{
+					ContextMenuWidgetRenameButton->setFillColor(sf::Color::Black);
+				}
+			}
+
+			if (event.type == event.MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left && IsRendering == true)
+			{
+				if (IsConfirmWidgetRendering == false)
+				{
+					ContextMenuWidgetRenameButtonTextInputWidget->SetString(sf::String(ContextMenuWidgetDropDownListElement->getName()));
+					OpenConfirmWidget();
+					CurrentButton = Rename;
+				}
+				else
+				{
+					if (ContextMenuWidgetConfirmWidgetShape->getGlobalBounds().contains(CurrentMouseCoords) != true)
+					{
+						ContextMenuWidgetRenameButtonTextInputWidget->SetString(sf::String(ContextMenuWidgetDropDownListElement->getName()));
+						OpenConfirmWidget();
+						CurrentButton = Rename;
+					}
+				}
 			}
 		}
-		
-		if (event.type == event.MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left && IsRendering == true)
+		else
 		{
-			OpenConfirmWidget();
+			ContextMenuWidgetRenameButton->setFillColor(sf::Color::Black);
+		}
+
+		ContextMenuWidgetRenameButtonTextInputWidget->InputHandler(event);
+
+		if (IsConfirmWidgetRendering && event.type == event.MouseButtonReleased &&
+			event.mouseButton.button == sf::Mouse::Left && ContextMenuWidgetConfirmWidgetAcceptShape->getGlobalBounds().contains(CurrentMouseCoords))
+		{
+			switch (CurrentButton)
+			{
+			case None:
+				break;
+
+			case Add:
+				if (ContextMenuWidgetRenameButtonTextInputWidget->GetString() != "")
+				{ 
+					ContextMenuWidgetDropDownList->AddNewDropDownListElement(ContextMenuWidgetDropDownListElement,
+						ContextMenuWidgetRenameButtonTextInputWidget->GetString());
+				}
+				CloseContextMenu();
+				break;
+
+			case Rename:
+				if (ContextMenuWidgetRenameButtonTextInputWidget->GetString() != "")
+				{
+					ContextMenuWidgetDropDownList->RenameDropDownListElement(ContextMenuWidgetDropDownListElement,
+						ContextMenuWidgetRenameButtonTextInputWidget->GetString());
+				}
+				CloseContextMenu();
+				break;
+
+			case Delete:
+				break;
+			}
 		}
 	}
-	else
-	{
-		ContextMenuWidgetRenameButton->setFillColor(sf::Color::Black);
-	}
-
-	ContextMenuWidgetRenameButtonTextInputWidget->InputHandler(event);
 }
 
-void ContextMenuWidget::OpenContextMenu()
+void ContextMenuWidget::OpenContextMenu(DropDownListElementWidget* contextMenuWidgetDropDownListElement)
 {
 	IsRendering = true;
+
+	ContextMenuWidgetDropDownListElement = contextMenuWidgetDropDownListElement;
+
 	/// Локальная переменная для отслеживания позиции курсора в окне
 	sf::Vector2f CurrentMouseCoords = FindMouseCoords(ContextMenuWidgetWindow);
 	ContextMenuWidgetShape->setPosition(CurrentMouseCoords);
@@ -195,6 +280,9 @@ void ContextMenuWidget::OpenContextMenu()
 
 void ContextMenuWidget::CloseContextMenu()
 {
+	CurrentButton = None;
+	IsConfirmWidgetRendering = false;
+	IsMouseOnShape = false;
 	IsRendering = false;
 }
 

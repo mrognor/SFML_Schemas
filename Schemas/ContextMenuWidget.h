@@ -5,11 +5,19 @@
 #include "DropDownListElementWidget.h"
 #include "TextInputWidget.h"
 
+/// Одного только конструктора не достаточно. Требуется 
+/// выполнить функцию SetContextMenuWidgetDropDownList
 class ContextMenuWidget
 {
 private:
 	/// Переменная для окна в котором выполняется операции контекстного меню
 	sf::RenderWindow* ContextMenuWidgetWindow;
+
+	/// Переменная-указатель(DropDownListElement) для работы с элементами списка DropDownList
+	DropDownListElementWidget* ContextMenuWidgetDropDownListElement;
+
+	/// Переменная-указатель(DropDownList) для работы с элементами списка DropDownList
+	DropDownListWidget* ContextMenuWidgetDropDownList;
 
 	/// Переменная-указатель(RectangleShape) для отображения объекта при вызове контекстного меню
 	sf::RectangleShape* ContextMenuWidgetShape;
@@ -46,6 +54,11 @@ private:
 	/// Переменная-указатель(RectangleShape) для отображения кнопки "нет" при вызове меню подтверждения
 	sf::RectangleShape* ContextMenuWidgetConfirmWidgetDeclineShape;
 
+	/// Переменная-указатель(Text)  для отображения кнопки подтвердить
+	sf::Text* ContextMenuWidgetConfirmWidgetAcceptText;
+
+	/// Переменная-указатель(Text)  для отображения кнопки отменить
+	sf::Text* ContextMenuWidgetConfirmWidgetDeclineText;
 
 	bool IsRendering = false;
 	
@@ -53,15 +66,30 @@ private:
 
 	bool IsConfirmWidgetRendering = false;
 
+	// Перечисление для типа кнопки
+	enum Buttons
+	{
+		None,
+		Add,
+		Rename,
+		Delete
+	};
+	// Текущая кнопка
+	Buttons CurrentButton = None;
+
 public:
+	/// Одного конструктора не достаточно
 	ContextMenuWidget(sf::RenderWindow* contextMenuWidgetWindow);
+	
+	void SetContextMenuWidgetDropDownList(DropDownListWidget* contextMenuWidgetDropDownList)
+	{ ContextMenuWidgetDropDownList = contextMenuWidgetDropDownList; }
 
 	void Tick();
 
 	/// Обработчик ввода 
 	void InputHandler(sf::Event event);
 
-	void OpenContextMenu();
+	void OpenContextMenu(DropDownListElementWidget* contextMenuWidgetDropDownListElement);
 
 	void CloseContextMenu();
 

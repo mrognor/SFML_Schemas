@@ -125,7 +125,7 @@ void DropDownListElementWidget::InputHandler(sf::Event event)
 			{
 				if (IsMouseOnShape)
 				{
-					DropDownListElementContextMenuWidget->OpenContextMenu();
+					DropDownListElementContextMenuWidget->OpenContextMenu(this);
 				}
 			}
 		}

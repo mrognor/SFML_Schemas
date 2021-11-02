@@ -4,6 +4,8 @@
 #include "DropDownListWidget.h"
 #include "DropDownListElementWidget.h"
 
+/// Одного только конструктора не достаточно. Требуется 
+/// выполнить функцию setWindowDropDownList
 class DragAndDropWidget
 {
 private:

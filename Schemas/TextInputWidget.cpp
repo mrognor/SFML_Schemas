@@ -241,10 +241,13 @@ void TextInputWidget::InputHandler(sf::Event event)
 			break;
 
 		default:
-			TextInputWidgetMainText.setString(TextInputWidgetMainText.getString().substring(0, CursorPosition) + sf::String(event.text.unicode)
-				+ TextInputWidgetMainText.getString().substring(CursorPosition));
-			CursorPosition++;
-			HighliteStartPosition = CursorPosition;
+			if (CursorPosition <= TextInputWidgetMainText.getString().getSize())
+			{
+				TextInputWidgetMainText.setString(TextInputWidgetMainText.getString().substring(0, CursorPosition) + sf::String(event.text.unicode)
+					+ TextInputWidgetMainText.getString().substring(CursorPosition));
+				CursorPosition++;
+				HighliteStartPosition = CursorPosition;
+			}
 		}
 	}
 
@@ -358,6 +361,11 @@ void TextInputWidget::InputHandler(sf::Event event)
 void TextInputWidget::SetPosition(sf::Vector2f Vec)
 {
 	TextInputWidgetSprite.setPosition(Vec);
+}
+
+void TextInputWidget::SetString(sf::String newstring)
+{
+	TextInputWidgetMainText.setString(newstring);
 }
 
 sf::String TextInputWidget::GetString()

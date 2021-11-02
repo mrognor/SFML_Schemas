@@ -69,6 +69,8 @@ public:
 
 	void SetPosition(sf::Vector2f Vec);
 
+	void SetString(sf::String newstring);
+
 	void SetHintString(sf::String hintString);
 
 	sf::String GetString();
