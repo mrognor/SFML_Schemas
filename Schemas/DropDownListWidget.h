@@ -46,9 +46,17 @@ public:
 	/// Находит номер и устанавливает элементу нужное значение
 	void FindAndSetDropDownListElementIndexes();
 
+	/// Функция для перемещения DropDownListElement в иерархии
 	void ReplaceDropDownListElement(DropDownListElementWidget* elementToMove, DropDownListElementWidget* destinationElement);
 
+	/// Функция для добавления нового DropDownListElement
+	void AddNewDropDownListElement(DropDownListElementWidget* parentElementToNewElement, std::string newname);
+
+	/// Функция для переименования DropDownListElement
 	void RenameDropDownListElement(DropDownListElementWidget* elementToRename, std::string newname);
+
+	/// Функция для удаления DropDownListElement
+	void DeleteDropDownListElement(DropDownListElementWidget* elementToDelete);
 
 	~DropDownListWidget();
 };

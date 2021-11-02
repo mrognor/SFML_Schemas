@@ -10,8 +10,6 @@ DropDownListWidget::DropDownListWidget(sf::RenderWindow* mainWindow, DragAndDrop
 	WidgetBody.setFillColor(sf::Color::Black);
 
 	LoadElementsFromFile();
-
-	RenameDropDownListElement(DropDownListElementsVector[6], "NewName");
 }
 
 void DropDownListWidget::LoadElementsFromFile()
@@ -255,6 +253,18 @@ void DropDownListWidget::ReplaceDropDownListElement(DropDownListElementWidget* e
 	LoadElementsFromFile();
 }
 
+void DropDownListWidget::AddNewDropDownListElement(DropDownListElementWidget* parentElementToNewElement, std::string newname)
+{
+	// —оздаю новый элемент и добавл€ю его в конец вектора
+	DropDownListElementWidget* F = new DropDownListElementWidget(this, DropDownListElementWindow, DropDownListDragAndDropWidget,
+		DropDownListContextMenuWidget, newname, DropDownListElementsVector[0]->getFullPath() + newname + "/", DropDownListElementsVector.size());
+	F->setIsDropDownListElementOpen(true);
+	DropDownListElementsVector.push_back(F);
+
+	// »спользую функцию дл€ перемещени€ созданного элемента
+	ReplaceDropDownListElement(F, parentElementToNewElement);
+}
+
 void DropDownListWidget::RenameDropDownListElement(DropDownListElementWidget* elementToRename, std::string newname)
 {
 	std::ofstream NodesTXTOut;
@@ -284,6 +294,32 @@ void DropDownListWidget::RenameDropDownListElement(DropDownListElementWidget* el
 					NodesTXTOut << "false" << std::endl;
 			}
 			else
+			{
+				NodesTXTOut << element->getFullPath() << " " << element->getName() << " ";
+				if (element->getIsDropDownListElementOpen())
+					NodesTXTOut << "true" << std::endl;
+				else
+					NodesTXTOut << "false" << std::endl;
+			}
+		}
+	}
+
+	NodesTXTOut.close();
+
+	LoadElementsFromFile();
+}
+
+void DropDownListWidget::DeleteDropDownListElement(DropDownListElementWidget* elementToDelete)
+{
+	std::ofstream NodesTXTOut;
+	NodesTXTOut.open("Nodes.txt");
+
+	if (NodesTXTOut.is_open())
+	{
+		for (DropDownListElementWidget* element : DropDownListElementsVector)
+		{
+			//std::cout << element->getFullPath().find(elementToRename->getFullPath()) << std::endl;
+			if (element->getFullPath().find(elementToDelete->getFullPath()) == -1)
 			{
 				NodesTXTOut << element->getFullPath() << " " << element->getName() << " ";
 				if (element->getIsDropDownListElementOpen())
