@@ -41,11 +41,15 @@ ContextMenuWidget::ContextMenuWidget(sf::RenderWindow* contextMenuWidgetWindow) 
 	ContextMenuWidgetConfirmWidgetShape = new sf::RectangleShape(sf::Vector2f(305, 95));
 	ContextMenuWidgetConfirmWidgetShape->setFillColor(sf::Color::Black);
 
-	ContextMenuWidgetRenameButtonTextInputWidget = new TextInputWidget(ContextMenuWidgetWindow);
+	ContextMenuWidgetConfirmMenuWidgetTextInputWidget = new TextInputWidget(ContextMenuWidgetWindow);
 
 	ContextMenuWidgetConfirmWidgetAcceptShape = new sf::RectangleShape(sf::Vector2f(145, 40));
+	ContextMenuWidgetConfirmWidgetAcceptText = new sf::Text("Accept", font);
+	ContextMenuWidgetConfirmWidgetAcceptText->setFillColor(sf::Color::Black);
 
 	ContextMenuWidgetConfirmWidgetDeclineShape = new sf::RectangleShape(sf::Vector2f(145, 40));
+	ContextMenuWidgetConfirmWidgetDeclineText = new sf::Text("Decline", font);
+	ContextMenuWidgetConfirmWidgetDeclineText->setFillColor(sf::Color::Black);
 }
 
 void ContextMenuWidget::Tick()
@@ -65,9 +69,11 @@ void ContextMenuWidget::Tick()
 		if (IsConfirmWidgetRendering == true)
 		{
 			ContextMenuWidgetWindow->draw(*ContextMenuWidgetConfirmWidgetShape);
-			ContextMenuWidgetRenameButtonTextInputWidget->Tick();
+			ContextMenuWidgetConfirmMenuWidgetTextInputWidget->Tick();
 			ContextMenuWidgetWindow->draw(*ContextMenuWidgetConfirmWidgetAcceptShape);
 			ContextMenuWidgetWindow->draw(*ContextMenuWidgetConfirmWidgetDeclineShape);
+			ContextMenuWidgetWindow->draw(*ContextMenuWidgetConfirmWidgetAcceptText);
+			ContextMenuWidgetWindow->draw(*ContextMenuWidgetConfirmWidgetDeclineText);
 		}
 	}
 }
@@ -128,7 +134,9 @@ void ContextMenuWidget::InputHandler(sf::Event event)
 			{
 				if (IsConfirmWidgetRendering == false)
 				{
-					ContextMenuWidgetRenameButtonTextInputWidget->SetString("");
+					ContextMenuWidgetConfirmMenuWidgetTextInputWidget->SetIsReceiveInput(true);
+					ContextMenuWidgetConfirmMenuWidgetTextInputWidget->SetString("");
+					ContextMenuWidgetConfirmMenuWidgetTextInputWidget->SetHintString("Insert name");
 					OpenConfirmWidget();
 					CurrentButton = Add;
 				}
@@ -136,7 +144,9 @@ void ContextMenuWidget::InputHandler(sf::Event event)
 				{
 					if (ContextMenuWidgetConfirmWidgetShape->getGlobalBounds().contains(CurrentMouseCoords) != true)
 					{
-						ContextMenuWidgetRenameButtonTextInputWidget->SetString("");
+						ContextMenuWidgetConfirmMenuWidgetTextInputWidget->SetIsReceiveInput(true);
+						ContextMenuWidgetConfirmMenuWidgetTextInputWidget->SetString("");
+						ContextMenuWidgetConfirmMenuWidgetTextInputWidget->SetHintString("Insert name");
 						OpenConfirmWidget();
 						CurrentButton = Add;
 					}
@@ -168,6 +178,9 @@ void ContextMenuWidget::InputHandler(sf::Event event)
 				{
 					OpenConfirmWidget();
 					CurrentButton = Delete;
+					ContextMenuWidgetConfirmMenuWidgetTextInputWidget->SetIsReceiveInput(false);
+					ContextMenuWidgetConfirmMenuWidgetTextInputWidget->SetString("          Delete ?");
+					
 				}
 				else
 				{
@@ -175,6 +188,9 @@ void ContextMenuWidget::InputHandler(sf::Event event)
 					{
 						OpenConfirmWidget();
 						CurrentButton = Delete;
+						ContextMenuWidgetConfirmMenuWidgetTextInputWidget->SetIsReceiveInput(false);
+						ContextMenuWidgetConfirmMenuWidgetTextInputWidget->SetString("          Delete ?");
+						
 					}
 				}
 			}
@@ -203,7 +219,8 @@ void ContextMenuWidget::InputHandler(sf::Event event)
 			{
 				if (IsConfirmWidgetRendering == false)
 				{
-					ContextMenuWidgetRenameButtonTextInputWidget->SetString(sf::String(ContextMenuWidgetDropDownListElement->getName()));
+					ContextMenuWidgetConfirmMenuWidgetTextInputWidget->SetIsReceiveInput(true);
+					ContextMenuWidgetConfirmMenuWidgetTextInputWidget->SetString(sf::String(ContextMenuWidgetDropDownListElement->getName()));
 					OpenConfirmWidget();
 					CurrentButton = Rename;
 				}
@@ -211,7 +228,8 @@ void ContextMenuWidget::InputHandler(sf::Event event)
 				{
 					if (ContextMenuWidgetConfirmWidgetShape->getGlobalBounds().contains(CurrentMouseCoords) != true)
 					{
-						ContextMenuWidgetRenameButtonTextInputWidget->SetString(sf::String(ContextMenuWidgetDropDownListElement->getName()));
+						ContextMenuWidgetConfirmMenuWidgetTextInputWidget->SetIsReceiveInput(true);
+						ContextMenuWidgetConfirmMenuWidgetTextInputWidget->SetString(sf::String(ContextMenuWidgetDropDownListElement->getName()));
 						OpenConfirmWidget();
 						CurrentButton = Rename;
 					}
@@ -223,7 +241,13 @@ void ContextMenuWidget::InputHandler(sf::Event event)
 			ContextMenuWidgetRenameButton->setFillColor(sf::Color::Black);
 		}
 
-		ContextMenuWidgetRenameButtonTextInputWidget->InputHandler(event);
+		ContextMenuWidgetConfirmMenuWidgetTextInputWidget->InputHandler(event);
+
+		if (IsConfirmWidgetRendering && event.type == event.MouseButtonReleased &&
+			event.mouseButton.button == sf::Mouse::Left && ContextMenuWidgetConfirmWidgetDeclineShape->getGlobalBounds().contains(CurrentMouseCoords))
+		{
+			IsConfirmWidgetRendering = false;
+		}
 
 		if (IsConfirmWidgetRendering && event.type == event.MouseButtonReleased &&
 			event.mouseButton.button == sf::Mouse::Left && ContextMenuWidgetConfirmWidgetAcceptShape->getGlobalBounds().contains(CurrentMouseCoords))
@@ -234,24 +258,26 @@ void ContextMenuWidget::InputHandler(sf::Event event)
 				break;
 
 			case Add:
-				if (ContextMenuWidgetRenameButtonTextInputWidget->GetString() != "")
+				if (ContextMenuWidgetConfirmMenuWidgetTextInputWidget->GetString() != "")
 				{ 
 					ContextMenuWidgetDropDownList->AddNewDropDownListElement(ContextMenuWidgetDropDownListElement,
-						ContextMenuWidgetRenameButtonTextInputWidget->GetString());
+						ContextMenuWidgetConfirmMenuWidgetTextInputWidget->GetString());
 				}
 				CloseContextMenu();
 				break;
 
 			case Rename:
-				if (ContextMenuWidgetRenameButtonTextInputWidget->GetString() != "")
+				if (ContextMenuWidgetConfirmMenuWidgetTextInputWidget->GetString() != "")
 				{
 					ContextMenuWidgetDropDownList->RenameDropDownListElement(ContextMenuWidgetDropDownListElement,
-						ContextMenuWidgetRenameButtonTextInputWidget->GetString());
+						ContextMenuWidgetConfirmMenuWidgetTextInputWidget->GetString());
 				}
 				CloseContextMenu();
 				break;
 
 			case Delete:
+				ContextMenuWidgetDropDownList->DeleteDropDownListElement(ContextMenuWidgetDropDownListElement);
+				CloseContextMenu();
 				break;
 			}
 		}
@@ -295,9 +321,12 @@ void ContextMenuWidget::OpenConfirmWidget()
 	{
 		IsConfirmWidgetRendering = true;
 		ContextMenuWidgetConfirmWidgetShape->setPosition(CurrentMouseCoords);
-		ContextMenuWidgetRenameButtonTextInputWidget->SetPosition(sf::Vector2f(CurrentMouseCoords.x + 5, CurrentMouseCoords.y + 5));
+		ContextMenuWidgetConfirmMenuWidgetTextInputWidget->SetPosition(sf::Vector2f(CurrentMouseCoords.x + 5, CurrentMouseCoords.y + 5));
 		ContextMenuWidgetConfirmWidgetAcceptShape->setPosition(sf::Vector2f(CurrentMouseCoords.x + 5, CurrentMouseCoords.y + 50));
 		ContextMenuWidgetConfirmWidgetDeclineShape->setPosition(sf::Vector2f(CurrentMouseCoords.x + 155, CurrentMouseCoords.y + 50));
+	
+		ContextMenuWidgetConfirmWidgetAcceptText->setPosition(sf::Vector2f(CurrentMouseCoords.x + 25, CurrentMouseCoords.y + 50));
+		ContextMenuWidgetConfirmWidgetDeclineText->setPosition(sf::Vector2f(CurrentMouseCoords.x + 175, CurrentMouseCoords.y + 50));
 	}
 }
 
@@ -317,5 +346,8 @@ ContextMenuWidget::~ContextMenuWidget()
 	delete ContextMenuWidgetConfirmWidgetAcceptShape;
 	delete ContextMenuWidgetConfirmWidgetDeclineShape;
 
-	delete ContextMenuWidgetRenameButtonTextInputWidget;
+	delete ContextMenuWidgetConfirmWidgetAcceptText;
+	delete ContextMenuWidgetConfirmWidgetDeclineText;
+
+	delete ContextMenuWidgetConfirmMenuWidgetTextInputWidget;
 }

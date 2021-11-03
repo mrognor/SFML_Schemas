@@ -46,7 +46,7 @@ private:
 	/// Переменная-указатель(RectangleShape) отображения объекта при вызове меню подтверждения 
 	sf::RectangleShape* ContextMenuWidgetConfirmWidgetShape;
 
-	TextInputWidget* ContextMenuWidgetRenameButtonTextInputWidget;
+	TextInputWidget* ContextMenuWidgetConfirmMenuWidgetTextInputWidget;
 
 	/// Переменная-указатель(RectangleShape) для отображения кнопки "да" при вызове меню подтверждения
 	sf::RectangleShape* ContextMenuWidgetConfirmWidgetAcceptShape;

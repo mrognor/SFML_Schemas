@@ -103,7 +103,6 @@ void DropDownListWidget::FindAndSetDropDownListElementIndexes()
 	}
 }
 
-
 void DropDownListWidget::OpenDropDownListElement(DropDownListElementWidget* elementToOpen)
 {
 	std::vector<DropDownListElementWidget*> ElementsToClose;

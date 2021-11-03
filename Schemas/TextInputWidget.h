@@ -60,6 +60,8 @@ private:
 	/// Позиция нажатия на курсор
 	float CursorClickPosition;
 
+	bool IsReceiveInput = true;
+
 public:
 	TextInputWidget(sf::RenderWindow* textInputWidgetWindow);
 
@@ -72,6 +74,10 @@ public:
 	void SetString(sf::String newstring);
 
 	void SetHintString(sf::String hintString);
+
+	bool GetIsReceiveInput() { return IsReceiveInput; }
+
+	void SetIsReceiveInput(bool f) { IsReceiveInput = f; }
 
 	sf::String GetString();
 
