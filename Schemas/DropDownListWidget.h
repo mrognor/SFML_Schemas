@@ -23,6 +23,10 @@ private:
 	/// Переменная для отслеживания объекта(ContextMenuWidget)
 	ContextMenuWidget* DropDownListContextMenuWidget;
 
+	/// Функция для записи движимых нод в файл. Алфавитный порядок соблюдается
+	void WriteMovingNodesInAlphabeticOrder(std::vector<std::string> staticNodes, std::vector<std::string> movingNodes,
+		DropDownListElementWidget* destinationElement);
+
 public:
 	///
 	DropDownListWidget(sf::RenderWindow* mainWindow, DragAndDropWidget* dropDownListWindowDragAndDropWidget,

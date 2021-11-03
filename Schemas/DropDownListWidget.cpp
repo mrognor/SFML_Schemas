@@ -157,8 +157,8 @@ void DropDownListWidget::ReplaceDropDownListElement(DropDownListElementWidget* e
 	if (destinationElement->getFullPath().find(elementToMove->getFullPath()) != -1)
 		return;
 
-	std::vector<std::string> StaticPaths;
-	std::vector<std::string> MovingPaths;
+	std::vector<std::string> StaticNodes;
+	std::vector<std::string> MovingNodes;
 
 	for (DropDownListElementWidget* elem : DropDownListElementsVector)
 	{
@@ -174,7 +174,7 @@ void DropDownListWidget::ReplaceDropDownListElement(DropDownListElementWidget* e
 			else 
 				StringToWrite += " false";
 
-			MovingPaths.push_back(StringToWrite);
+			MovingNodes.push_back(StringToWrite);
 		}
 		else
 		{
@@ -183,7 +183,7 @@ void DropDownListWidget::ReplaceDropDownListElement(DropDownListElementWidget* e
 				StringToWrite += " true";
 			else
 				StringToWrite += " false";
-			StaticPaths.push_back(StringToWrite);
+			StaticNodes.push_back(StringToWrite);
 		}
 	}
 
@@ -197,58 +197,19 @@ void DropDownListWidget::ReplaceDropDownListElement(DropDownListElementWidget* e
 	std::cout << std::endl;
 
 	std::cout << "StaticPaths" << std::endl;
-	for (std::string str : StaticPaths)
+	for (std::string str : StaticNodes)
 		std::cout << str << std::endl;
 	std::cout << std::endl;
 
 	std::cout << "MovingPaths" << std::endl;
-	for (std::string str : MovingPaths)
+	for (std::string str : MovingNodes)
 		std::cout << str << std::endl;
 	std::cout << std::endl;
 	
 	
 	std::string Line;
 
-	std::ofstream NodesTXTOut;
-	NodesTXTOut.open("Nodes.txt");
-
-	if (NodesTXTOut.is_open())
-	{
-		bool ShouldWriteMovingPaths = false;
-		bool WasWriteMovingPaths = false;
-		for (std::string stringToWriteIntoFile : StaticPaths)
-		{
-			if (ShouldWriteMovingPaths)
-			{
-				//std::cout << stringToWriteIntoFile.substr(0, stringToWriteIntoFile.find(" ")) << " " <<
-				//	destinationElement->getFullPath() << std::endl;
-
-				if (stringToWriteIntoFile.substr(0, stringToWriteIntoFile.find(" ")) > MovingPaths[0] || stringToWriteIntoFile.find(destinationElement->getFullPath()) == -1)
-				{
-					for (std::string str : MovingPaths)
-						NodesTXTOut << str << std::endl;
-					ShouldWriteMovingPaths = false;
-					WasWriteMovingPaths = true;
-				}
-			}
-
-			if (stringToWriteIntoFile.substr(0, stringToWriteIntoFile.find(" ")) == destinationElement->getFullPath())
-			{	
-				NodesTXTOut << stringToWriteIntoFile << std::endl;
-				ShouldWriteMovingPaths = true;
-			}
-
-			else
-			{
-				NodesTXTOut << stringToWriteIntoFile << std::endl;
-			}
-		}
-		if (WasWriteMovingPaths == false)
-			for (std::string str : MovingPaths)
-				NodesTXTOut << str << std::endl;
-	}
-
-	NodesTXTOut.close();
+	WriteMovingNodesInAlphabeticOrder(StaticNodes, MovingNodes, destinationElement);
 	
 	LoadElementsFromFile();
 }
@@ -267,44 +228,51 @@ void DropDownListWidget::AddNewDropDownListElement(DropDownListElementWidget* pa
 
 void DropDownListWidget::RenameDropDownListElement(DropDownListElementWidget* elementToRename, std::string newname)
 {
-	std::ofstream NodesTXTOut;
-	NodesTXTOut.open("Nodes.txt");
+	std::vector<std::string> StaticNodes;
+	std::vector<std::string> MovingNodes;
+	DropDownListElementWidget* ParentElement = DropDownListElementsVector[0];
+	bool WasParentElementFound = false;
 
-	if (NodesTXTOut.is_open())
+	for (DropDownListElementWidget* element : DropDownListElementsVector)
 	{
-		for (DropDownListElementWidget* element : DropDownListElementsVector)
+		std::string StringToWrite;
+			
+		if (element->getFullPath().find(elementToRename->getFullPath()) != -1)
 		{
-			std::cout << element->getFullPath().find(elementToRename->getFullPath()) << std::endl;
-			if (element->getFullPath().find(elementToRename->getFullPath()) != -1)
+			if (element == elementToRename)
 			{
-				if (element == elementToRename)
-				{
-					NodesTXTOut << element->getFullPath().replace(element->getFullPath().find(element->getName()),
-						element->getName().size(), newname) << " " << newname << " ";
-				}
-				else
-				{
-					NodesTXTOut << element->getFullPath().replace(element->getFullPath().find(elementToRename->getName()),
-						elementToRename->getName().size(), newname) << " " << element->getName() << " ";
-				}
-
-				if (element->getIsDropDownListElementOpen())
-					NodesTXTOut << "true" << std::endl;
-				else
-					NodesTXTOut << "false" << std::endl;
+				StringToWrite =  element->getFullPath().replace(element->getFullPath().find(element->getName()),
+					element->getName().size(), newname) + " " + newname + " ";
+				WasParentElementFound = true;
 			}
 			else
 			{
-				NodesTXTOut << element->getFullPath() << " " << element->getName() << " ";
-				if (element->getIsDropDownListElementOpen())
-					NodesTXTOut << "true" << std::endl;
-				else
-					NodesTXTOut << "false" << std::endl;
+				StringToWrite = element->getFullPath().replace(element->getFullPath().find(elementToRename->getName()),
+					elementToRename->getName().size(), newname) + " " + element->getName() + " ";
 			}
+
+			if (element->getIsDropDownListElementOpen())
+				StringToWrite += "true";
+			else
+				StringToWrite += "false";
+
+			MovingNodes.push_back(StringToWrite);
 		}
+	else
+		{
+			StringToWrite = element->getFullPath() + " " + element->getName() + " ";
+			if (element->getIsDropDownListElementOpen())
+				StringToWrite += "true";
+			else
+				StringToWrite += "false";
+
+			StaticNodes.push_back(StringToWrite);
+		}
+	if(WasParentElementFound == false)
+		ParentElement = element;
 	}
 
-	NodesTXTOut.close();
+	WriteMovingNodesInAlphabeticOrder(StaticNodes, MovingNodes, ParentElement);
 
 	LoadElementsFromFile();
 }
@@ -333,6 +301,51 @@ void DropDownListWidget::DeleteDropDownListElement(DropDownListElementWidget* el
 	NodesTXTOut.close();
 
 	LoadElementsFromFile();
+}
+
+void DropDownListWidget::WriteMovingNodesInAlphabeticOrder(std::vector<std::string> staticNodes, std::vector<std::string> movingNodes,
+	DropDownListElementWidget* destinationElement)
+{
+	std::ofstream NodesTXTOut;
+	NodesTXTOut.open("Nodes.txt");
+
+	if (NodesTXTOut.is_open())
+	{
+		bool ShouldWriteMovingNodes = false;
+		bool WasWriteMovingNodes = false;
+		for (std::string stringToWriteIntoFile : staticNodes)
+		{
+			if (ShouldWriteMovingNodes)
+			{
+				//std::cout << stringToWriteIntoFile.substr(0, stringToWriteIntoFile.find(" ")) << " " <<
+				//	destinationElement->getFullPath() << std::endl;
+
+				if (stringToWriteIntoFile.substr(0, stringToWriteIntoFile.find(" ")) > movingNodes[0] || stringToWriteIntoFile.find(destinationElement->getFullPath()) == -1)
+				{
+					for (std::string str : movingNodes)
+						NodesTXTOut << str << std::endl;
+					ShouldWriteMovingNodes = false;
+					WasWriteMovingNodes = true;
+				}
+			}
+
+			if (stringToWriteIntoFile.substr(0, stringToWriteIntoFile.find(" ")) == destinationElement->getFullPath())
+			{
+				NodesTXTOut << stringToWriteIntoFile << std::endl;
+				ShouldWriteMovingNodes = true;
+			}
+
+			else
+			{
+				NodesTXTOut << stringToWriteIntoFile << std::endl;
+			}
+		}
+		if (WasWriteMovingNodes == false)
+			for (std::string str : movingNodes)
+				NodesTXTOut << str << std::endl;
+	}
+
+	NodesTXTOut.close();
 }
 
 DropDownListWidget::~DropDownListWidget()
