@@ -1,11 +1,13 @@
 #include "DropDownListElementWidget.h"
 
 DropDownListElementWidget::DropDownListElementWidget(DropDownListWidget* dropDownListParent,
-	sf::RenderWindow* window, DragAndDropWidget * dropDownListElementDragAndDropWidget, 
+	sf::RenderWindow* window, sf::RenderTexture* dropDownListElementWidgetDropDownListWidgetTexture,
+	DragAndDropWidget * dropDownListElementDragAndDropWidget,
 	ContextMenuWidget* dropDownListElementContextMenu, std::string name,
  std::string path, 
 	int numberInDropDownList)
 	: DropDownListParent(dropDownListParent), DropDownListWindow(window), 
+	DropDownListElementWidgetDropDownListWidgetTexture(dropDownListElementWidgetDropDownListWidgetTexture),
 	DropDownListElementDragAndDropWidget(dropDownListElementDragAndDropWidget),
 	DropDownListElementContextMenuWidget(dropDownListElementContextMenu), Name(name),
 	FullPath(path),  NumberInDropDownList(numberInDropDownList)
@@ -13,8 +15,9 @@ DropDownListElementWidget::DropDownListElementWidget(DropDownListWidget* dropDow
 	font.loadFromFile("Font.ttf");
 
 	MainDropDownListElementShape = new sf::RectangleShape();
-	MainDropDownListElementShape->setSize(sf::Vector2f(380 - 20 * CountInStr(FullPath, "/"), 40));
-	
+	//MainDropDownListElementShape->setSize(sf::Vector2f(380 - 20 * CountInStr(FullPath, "/"), 40));
+	MainDropDownListElementShape->setSize(sf::Vector2f(8000, 40));
+
 	MainDropDownListElementText = new sf::Text;
 	MainDropDownListElementText->setFont(font);
 	MainDropDownListElementText->setString(sf::String(Name));
@@ -25,16 +28,6 @@ DropDownListElementWidget::DropDownListElementWidget(DropDownListWidget* dropDow
 	DropDownListElementOpenClosedConditionTriangle->setRotation(180);
 
 	UpdateDropDownListElementPosition();
-}
-
-void DropDownListElementWidget::DrawDropDownListElementToTexture(sf::RenderTexture* textureToDraw)
-{
-	if (IsRendering)
-	{
-		textureToDraw->draw(*MainDropDownListElementShape);
-		textureToDraw->draw(*MainDropDownListElementText);
-		textureToDraw->draw(*DropDownListElementOpenClosedConditionTriangle);
-	}
 }
 
 void DropDownListElementWidget::setIsDropDownListElementOpen(bool f)
@@ -53,6 +46,16 @@ void DropDownListElementWidget::UpdateDropDownListElementPosition()
 	MainDropDownListElementText->setPosition(15 + 20 * CountInStr(FullPath, "/"), 15 + NumberInDropDownList * 50);
 
 	DropDownListElementOpenClosedConditionTriangle->setPosition(10 + 20 * CountInStr(FullPath, "/"), 40 + NumberInDropDownList * 50);
+}
+
+void DropDownListElementWidget::Tick()
+{
+	if (IsRendering)
+	{
+		DropDownListElementWidgetDropDownListWidgetTexture->draw(*MainDropDownListElementShape);
+		DropDownListElementWidgetDropDownListWidgetTexture->draw(*MainDropDownListElementText);
+		DropDownListElementWidgetDropDownListWidgetTexture->draw(*DropDownListElementOpenClosedConditionTriangle);
+	}
 }
 
 bool DropDownListElementWidget::operator==(const DropDownListElementWidget& Obj)

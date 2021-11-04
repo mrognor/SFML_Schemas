@@ -2,11 +2,11 @@ A/ A true
 A/B/ B true
 A/Ba/ Ba true
 A/bd/ bd true
-A/C/ C true
 A/CC/ CC true
-A/CC/Dsaf/ Dsaf true
-A/CC/Dsaf/F/ F true
-A/FFG/ FFG true
+A/CC/C/ C true
+A/CC/C/Dsaf/ Dsaf true
+A/CC/C/Dsaf/F/ F true
+A/CC/C/Dsaf/F/FFG/ FFG true
 A/GGGF/ GGGF true
 A/ghshgsdgh/ ghshgsdgh true
 A/New/ New true

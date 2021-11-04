@@ -12,6 +12,15 @@ DropDownListWidget::DropDownListWidget(sf::RenderWindow* mainWindow, DragAndDrop
 	DropDownListElementWidgetSprite = new sf::Sprite();
 	DropDownListElementWidgetSprite->setTexture(DropDownListElementWidgetTexture->getTexture());
 
+	PaddingShape.setSize(sf::Vector2f(10, 8000));
+	PaddingShape.setPosition(sf::Vector2f(sizeX-10, 0));
+	PaddingShape.setFillColor(sf::Color::Black);
+
+	DropDownListElementWidgetTexture->create(2000, sizeY);
+	DropDownListElementWidgetTexture->clear(sf::Color::Black);
+
+	DropDownListElementWidgetSprite->setTexture(DropDownListElementWidgetTexture->getTexture(), true);
+
 	LoadElementsFromFile();
 }
 
@@ -36,7 +45,7 @@ void DropDownListWidget::LoadElementsFromFile()
 		while (getline(NodesTXT, Line))
 		{
 			std::vector<std::string> ParsedLine = Split(Line, " ");
-			DropDownListElementWidget* F = new DropDownListElementWidget(this, DropDownListWindow, 
+			DropDownListElementWidget* F = new DropDownListElementWidget(this, DropDownListWindow, DropDownListElementWidgetTexture, 
 				DropDownListDragAndDropWidget, DropDownListContextMenuWidget, ParsedLine[1], ParsedLine[0],
 				DropDownListElementsVector.size());
 
@@ -95,11 +104,11 @@ void DropDownListWidget::Tick()
 	for (DropDownListElementWidget* element : DropDownListElementsVector)
 	{
 		element->Tick();
-		element->DrawDropDownListElementToTexture(DropDownListElementWidgetTexture);
 	}
 	DropDownListElementWidgetTexture->display();
 
 	DropDownListWindow->draw(*DropDownListElementWidgetSprite);
+	DropDownListWindow->draw(PaddingShape);
 }
 
 void DropDownListWidget::FindAndSetDropDownListElementIndexes()
@@ -228,7 +237,7 @@ void DropDownListWidget::ReplaceDropDownListElement(DropDownListElementWidget* e
 void DropDownListWidget::AddNewDropDownListElement(DropDownListElementWidget* parentElementToNewElement, std::string newname)
 {
 	// —оздаю новый элемент и добавл€ю его в конец вектора
-	DropDownListElementWidget* F = new DropDownListElementWidget(this, DropDownListWindow, DropDownListDragAndDropWidget,
+	DropDownListElementWidget* F = new DropDownListElementWidget(this, DropDownListWindow, DropDownListElementWidgetTexture, DropDownListDragAndDropWidget,
 		DropDownListContextMenuWidget, newname, DropDownListElementsVector[0]->getFullPath() + newname + "/", DropDownListElementsVector.size());
 	F->setIsDropDownListElementOpen(true);
 	DropDownListElementsVector.push_back(F);

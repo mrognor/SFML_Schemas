@@ -18,6 +18,9 @@ private:
 	/// Указатель на окно приложения в котором находится виджет(DropDownListWidget)
 	sf::RenderWindow* DropDownListWindow;
 
+	/// Указатель на текстуру для списка(DropDownList)
+	sf::RenderTexture* DropDownListElementWidgetDropDownListWidgetTexture;
+
 	/// Переменная для отслеживания объекта(ContextMenuWidget)
 	ContextMenuWidget* DropDownListElementContextMenuWidget;
 
@@ -60,7 +63,8 @@ public:
 	/// Создает объект RectangleShape для тела данного виджета. Вызывает функцию UpdateDropDownListElementPosition.
 	/// UpdateDropDownListElementPosition перемещает тело виджета и текст в правильную позицию. Позиция устанавливается 
 	/// из DropDownListWidget.
-	DropDownListElementWidget(DropDownListWidget* dropDownListParent, sf::RenderWindow* window, DragAndDropWidget * dropDownListElementDragAndDropWidget,
+	DropDownListElementWidget(DropDownListWidget* dropDownListParent, sf::RenderWindow* window, 
+		sf::RenderTexture* dropDownListElementWidgetDropDownListWidgetTexture, DragAndDropWidget * dropDownListElementDragAndDropWidget,
  ContextMenuWidget* dropDownListElementContextMenu,
 		std::string name, std::string path, int numberInDropDownList);
 
@@ -84,9 +88,6 @@ public:
 	/// Геттер для переменной для отрисовки объекта(DropDownListElementWidget)
 	bool getIsRendering() { return IsRendering; }
 
-	/// Функция для отрисовки элемента на текстуре
-	void DrawDropDownListElementToTexture(sf::RenderTexture* textureToDraw);
-
 	/// Сеттер для переменной для закрытия папки 
 	void setIsDropDownListElementOpen(bool f);
 	// Геттер для переменной для закрытия папки
@@ -98,7 +99,7 @@ public:
 	void UpdateDropDownListElementPosition();
 
 	/// Функция, работающая каждый такт 
-	void Tick() {};
+	void Tick();
 
 	/// Обработчик ввода 
 	void InputHandler(sf::Event event);

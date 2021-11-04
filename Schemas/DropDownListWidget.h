@@ -11,6 +11,9 @@ private:
 	/// ”казатель на главное окно приложени€ 
 	sf::RenderWindow* DropDownListWindow;
 
+	/// ѕеременна€ дл€ визуального ограничени€ длины кнопок
+	sf::RectangleShape PaddingShape;
+
 	/// ”казатель на текстуру дл€ списка(DropDownList)
 	sf::RenderTexture* DropDownListElementWidgetTexture;
 
