@@ -16,5 +16,6 @@ A/New/NewName/ NewName true
 A/T/ T true
 A/T/Z/ Z true
 A/T/Z/zzzaaa/ zzzaaa true
+A/T/Z/zzzaaa/fdasf/ fdasf true
 A/T/Z/zzzaaa/ZZZZ/ ZZZZ true
 A/T/Z/zzzaaa/ZZZZ/zzzz/ zzzz true

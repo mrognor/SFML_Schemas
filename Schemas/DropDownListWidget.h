@@ -58,6 +58,9 @@ public:
 
 	/// 
 	void Tick();
+	
+	/// Функция возвращает sprite списка
+	sf::Sprite* GetSprite() { return DropDownListElementWidgetSprite; }
 
 	/// Функция для открытия DropDownListElementWidget
 	void OpenDropDownListElement(DropDownListElementWidget* elementToOpen);

@@ -80,7 +80,8 @@ void DropDownListElementWidget::InputHandler(sf::Event event)
 		sf::Vector2f CurrentMouseCoords = FindMouseCoords(DropDownListWindow);
 
 		// OnHovered
-		if (MainDropDownListElementShape->getGlobalBounds().contains(CurrentMouseCoords.x, CurrentMouseCoords.y) &&
+		
+		if (IsShapeInSpriteContain(*DropDownListParent->GetSprite(), *MainDropDownListElementShape, CurrentMouseCoords) &&
 			DropDownListElementContextMenuWidget->getIsMouseOnShape() == false && 
 			CurrentMouseCoords.x < DropDownListElementWidgetDropDownListWidgetTexture->getSize().x - 10) // 10 тут - ширина paddingshape в DropDownList 
 		{
