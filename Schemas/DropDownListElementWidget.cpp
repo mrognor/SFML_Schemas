@@ -81,7 +81,8 @@ void DropDownListElementWidget::InputHandler(sf::Event event)
 
 		// OnHovered
 		if (MainDropDownListElementShape->getGlobalBounds().contains(CurrentMouseCoords.x, CurrentMouseCoords.y) &&
-			DropDownListElementContextMenuWidget->getIsMouseOnShape() == false)
+			DropDownListElementContextMenuWidget->getIsMouseOnShape() == false && 
+			CurrentMouseCoords.x < DropDownListElementWidgetDropDownListWidgetTexture->getSize().x - 10) // 10 тут - ширина paddingshape в DropDownList 
 		{
 			IsMouseOnShape = true;
 			MainDropDownListElementShape->setFillColor(sf::Color::Blue);

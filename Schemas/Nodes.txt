@@ -1,7 +1,7 @@
 A/ A true
 A/B/ B true
 A/Ba/ Ba true
-A/bd/ bd true
+A/Ba/bd/ bd true
 A/CC/ CC true
 A/CC/C/ C true
 A/CC/C/Dsaf/ Dsaf true
@@ -9,9 +9,9 @@ A/CC/C/Dsaf/F/ F true
 A/CC/C/Dsaf/F/FFG/ FFG true
 A/GGGF/ GGGF true
 A/ghshgsdgh/ ghshgsdgh true
-A/New/ New true
 A/NewName/ NewName true
-A/T/ T false
+A/NewName/NewName/New/ New true
+A/NewName/NewName/New/T/ T false
 A/Z/ Z true
 A/zzzaaa/ zzzaaa true
 A/zzzaaa/FF/ FF true

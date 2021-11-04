@@ -14,6 +14,9 @@ private:
 	/// Переменная для визуального ограничения длины кнопок
 	sf::RectangleShape PaddingShape;
 
+	/// Переменная для визуального изменения размера списка
+	sf::RectangleShape HorizontalSliderShape;
+
 	/// Указатель на текстуру для списка(DropDownList)
 	sf::RenderTexture* DropDownListElementWidgetTexture;
 
@@ -28,6 +31,8 @@ private:
 
 	/// Переменная для отслеживания объекта(ContextMenuWidget)
 	ContextMenuWidget* DropDownListContextMenuWidget;
+
+	bool IsHorizontalMoving = false;
 
 	/// Функция для записи движимых нод в файл. Алфавитный порядок соблюдается
 	void WriteMovingNodesInAlphabeticOrder(std::vector<std::string> staticNodes, std::vector<std::string> movingNodes,

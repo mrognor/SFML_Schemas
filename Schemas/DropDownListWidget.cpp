@@ -16,10 +16,9 @@ DropDownListWidget::DropDownListWidget(sf::RenderWindow* mainWindow, DragAndDrop
 	PaddingShape.setPosition(sf::Vector2f(sizeX-10, 0));
 	PaddingShape.setFillColor(sf::Color::Black);
 
-	DropDownListElementWidgetTexture->create(2000, sizeY);
-	DropDownListElementWidgetTexture->clear(sf::Color::Black);
-
-	DropDownListElementWidgetSprite->setTexture(DropDownListElementWidgetTexture->getTexture(), true);
+	HorizontalSliderShape.setSize(sf::Vector2f(10, 100));
+	HorizontalSliderShape.setPosition(sf::Vector2f(sizeX-10, DropDownListWindow->getSize().y/2));
+	HorizontalSliderShape.setFillColor(sf::Color::Cyan);
 
 	LoadElementsFromFile();
 }
@@ -71,10 +70,13 @@ void DropDownListWidget::LoadElementsFromFile()
 
 void DropDownListWidget::InputHandler(sf::Event event)
 {
+	sf::Vector2f MouseCoords = FindMouseCoords(DropDownListWindow);
+
 	for (DropDownListElementWidget* element : DropDownListElementsVector)
 	{
 		element->InputHandler(event);
 	}
+
 	if (event.type == sf::Event::Closed)
 	{
 		std::ofstream NodesTXTOut;
@@ -95,6 +97,37 @@ void DropDownListWidget::InputHandler(sf::Event event)
 			}
 		}
 	}
+
+	if (event.type == sf::Event::Resized)
+	{
+		if (DropDownListElementWidgetTexture->getSize().x > DropDownListWindow->getSize().x - 15)
+		{
+			DropDownListElementWidgetTexture->create(DropDownListWindow->getSize().x - 15, DropDownListElementWidgetTexture->getSize().y);
+			DropDownListElementWidgetTexture->clear(sf::Color::Black);
+			DropDownListElementWidgetSprite->setTexture(DropDownListElementWidgetTexture->getTexture(), true);
+			PaddingShape.setPosition(DropDownListWindow->getSize().x - 15, PaddingShape.getPosition().y);
+			HorizontalSliderShape.setPosition(DropDownListWindow->getSize().x - 15, HorizontalSliderShape.getPosition().y);
+		}
+	}
+
+	if (event.type == event.MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left
+		&& HorizontalSliderShape.getGlobalBounds().contains(MouseCoords))
+		IsHorizontalMoving = true;
+
+	if (event.type == event.MouseButtonReleased)
+		IsHorizontalMoving = false;
+
+	if (event.type == event.MouseMoved)
+	{
+		if (IsHorizontalMoving && MouseCoords.x > 15 && MouseCoords.x < DropDownListWindow->getSize().x - 15)
+		{
+			DropDownListElementWidgetTexture->create(MouseCoords.x, DropDownListElementWidgetTexture->getSize().y);
+			DropDownListElementWidgetTexture->clear(sf::Color::Black);
+			DropDownListElementWidgetSprite->setTexture(DropDownListElementWidgetTexture->getTexture(), true);
+			PaddingShape.setPosition(MouseCoords.x, PaddingShape.getPosition().y);
+			HorizontalSliderShape.setPosition(MouseCoords.x, HorizontalSliderShape.getPosition().y);
+		}
+	}
 }
 
 void DropDownListWidget::Tick()
@@ -109,6 +142,7 @@ void DropDownListWidget::Tick()
 
 	DropDownListWindow->draw(*DropDownListElementWidgetSprite);
 	DropDownListWindow->draw(PaddingShape);
+	DropDownListWindow->draw(HorizontalSliderShape);
 }
 
 void DropDownListWidget::FindAndSetDropDownListElementIndexes()
