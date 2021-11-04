@@ -16,7 +16,7 @@ private:
 	DragAndDropWidget* DropDownListElementDragAndDropWidget;
 
 	/// Указатель на окно приложения в котором находится виджет(DropDownListWidget)
-	sf::RenderWindow* DropDownListElementWindow;
+	sf::RenderWindow* DropDownListWindow;
 
 	/// Переменная для отслеживания объекта(ContextMenuWidget)
 	ContextMenuWidget* DropDownListElementContextMenuWidget;
@@ -71,7 +71,7 @@ public:
 
 	/// Сеттер для имени
 	void setName(std::string name) { Name = name; }
-	// Геттер для имени
+	/// Геттер для имени
 	std::string getName() { return Name; }
 
 	/// Устанавливает позицию данного объекта в списке DropDownListWidget
@@ -80,9 +80,12 @@ public:
 	int getNumberInDropDownList() { return NumberInDropDownList; }
 
 	/// Сеттер для переменной для отрисовки объекта(DropDownListElementWidget)
-	void setIsRendering(bool f) { IsRendering = f; }
-	// Геттер для переменной для отрисовки объекта(DropDownListElementWidget)
+	void setIsRendering(bool f);
+	/// Геттер для переменной для отрисовки объекта(DropDownListElementWidget)
 	bool getIsRendering() { return IsRendering; }
+
+	/// Функция для отрисовки элемента на текстуре
+	void DrawDropDownListElementToTexture(sf::RenderTexture* textureToDraw);
 
 	/// Сеттер для переменной для закрытия папки 
 	void setIsDropDownListElementOpen(bool f);
@@ -95,9 +98,9 @@ public:
 	void UpdateDropDownListElementPosition();
 
 	/// Функция, работающая каждый такт 
-	void Tick();
+	void Tick() {};
 
-	// Обработчик ввода 
+	/// Обработчик ввода 
 	void InputHandler(sf::Event event);
 
 	/// Оператор сравнения

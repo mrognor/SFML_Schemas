@@ -2,14 +2,22 @@
 
 DropDownListWidget::DropDownListWidget(sf::RenderWindow* mainWindow, DragAndDropWidget* dropDownListWindowDragAndDropWidget,
 	ContextMenuWidget* dropDownListContextMenuWidget, int sizeX, int sizeY) : 
-	DropDownListElementWindow(mainWindow), DropDownListDragAndDropWidget(dropDownListWindowDragAndDropWidget),
+	DropDownListWindow(mainWindow), DropDownListDragAndDropWidget(dropDownListWindowDragAndDropWidget),
 	DropDownListContextMenuWidget(dropDownListContextMenuWidget)
 {
+	DropDownListElementWidgetTexture = new sf::RenderTexture();
+	DropDownListElementWidgetTexture->create(sizeX, sizeY);
+	DropDownListElementWidgetTexture->clear(sf::Color::Black);
 
-	WidgetBody.setSize(sf::Vector2f(sizeX, sizeY));
-	WidgetBody.setFillColor(sf::Color::Black);
+	DropDownListElementWidgetSprite = new sf::Sprite();
+	DropDownListElementWidgetSprite->setTexture(DropDownListElementWidgetTexture->getTexture());
 
 	LoadElementsFromFile();
+}
+
+void DropDownListElementWidget::setIsRendering(bool f)
+{
+	IsRendering = f; 
 }
 
 void DropDownListWidget::LoadElementsFromFile()
@@ -28,7 +36,7 @@ void DropDownListWidget::LoadElementsFromFile()
 		while (getline(NodesTXT, Line))
 		{
 			std::vector<std::string> ParsedLine = Split(Line, " ");
-			DropDownListElementWidget* F = new DropDownListElementWidget(this, DropDownListElementWindow, 
+			DropDownListElementWidget* F = new DropDownListElementWidget(this, DropDownListWindow, 
 				DropDownListDragAndDropWidget, DropDownListContextMenuWidget, ParsedLine[1], ParsedLine[0],
 				DropDownListElementsVector.size());
 
@@ -82,12 +90,16 @@ void DropDownListWidget::InputHandler(sf::Event event)
 
 void DropDownListWidget::Tick()
 {
-	DropDownListElementWindow->draw(WidgetBody);
+	DropDownListElementWidgetTexture->clear(sf::Color::Black);
 
 	for (DropDownListElementWidget* element : DropDownListElementsVector)
 	{
 		element->Tick();
+		element->DrawDropDownListElementToTexture(DropDownListElementWidgetTexture);
 	}
+	DropDownListElementWidgetTexture->display();
+
+	DropDownListWindow->draw(*DropDownListElementWidgetSprite);
 }
 
 void DropDownListWidget::FindAndSetDropDownListElementIndexes()
@@ -216,7 +228,7 @@ void DropDownListWidget::ReplaceDropDownListElement(DropDownListElementWidget* e
 void DropDownListWidget::AddNewDropDownListElement(DropDownListElementWidget* parentElementToNewElement, std::string newname)
 {
 	// —оздаю новый элемент и добавл€ю его в конец вектора
-	DropDownListElementWidget* F = new DropDownListElementWidget(this, DropDownListElementWindow, DropDownListDragAndDropWidget,
+	DropDownListElementWidget* F = new DropDownListElementWidget(this, DropDownListWindow, DropDownListDragAndDropWidget,
 		DropDownListContextMenuWidget, newname, DropDownListElementsVector[0]->getFullPath() + newname + "/", DropDownListElementsVector.size());
 	F->setIsDropDownListElementOpen(true);
 	DropDownListElementsVector.push_back(F);
@@ -349,6 +361,9 @@ void DropDownListWidget::WriteMovingNodesInAlphabeticOrder(std::vector<std::stri
 
 DropDownListWidget::~DropDownListWidget()
 {
+	delete DropDownListElementWidgetTexture;
+	delete DropDownListElementWidgetSprite;
+
 	for (DropDownListElementWidget* folder : DropDownListElementsVector)
 	{
 		delete folder;

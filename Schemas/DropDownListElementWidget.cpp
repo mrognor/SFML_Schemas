@@ -5,7 +5,7 @@ DropDownListElementWidget::DropDownListElementWidget(DropDownListWidget* dropDow
 	ContextMenuWidget* dropDownListElementContextMenu, std::string name,
  std::string path, 
 	int numberInDropDownList)
-	: DropDownListParent(dropDownListParent), DropDownListElementWindow(window), 
+	: DropDownListParent(dropDownListParent), DropDownListWindow(window), 
 	DropDownListElementDragAndDropWidget(dropDownListElementDragAndDropWidget),
 	DropDownListElementContextMenuWidget(dropDownListElementContextMenu), Name(name),
 	FullPath(path),  NumberInDropDownList(numberInDropDownList)
@@ -25,6 +25,16 @@ DropDownListElementWidget::DropDownListElementWidget(DropDownListWidget* dropDow
 	DropDownListElementOpenClosedConditionTriangle->setRotation(180);
 
 	UpdateDropDownListElementPosition();
+}
+
+void DropDownListElementWidget::DrawDropDownListElementToTexture(sf::RenderTexture* textureToDraw)
+{
+	if (IsRendering)
+	{
+		textureToDraw->draw(*MainDropDownListElementShape);
+		textureToDraw->draw(*MainDropDownListElementText);
+		textureToDraw->draw(*DropDownListElementOpenClosedConditionTriangle);
+	}
 }
 
 void DropDownListElementWidget::setIsDropDownListElementOpen(bool f)
@@ -59,22 +69,12 @@ bool DropDownListElementWidget::operator!=(const DropDownListElementWidget& Obj)
 	return true;
 }
 
-void DropDownListElementWidget::Tick()
-{
-	if (IsRendering)
-	{
-		DropDownListElementWindow->draw(*MainDropDownListElementShape);
-		DropDownListElementWindow->draw(*MainDropDownListElementText);
-		DropDownListElementWindow->draw(*DropDownListElementOpenClosedConditionTriangle);
-	}
-}
-
 void DropDownListElementWidget::InputHandler(sf::Event event)
 {
 	if (IsRendering)
 	{
 		/// Локальная переменная для отслеживания позиции курсора в окне
-		sf::Vector2f CurrentMouseCoords = FindMouseCoords(DropDownListElementWindow);
+		sf::Vector2f CurrentMouseCoords = FindMouseCoords(DropDownListWindow);
 
 		// OnHovered
 		if (MainDropDownListElementShape->getGlobalBounds().contains(CurrentMouseCoords.x, CurrentMouseCoords.y) &&

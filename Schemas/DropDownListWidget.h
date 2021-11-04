@@ -9,10 +9,13 @@ class DropDownListWidget
 {
 private:
 	/// Указатель на главное окно приложения 
-	sf::RenderWindow* DropDownListElementWindow;
+	sf::RenderWindow* DropDownListWindow;
 
-	/// RectangleShape. Прямоугольник, служащий главным телом виджета списка
-	sf::RectangleShape WidgetBody;
+	/// Указатель на текстуру для списка(DropDownList)
+	sf::RenderTexture* DropDownListElementWidgetTexture;
+
+	/// Указатель на спрайт для списка(DropDownList)
+	sf::Sprite* DropDownListElementWidgetSprite;
 
 	/// Вектор из всех элементов виджета(DropDownListElementWidget)
 	std::vector<DropDownListElementWidget*> DropDownListElementsVector;
