@@ -93,6 +93,9 @@ public:
 	// Геттер для переменной для закрытия папки
 	bool getIsDropDownListElementOpen() { return IsDropDownListElementOpen; }
 
+	/// Возвращает getGlobalBounds() тела шейпа. left и width не имеет смысла рассматривать т.к тело очень длинное
+	sf::FloatRect getGlobalBounds() { return MainDropDownListElementShape->getGlobalBounds(); }
+
 	/// Данная функция перемещает тело виджета(DropDownListElementWidget) и текст в нужную позицию
 	/// Для определения позиция есть переменная NumberInDropDownList
 	/// Эта переменная устанавливается из DropDownListWidget.

@@ -17,6 +17,9 @@ private:
 	/// Переменная для визуального изменения размера списка
 	sf::RectangleShape HorizontalSliderShape;
 
+	/// Переменная для движения списка по вертикали
+	sf::RectangleShape VerticalSliderShape; 
+
 	/// Указатель на текстуру для списка(DropDownList)
 	sf::RenderTexture* DropDownListElementWidgetTexture;
 
@@ -33,6 +36,10 @@ private:
 	ContextMenuWidget* DropDownListContextMenuWidget;
 
 	bool IsHorizontalMoving = false;
+
+	bool IsVerticalMoving = false;
+
+	float VerticalSliderClickPosition;
 
 	/// Функция для записи движимых нод в файл. Алфавитный порядок соблюдается
 	void WriteMovingNodesInAlphabeticOrder(std::vector<std::string> staticNodes, std::vector<std::string> movingNodes,

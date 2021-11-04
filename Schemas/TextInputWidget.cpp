@@ -20,7 +20,7 @@ TextInputWidget::TextInputWidget(sf::RenderWindow* textInputWidgetWindow) : Text
 
 	TextInputWidgetCursorText.setFont(font);
 
-	TextInputWidgetSliderShape.setSize(sf::Vector2f(200, 10));
+	TextInputWidgetSliderShape.setSize(sf::Vector2f(293, 10));
 	TextInputWidgetSliderShape.setPosition(sf::Vector2f(0, 35));
 	TextInputWidgetSliderShape.setFillColor(sf::Color::Green);
 

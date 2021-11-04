@@ -20,6 +20,9 @@ DropDownListWidget::DropDownListWidget(sf::RenderWindow* mainWindow, DragAndDrop
 	HorizontalSliderShape.setPosition(sf::Vector2f(sizeX-10, DropDownListWindow->getSize().y/2));
 	HorizontalSliderShape.setFillColor(sf::Color::Cyan);
 
+	VerticalSliderShape.setSize(sf::Vector2f(10, sizeY));
+	VerticalSliderShape.setFillColor(sf::Color::Cyan);
+
 	LoadElementsFromFile();
 }
 
@@ -100,6 +103,9 @@ void DropDownListWidget::InputHandler(sf::Event event)
 
 	if (event.type == sf::Event::Resized)
 	{
+		HorizontalSliderShape.setPosition(HorizontalSliderShape.getPosition().x, DropDownListWindow->getSize().y/2);
+		VerticalSliderShape.setSize(sf::Vector2f(10, DropDownListWindow->getSize().y));
+
 		if (DropDownListElementWidgetTexture->getSize().x > DropDownListWindow->getSize().x - 15)
 		{
 			DropDownListElementWidgetTexture->create(DropDownListWindow->getSize().x - 15, DropDownListElementWidgetTexture->getSize().y);
@@ -111,11 +117,21 @@ void DropDownListWidget::InputHandler(sf::Event event)
 	}
 
 	if (event.type == event.MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left
+		&& VerticalSliderShape.getGlobalBounds().contains(MouseCoords))
+	{
+		IsVerticalMoving = true;
+		VerticalSliderClickPosition = MouseCoords.y - VerticalSliderShape.getGlobalBounds().top;
+	}
+
+	if (event.type == event.MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left
 		&& HorizontalSliderShape.getGlobalBounds().contains(MouseCoords))
 		IsHorizontalMoving = true;
 
 	if (event.type == event.MouseButtonReleased)
+	{
 		IsHorizontalMoving = false;
+		IsVerticalMoving = false;
+	}
 
 	if (event.type == event.MouseMoved)
 	{
@@ -127,6 +143,20 @@ void DropDownListWidget::InputHandler(sf::Event event)
 			PaddingShape.setPosition(MouseCoords.x, PaddingShape.getPosition().y);
 			HorizontalSliderShape.setPosition(MouseCoords.x, HorizontalSliderShape.getPosition().y);
 		}
+
+		if (IsVerticalMoving)
+		{
+			VerticalSliderShape.setPosition(sf::Vector2f(0, MouseCoords.y - VerticalSliderClickPosition));
+
+			// Граничные позиции слайдера
+			if (VerticalSliderShape.getGlobalBounds().top < 0)
+				VerticalSliderShape.setPosition(0, 0);
+
+			if (VerticalSliderShape.getGlobalBounds().top + VerticalSliderShape.getGlobalBounds().height > DropDownListWindow->getSize().y)
+				VerticalSliderShape.setPosition(0, DropDownListWindow->getSize().y - VerticalSliderShape.getGlobalBounds().height);
+			
+			DropDownListElementWidgetSprite->setPosition(0, -1 * VerticalSliderShape.getGlobalBounds().top * DropDownListWindow->getSize().y / VerticalSliderShape.getGlobalBounds().height);
+		}
 	}
 }
 
@@ -134,15 +164,24 @@ void DropDownListWidget::Tick()
 {
 	DropDownListElementWidgetTexture->clear(sf::Color::Black);
 
+	DropDownListElementWidget* LastDrawingElement  = DropDownListElementsVector[0];
 	for (DropDownListElementWidget* element : DropDownListElementsVector)
 	{
 		element->Tick();
+		if (element->getIsRendering())
+			LastDrawingElement = element;
 	}
 	DropDownListElementWidgetTexture->display();
 
 	DropDownListWindow->draw(*DropDownListElementWidgetSprite);
 	DropDownListWindow->draw(PaddingShape);
 	DropDownListWindow->draw(HorizontalSliderShape);
+
+	if (LastDrawingElement->getGlobalBounds().top + LastDrawingElement->getGlobalBounds().height > DropDownListWindow->getSize().y)
+	{
+		VerticalSliderShape.setScale(sf::Vector2f(1, DropDownListWindow->getSize().y / (LastDrawingElement->getGlobalBounds().top + LastDrawingElement->getGlobalBounds().height)));
+		DropDownListWindow->draw(VerticalSliderShape);
+	}
 }
 
 void DropDownListWidget::FindAndSetDropDownListElementIndexes()
@@ -220,7 +259,7 @@ void DropDownListWidget::ReplaceDropDownListElement(DropDownListElementWidget* e
 		if (elem->getFullPath().find(elementToMove->getFullPath()) != -1)
 		{
 			StringToWrite = destinationElement->getFullPath() +
-				elem->getFullPath().substr(elem->getFullPath().find(elementToMove->getName()), elem->getFullPath().find(" "))
+				elem->getFullPath().substr(elem->getFullPath().find("/" + elementToMove->getName() + "/") + 1, elem->getFullPath().find(" "))
 				+ " " + elem->getName();
 			
 			if (elem->getIsDropDownListElementOpen())

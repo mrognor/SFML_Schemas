@@ -22,6 +22,8 @@ int main()
 	d.setWindowDropDownList(&f);
 	c.SetContextMenuWidgetDropDownList(&f);
 
+	std::cout << ("CC" > "C") << std::endl;
+
 	// create own view
 	sf::View view = window.getDefaultView();
 
