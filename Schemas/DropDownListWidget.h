@@ -37,6 +37,8 @@ private:
 
 	bool IsHorizontalMoving = false;
 
+	bool IsCanVerticalmoving = false;
+
 	bool IsVerticalMoving = false;
 
 	float VerticalSliderClickPosition;

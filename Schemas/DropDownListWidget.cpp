@@ -116,7 +116,7 @@ void DropDownListWidget::InputHandler(sf::Event event)
 		}
 	}
 
-	if (event.type == event.MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left
+	if (event.type == event.MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left && IsCanVerticalmoving == true
 		&& VerticalSliderShape.getGlobalBounds().contains(MouseCoords))
 	{
 		IsVerticalMoving = true;
@@ -131,6 +131,20 @@ void DropDownListWidget::InputHandler(sf::Event event)
 	{
 		IsHorizontalMoving = false;
 		IsVerticalMoving = false;
+	}
+
+	if (event.type == event.MouseWheelMoved && IsCanVerticalmoving == true)
+	{
+		VerticalSliderShape.move(sf::Vector2f(0, event.mouseWheel.delta * -6));
+
+		// Граничные позиции слайдера
+		if (VerticalSliderShape.getGlobalBounds().top < 0)
+			VerticalSliderShape.setPosition(0, 0);
+
+		if (VerticalSliderShape.getGlobalBounds().top + VerticalSliderShape.getGlobalBounds().height > DropDownListWindow->getSize().y)
+			VerticalSliderShape.setPosition(0, DropDownListWindow->getSize().y - VerticalSliderShape.getGlobalBounds().height);
+
+		DropDownListElementWidgetSprite->setPosition(0, -1 * VerticalSliderShape.getGlobalBounds().top * DropDownListWindow->getSize().y / VerticalSliderShape.getGlobalBounds().height);
 	}
 
 	if (event.type == event.MouseMoved)
@@ -181,7 +195,10 @@ void DropDownListWidget::Tick()
 	{
 		VerticalSliderShape.setScale(sf::Vector2f(1, DropDownListWindow->getSize().y / (LastDrawingElement->getGlobalBounds().top + LastDrawingElement->getGlobalBounds().height)));
 		DropDownListWindow->draw(VerticalSliderShape);
+		IsCanVerticalmoving = true;
 	}
+	else
+		IsCanVerticalmoving = false;
 }
 
 void DropDownListWidget::FindAndSetDropDownListElementIndexes()
