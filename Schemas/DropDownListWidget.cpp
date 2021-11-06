@@ -133,7 +133,9 @@ void DropDownListWidget::InputHandler(sf::Event event)
 		IsVerticalMoving = false;
 	}
 
-	if (event.type == event.MouseWheelMoved && IsCanVerticalmoving == true)
+
+	if (event.type == event.MouseWheelMoved && IsCanVerticalmoving == true &&
+		DropDownListElementWidgetSprite->getGlobalBounds().contains(MouseCoords))
 	{
 		VerticalSliderShape.move(sf::Vector2f(0, event.mouseWheel.delta * -6));
 
@@ -259,7 +261,7 @@ void DropDownListWidget::CloseDropDownListElement(DropDownListElementWidget* ele
 	for (DropDownListElementWidget* element : DropDownListElementsVector)
 	{
 		element->UpdateDropDownListElementPosition();
-	}
+	} 
 }
 
 void DropDownListWidget::ReplaceDropDownListElement(DropDownListElementWidget* elementToMove, DropDownListElementWidget* destinationElement)

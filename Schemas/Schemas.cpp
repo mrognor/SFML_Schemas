@@ -8,6 +8,7 @@
 #include "DropDownListElementWidget.h"
 #include "DragAndDropWidget.h"
 #include "ContextMenuWidget.h"
+#include "MovingPoleWidget.h"
 
 int main()
 {
@@ -16,13 +17,12 @@ int main()
 
 	DragAndDropWidget d(&window);
 	ContextMenuWidget c(&window);
+	MovingPoleWidget m(&window);
 
 	DropDownListWidget f(&window, &d, &c, 400, 8000);
 	
 	d.setWindowDropDownList(&f);
 	c.SetContextMenuWidgetDropDownList(&f);
-
-	std::cout << ("CC" > "C") << std::endl;
 
 	// create own view
 	sf::View view = window.getDefaultView();
@@ -34,6 +34,7 @@ int main()
 
 		while (window.pollEvent(event))
 		{	
+			m.InputHandler(event);
 			c.InputHandler(event);
 			f.InputHandler(event);
 			d.InputHandler(event);
@@ -50,6 +51,7 @@ int main()
 
 		}
 
+		m.Tick();
 		f.Tick();
 		c.Tick();
 		d.Tick();

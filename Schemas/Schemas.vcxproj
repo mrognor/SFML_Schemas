@@ -148,6 +148,7 @@
     <ClCompile Include="DragAndDropWidget.cpp" />
     <ClCompile Include="DropDownListWidget.cpp" />
     <ClCompile Include="DropDownListElementWidget.cpp" />
+    <ClCompile Include="MovingPoleWidget.cpp" />
     <ClCompile Include="Schemas.cpp" />
     <ClCompile Include="TextInputWidget.cpp" />
   </ItemGroup>
@@ -159,6 +160,7 @@
     <ClInclude Include="DragAndDropWidget.h" />
     <ClInclude Include="DropDownListWidget.h" />
     <ClInclude Include="DropDownListElementWidget.h" />
+    <ClInclude Include="MovingPoleWidget.h" />
     <ClInclude Include="SchemasClasses.h" />
     <ClInclude Include="SchemasFunctions.h" />
     <ClInclude Include="TextInputWidget.h" />
