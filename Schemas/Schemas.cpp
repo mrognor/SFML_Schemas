@@ -17,10 +17,12 @@ int main()
 
 	DragAndDropWidget d(&window);
 	ContextMenuWidget c(&window);
-	MovingPoleWidget m(&window);
+	
 
 	DropDownListWidget f(&window, &d, &c, 400, 8000);
-	
+
+	MovingPoleWidget m(&window, &f);
+
 	d.setWindowDropDownList(&f);
 	c.SetContextMenuWidgetDropDownList(&f);
 

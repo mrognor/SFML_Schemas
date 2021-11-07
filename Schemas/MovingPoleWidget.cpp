@@ -1,22 +1,23 @@
 #include "MovingPoleWidget.h"
 
-MovingPoleWidget::MovingPoleWidget(sf::RenderWindow* movingPoleWidgetWindow) : MovingPoleWidgetWindow(movingPoleWidgetWindow)
+MovingPoleWidget::MovingPoleWidget(sf::RenderWindow* movingPoleWidgetWindow, DropDownListWidget* movingPoleDropDownListWidget) :
+	MovingPoleWidgetWindow(movingPoleWidgetWindow), MovingPoleDropDownListWidget(movingPoleDropDownListWidget)
 {
 	ShapeToTest.setSize({ 100, 100 });
 	ShapeToTest.setPosition({ 600, 600 });
 
-	Texture = new sf::RenderTexture;
-	Texture->create(1920, 1080);
-	Texture->draw(ShapeToTest);
-	Texture->display();
+	MovingPoleWidgetTexture = new sf::RenderTexture;
+	MovingPoleWidgetTexture->create(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height);
+	MovingPoleWidgetTexture->draw(ShapeToTest);
+	MovingPoleWidgetTexture->display();
 
-	Sprite = new sf::Sprite;
-	Sprite->setTexture(Texture->getTexture());
+	MovingPoleWidgetSprite = new sf::Sprite;
+	MovingPoleWidgetSprite->setTexture(MovingPoleWidgetTexture->getTexture());
 }
 
 void MovingPoleWidget::Tick()
 {
-	MovingPoleWidgetWindow->draw(*Sprite);
+	MovingPoleWidgetWindow->draw(*MovingPoleWidgetSprite);
 }
 
 void MovingPoleWidget::InputHandler(sf::Event event)
@@ -33,11 +34,16 @@ void MovingPoleWidget::InputHandler(sf::Event event)
 
 	if (IsDragStarted)
 	{
-		Sprite->move(MouseCoords - LastMouseCoords);
+		ShapeToTest.move(MouseCoords - LastMouseCoords);
+
+		MovingPoleWidgetTexture->clear(sf::Color(0, 0, 0, 0));
+		MovingPoleWidgetTexture->draw(ShapeToTest);
+		MovingPoleWidgetTexture->display();
+
 		LastMouseCoords = MouseCoords;
 	}
 
-	if (event.type == event.MouseWheelMoved)
+	if (event.type == event.MouseWheelMoved && MovingPoleDropDownListWidget->GetSprite()->getGlobalBounds().contains(MouseCoords) == false)
 	{
 		float multiplayer = 1;
 		if (event.mouseWheel.delta == 1)
@@ -47,18 +53,18 @@ void MovingPoleWidget::InputHandler(sf::Event event)
 			multiplayer = 1.05;
 		
 
-		Texture->clear(sf::Color(0,0,0,0));
-		sf::View view = Texture->getView();
+		MovingPoleWidgetTexture->clear(sf::Color(0,0,0,0));
+		sf::View view = MovingPoleWidgetTexture->getView();
 		view.zoom(multiplayer);
-		Texture->setView(view);
+		MovingPoleWidgetTexture->setView(view);
 
-		Texture->draw(ShapeToTest);
-		Texture->display();
+		MovingPoleWidgetTexture->draw(ShapeToTest);
+		MovingPoleWidgetTexture->display();
 	}
 }
 
 MovingPoleWidget::~MovingPoleWidget()
 {
-	delete Texture;
-	delete Sprite;
+	delete MovingPoleWidgetTexture;
+	delete MovingPoleWidgetSprite;
 }

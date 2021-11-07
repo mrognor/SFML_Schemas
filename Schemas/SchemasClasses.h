@@ -15,3 +15,4 @@ class DragAndDropWidget;
 class ContextMenuWidget;
 class TextInputWidget;
 class MovingPoleWidget;
+class MovingPoleNodeWidget;
