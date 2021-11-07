@@ -292,16 +292,20 @@ void ContextMenuWidget::OpenContextMenu(DropDownListElementWidget* contextMenuWi
 
 	/// Локальная переменная для отслеживания позиции курсора в окне
 	sf::Vector2f CurrentMouseCoords = FindMouseCoords(ContextMenuWidgetWindow);
-	ContextMenuWidgetShape->setPosition(CurrentMouseCoords);
+	float VerticalShift = 0;
+	if (CurrentMouseCoords.y > ContextMenuWidgetWindow->getSize().y / 2)
+		VerticalShift = ContextMenuWidgetShape->getSize().y;
+
+	ContextMenuWidgetShape->setPosition(sf::Vector2f(CurrentMouseCoords.x, CurrentMouseCoords.y - VerticalShift));
 	
-	ContextMenuWidgetAddButton->setPosition(sf::Vector2f(CurrentMouseCoords.x + 5, CurrentMouseCoords.y + 5));
-	ContextMenuWidgetAddButtonText->setPosition(sf::Vector2f(CurrentMouseCoords.x + 5, CurrentMouseCoords.y + 5));
+	ContextMenuWidgetAddButton->setPosition(sf::Vector2f(CurrentMouseCoords.x + 5, CurrentMouseCoords.y + 5 - VerticalShift));
+	ContextMenuWidgetAddButtonText->setPosition(sf::Vector2f(CurrentMouseCoords.x + 5, CurrentMouseCoords.y + 5 - VerticalShift));
 
-	ContextMenuWidgetRenameButton->setPosition(sf::Vector2f(CurrentMouseCoords.x + 5, CurrentMouseCoords.y + 50));
-	ContextMenuWidgetRenameButtonText->setPosition(sf::Vector2f(CurrentMouseCoords.x + 5, CurrentMouseCoords.y + 50));
+	ContextMenuWidgetRenameButton->setPosition(sf::Vector2f(CurrentMouseCoords.x + 5, CurrentMouseCoords.y + 50 - VerticalShift));
+	ContextMenuWidgetRenameButtonText->setPosition(sf::Vector2f(CurrentMouseCoords.x + 5, CurrentMouseCoords.y + 50 - VerticalShift));
 
-	ContextMenuWidgetDeleteButton->setPosition(sf::Vector2f(CurrentMouseCoords.x + 5, CurrentMouseCoords.y + 95));
-	ContextMenuWidgetDeleteButtonText->setPosition(sf::Vector2f(CurrentMouseCoords.x + 5, CurrentMouseCoords.y + 95));
+	ContextMenuWidgetDeleteButton->setPosition(sf::Vector2f(CurrentMouseCoords.x + 5, CurrentMouseCoords.y + 95 - VerticalShift));
+	ContextMenuWidgetDeleteButtonText->setPosition(sf::Vector2f(CurrentMouseCoords.x + 5, CurrentMouseCoords.y + 95 - VerticalShift));
 }
 
 void ContextMenuWidget::CloseContextMenu()
@@ -319,14 +323,19 @@ void ContextMenuWidget::OpenConfirmWidget()
 	if ((IsConfirmWidgetRendering && ContextMenuWidgetConfirmWidgetShape->getGlobalBounds().contains(CurrentMouseCoords) == false) ||
 		IsConfirmWidgetRendering == false)
 	{
+		float VerticalShift = 0;
+		if (CurrentMouseCoords.y > ContextMenuWidgetWindow->getSize().y / 2)
+			VerticalShift = ContextMenuWidgetConfirmWidgetShape->getSize().y;
+
 		IsConfirmWidgetRendering = true;
-		ContextMenuWidgetConfirmWidgetShape->setPosition(CurrentMouseCoords);
-		ContextMenuWidgetConfirmMenuWidgetTextInputWidget->SetPosition(sf::Vector2f(CurrentMouseCoords.x + 5, CurrentMouseCoords.y + 5));
-		ContextMenuWidgetConfirmWidgetAcceptShape->setPosition(sf::Vector2f(CurrentMouseCoords.x + 5, CurrentMouseCoords.y + 50));
-		ContextMenuWidgetConfirmWidgetDeclineShape->setPosition(sf::Vector2f(CurrentMouseCoords.x + 155, CurrentMouseCoords.y + 50));
+
+		ContextMenuWidgetConfirmWidgetShape->setPosition(sf::Vector2f(CurrentMouseCoords.x, CurrentMouseCoords.y - VerticalShift));
+		ContextMenuWidgetConfirmMenuWidgetTextInputWidget->SetPosition(sf::Vector2f(CurrentMouseCoords.x + 5, CurrentMouseCoords.y + 5 - VerticalShift));
+		ContextMenuWidgetConfirmWidgetAcceptShape->setPosition(sf::Vector2f(CurrentMouseCoords.x + 5, CurrentMouseCoords.y + 50 - VerticalShift));
+		ContextMenuWidgetConfirmWidgetDeclineShape->setPosition(sf::Vector2f(CurrentMouseCoords.x + 155, CurrentMouseCoords.y + 50 - VerticalShift));
 	
-		ContextMenuWidgetConfirmWidgetAcceptText->setPosition(sf::Vector2f(CurrentMouseCoords.x + 25, CurrentMouseCoords.y + 50));
-		ContextMenuWidgetConfirmWidgetDeclineText->setPosition(sf::Vector2f(CurrentMouseCoords.x + 175, CurrentMouseCoords.y + 50));
+		ContextMenuWidgetConfirmWidgetAcceptText->setPosition(sf::Vector2f(CurrentMouseCoords.x + 25, CurrentMouseCoords.y + 50 - VerticalShift));
+		ContextMenuWidgetConfirmWidgetDeclineText->setPosition(sf::Vector2f(CurrentMouseCoords.x + 175, CurrentMouseCoords.y + 50 - VerticalShift));
 	}
 }
 
