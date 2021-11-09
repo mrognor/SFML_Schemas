@@ -3,6 +3,7 @@
 #include "SchemasClasses.h"
 #include "MovingPoleNodeWidget.h"
 #include "DropDownListWidget.h"
+#include "MovingPoleNodeWidget.h"
 
 class MovingPoleWidget
 {
@@ -10,10 +11,11 @@ private:
 	/// Окно поля
 	sf::RenderWindow* MovingPoleWidgetWindow;
 
+	/// Указатель на DropDown список
 	DropDownListWidget* MovingPoleDropDownListWidget;
-
-	sf::RectangleShape ShapeToTest;
 	
+	MovingPoleNodeWidget* TestPoleWidget1;
+
 	/// Переменная для последних координат мыши
 	sf::Vector2f LastMouseCoords;
 

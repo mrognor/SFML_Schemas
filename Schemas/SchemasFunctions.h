@@ -72,6 +72,7 @@ inline std::vector<std::string> Split(std::string stringToSplit, std::string str
 	return FinalVector;
 }
 
+
 inline sf::Vector2f FindMouseCoords(sf::RenderWindow* windowToFindCursorPosition)
 {
 	return sf::Vector2f(windowToFindCursorPosition->mapPixelToCoords
@@ -80,6 +81,20 @@ inline sf::Vector2f FindMouseCoords(sf::RenderWindow* windowToFindCursorPosition
 			sf::Mouse::getPosition(*windowToFindCursorPosition).y)
 		).x,
 		windowToFindCursorPosition->mapPixelToCoords
+		(sf::Vector2i
+		(sf::Mouse::getPosition(*windowToFindCursorPosition).x,
+			sf::Mouse::getPosition(*windowToFindCursorPosition).y)
+		).y);
+}
+
+inline sf::Vector2f FindMouseCoords(sf::RenderTexture* textureToFindCursorPosition, sf::RenderWindow* windowToFindCursorPosition)
+{
+	return sf::Vector2f(textureToFindCursorPosition->mapPixelToCoords
+	(sf::Vector2i
+	(sf::Mouse::getPosition(*windowToFindCursorPosition).x,
+		sf::Mouse::getPosition(*windowToFindCursorPosition).y)
+	).x,
+		textureToFindCursorPosition->mapPixelToCoords
 		(sf::Vector2i
 		(sf::Mouse::getPosition(*windowToFindCursorPosition).x,
 			sf::Mouse::getPosition(*windowToFindCursorPosition).y)

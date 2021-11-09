@@ -3,26 +3,30 @@
 MovingPoleWidget::MovingPoleWidget(sf::RenderWindow* movingPoleWidgetWindow, DropDownListWidget* movingPoleDropDownListWidget) :
 	MovingPoleWidgetWindow(movingPoleWidgetWindow), MovingPoleDropDownListWidget(movingPoleDropDownListWidget)
 {
-	ShapeToTest.setSize({ 100, 100 });
-	ShapeToTest.setPosition({ 600, 600 });
-
 	MovingPoleWidgetTexture = new sf::RenderTexture;
 	MovingPoleWidgetTexture->create(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height);
-	MovingPoleWidgetTexture->draw(ShapeToTest);
 	MovingPoleWidgetTexture->display();
 
 	MovingPoleWidgetSprite = new sf::Sprite;
 	MovingPoleWidgetSprite->setTexture(MovingPoleWidgetTexture->getTexture());
+
+	TestPoleWidget1 = new MovingPoleNodeWidget(MovingPoleWidgetWindow, MovingPoleWidgetSprite, MovingPoleWidgetTexture, 600, 200);
+	TestPoleWidget1->CreateGraphicalRepresentationOfElement();
+	TestPoleWidget1->DrawElementToTexture();
 }
 
 void MovingPoleWidget::Tick()
 {
+	TestPoleWidget1->DrawElementToTexture();
+
 	MovingPoleWidgetWindow->draw(*MovingPoleWidgetSprite);
 }
 
 void MovingPoleWidget::InputHandler(sf::Event event)
 {
 	sf::Vector2f MouseCoords = FindMouseCoords(MovingPoleWidgetWindow);
+
+	TestPoleWidget1->InputHandler(event);
 
 	if (event.type == event.MouseButtonPressed && event.mouseButton.button == sf::Mouse::Right)
 	{
@@ -34,10 +38,11 @@ void MovingPoleWidget::InputHandler(sf::Event event)
 
 	if (IsDragStarted)
 	{
-		ShapeToTest.move(MouseCoords - LastMouseCoords);
+		TestPoleWidget1->Move(MouseCoords - LastMouseCoords);
 
 		MovingPoleWidgetTexture->clear(sf::Color(0, 0, 0, 0));
-		MovingPoleWidgetTexture->draw(ShapeToTest);
+		TestPoleWidget1->DrawElementToTexture();
+
 		MovingPoleWidgetTexture->display();
 
 		LastMouseCoords = MouseCoords;
@@ -54,11 +59,12 @@ void MovingPoleWidget::InputHandler(sf::Event event)
 		
 
 		MovingPoleWidgetTexture->clear(sf::Color(0,0,0,0));
+
 		sf::View view = MovingPoleWidgetTexture->getView();
 		view.zoom(multiplayer);
 		MovingPoleWidgetTexture->setView(view);
 
-		MovingPoleWidgetTexture->draw(ShapeToTest);
+		TestPoleWidget1->DrawElementToTexture();
 		MovingPoleWidgetTexture->display();
 	}
 }
@@ -67,4 +73,6 @@ MovingPoleWidget::~MovingPoleWidget()
 {
 	delete MovingPoleWidgetTexture;
 	delete MovingPoleWidgetSprite;
+
+	delete TestPoleWidget1;
 }
