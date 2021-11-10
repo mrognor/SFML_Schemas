@@ -1,6 +1,7 @@
 #pragma once
 
 #include "SchemasClasses.h"
+#include "MovingPoleWidget.h"
 
 struct InputNode
 {
@@ -68,6 +69,8 @@ class MovingPoleNodeWidget
 {
 private:
 	sf::RenderWindow* MovingPoleNodeWidgetWindow;
+	MovingPoleWidget* ParentMovingPoleWidget;
+
 	sf::RenderTexture* MovingPoleNodeWidgetTexture;
 	sf::Sprite* MovingPoleNodeWidgetSprite;
 
@@ -98,8 +101,7 @@ private:
 	void UpdateLogicalOutputs();
 
 public:
-	MovingPoleNodeWidget(sf::RenderWindow* window, sf::Sprite* movingPoleNodeWidgetSprite, 
-		sf::RenderTexture* movingPoleNodeWidgetTexture, float posX = 0, float posY = 0);
+	MovingPoleNodeWidget(sf::RenderWindow* window, MovingPoleWidget* movingPoleWidget, float posX = 0, float posY = 0);
 
 	void InputHandler(sf::Event event);
 

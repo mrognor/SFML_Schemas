@@ -4,6 +4,7 @@
 #include "MovingPoleNodeWidget.h"
 #include "DropDownListWidget.h"
 #include "MovingPoleNodeWidget.h"
+#include "DragAndDropWidget.h"
 
 class MovingPoleWidget
 {
@@ -15,6 +16,8 @@ private:
 	DropDownListWidget* MovingPoleDropDownListWidget;
 	
 	MovingPoleNodeWidget* TestPoleWidget1;
+
+	DragAndDropWidget* MovingPoleDragAndDropWidget;
 
 	/// Переменная для последних координат мыши
 	sf::Vector2f LastMouseCoords;
@@ -29,11 +32,15 @@ private:
 	bool IsDragStarted = false;
 
 public:
-	MovingPoleWidget(sf::RenderWindow* movingPoleWidgetWindow, DropDownListWidget* movingPoleDropDownListWidget);
+	MovingPoleWidget(sf::RenderWindow* movingPoleWidgetWindow, DropDownListWidget* movingPoleDropDownListWidget, DragAndDropWidget* movingPoleDragAndDropWidget);
 
 	void Tick();
 
 	void InputHandler(sf::Event event);
+
+	sf::RenderTexture* GetMovingPoleWidgetTexture() { return MovingPoleWidgetTexture; }
+
+	sf::Sprite* GetMovingPoleWidgetSprite() { return MovingPoleWidgetSprite; }
 
 	~MovingPoleWidget();
 };

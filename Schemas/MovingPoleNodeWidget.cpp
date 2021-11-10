@@ -1,10 +1,8 @@
 #include "MovingPoleNodeWidget.h"
 
 
-MovingPoleNodeWidget::MovingPoleNodeWidget(sf::RenderWindow* window, sf::Sprite* movingPoleNodeWidgetSprite,
-	sf::RenderTexture* movingPoleNodeWidgetTexture, float posX, float posY) :
-	MovingPoleNodeWidgetWindow(window), MovingPoleNodeWidgetSprite(movingPoleNodeWidgetSprite),
-	MovingPoleNodeWidgetTexture(movingPoleNodeWidgetTexture)
+MovingPoleNodeWidget::MovingPoleNodeWidget(sf::RenderWindow* window, MovingPoleWidget* movingPoleWidget, float posX, float posY) :
+	MovingPoleNodeWidgetWindow(window), ParentMovingPoleWidget(movingPoleWidget)
 {
 	MovingPoleNodeWidgetBody.setPosition({ posX, posY });
 	MovingPoleNodeWidgetBody.setFillColor(sf::Color::White);
@@ -17,29 +15,29 @@ MovingPoleNodeWidget::MovingPoleNodeWidget(sf::RenderWindow* window, sf::Sprite*
 
 void MovingPoleNodeWidget::DrawElementToTexture()
 {
-	MovingPoleNodeWidgetTexture->draw(MovingPoleNodeWidgetBody);
+	ParentMovingPoleWidget->GetMovingPoleWidgetTexture()->draw(MovingPoleNodeWidgetBody);
 	//MovingPoleNodeWidgetTexture->draw(MovingPoleNodeWidgetText);
 
 	for (sf::CircleShape* circle : InputShapes)
 	{
-		MovingPoleNodeWidgetTexture->draw(*circle);
+		ParentMovingPoleWidget->GetMovingPoleWidgetTexture()->draw(*circle);
 	}
 
 	for (sf::CircleShape* circle : OutputShapes)
 	{
-		MovingPoleNodeWidgetTexture->draw(*circle);
+		ParentMovingPoleWidget->GetMovingPoleWidgetTexture()->draw(*circle);
 	}
 }
 
 void MovingPoleNodeWidget::InputHandler(sf::Event event)
 {
-	sf::Vector2f MouseCoords = FindMouseCoords(MovingPoleNodeWidgetTexture, MovingPoleNodeWidgetWindow);
+	sf::Vector2f MouseCoords = FindMouseCoords(ParentMovingPoleWidget->GetMovingPoleWidgetTexture(), MovingPoleNodeWidgetWindow);
 
 	if (event.type == event.MouseButtonPressed)
 	{
 		for (auto it = InputNodesMap.begin(); it != InputNodesMap.end(); it++)
 		{
-			if (IsShapeInSpriteContain(*MovingPoleNodeWidgetSprite, *it->second.Circle, MouseCoords))
+			if (IsShapeInSpriteContain(*ParentMovingPoleWidget->GetMovingPoleWidgetSprite(), *it->second.Circle, MouseCoords))
 			{
 				if (it->second.Value == 0)
 				{

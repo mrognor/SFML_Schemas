@@ -1,7 +1,7 @@
 #include "MovingPoleWidget.h"
 
-MovingPoleWidget::MovingPoleWidget(sf::RenderWindow* movingPoleWidgetWindow, DropDownListWidget* movingPoleDropDownListWidget) :
-	MovingPoleWidgetWindow(movingPoleWidgetWindow), MovingPoleDropDownListWidget(movingPoleDropDownListWidget)
+MovingPoleWidget::MovingPoleWidget(sf::RenderWindow* movingPoleWidgetWindow, DropDownListWidget* movingPoleDropDownListWidget, DragAndDropWidget* movingPoleDragAndDropWidget) :
+	MovingPoleWidgetWindow(movingPoleWidgetWindow), MovingPoleDropDownListWidget(movingPoleDropDownListWidget), MovingPoleDragAndDropWidget(movingPoleDragAndDropWidget)
 {
 	MovingPoleWidgetTexture = new sf::RenderTexture;
 	MovingPoleWidgetTexture->create(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height);
@@ -10,7 +10,7 @@ MovingPoleWidget::MovingPoleWidget(sf::RenderWindow* movingPoleWidgetWindow, Dro
 	MovingPoleWidgetSprite = new sf::Sprite;
 	MovingPoleWidgetSprite->setTexture(MovingPoleWidgetTexture->getTexture());
 
-	TestPoleWidget1 = new MovingPoleNodeWidget(MovingPoleWidgetWindow, MovingPoleWidgetSprite, MovingPoleWidgetTexture, 600, 200);
+	TestPoleWidget1 = new MovingPoleNodeWidget(MovingPoleWidgetWindow, this, 600, 200);
 	TestPoleWidget1->CreateGraphicalRepresentationOfElement();
 	TestPoleWidget1->DrawElementToTexture();
 }
@@ -46,6 +46,15 @@ void MovingPoleWidget::InputHandler(sf::Event event)
 		MovingPoleWidgetTexture->display();
 
 		LastMouseCoords = MouseCoords;
+	}
+
+	if (event.type == event.MouseButtonReleased && MovingPoleDropDownListWidget->GetSprite()->getGlobalBounds().contains(MouseCoords) == false)
+	{
+		if (MovingPoleDragAndDropWidget != nullptr && MovingPoleDragAndDropWidget->getIsDragAndDropInProcess() &&
+			MovingPoleDragAndDropWidget->getCurrentDropDownListElement()->getIsFolder() == false)
+		{
+			std::cout << "GF" << std::endl;
+		}
 	}
 
 	if (event.type == event.MouseWheelMoved && MovingPoleDropDownListWidget->GetSprite()->getGlobalBounds().contains(MouseCoords) == false)

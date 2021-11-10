@@ -31,7 +31,7 @@ private:
 	
 	/// Переменная для отслеживания объекта(DropDownListElementWidget)
 	/// Указывает на объект для которого в данный момент выполняется операция DragAndDrop
-	DropDownListElementWidget* CurrentDropDownListElement;
+	DropDownListElementWidget* CurrentDropDownListElement = nullptr;
 
 	/// Переменная для отслеживания объекта(DropDownListWidget)
 	/// Указывает на объект который является списком данного окна в данный момент времени
