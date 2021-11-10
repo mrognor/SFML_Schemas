@@ -31,6 +31,11 @@ void DropDownListElementWidget::setIsRendering(bool f)
 	IsRendering = f; 
 }
 
+// Структура файла с нодами
+// Полный путь ноды. Название ноды включено в путь. В конце стоит слэш
+// Имя ноды
+// Состояние отркрытости ноды
+// Является ли нода папкой
 void DropDownListWidget::LoadElementsFromFile()
 {
 	std::ifstream NodesTXT;
@@ -60,6 +65,10 @@ void DropDownListWidget::LoadElementsFromFile()
 				ElementsToClose.push_back(F);
 			}
 			
+			if (ParsedLine[3] == std::string("true"))
+				F->setIsFolder(true);
+			else F->setIsFolder(false);
+
 			DropDownListElementsVector.push_back(F);
 		}
 
@@ -89,12 +98,16 @@ void DropDownListWidget::InputHandler(sf::Event event)
 		{
 			for (DropDownListElementWidget* element : DropDownListElementsVector)
 			{
-				NodesTXTOut << element->getFullPath() << " " << element->getName() << " ";
+				NodesTXTOut << element->getFullPath() << " " << element->getName();
 
 				if (element->getIsDropDownListElementOpen())
-					NodesTXTOut << std::string("true");
+					NodesTXTOut << std::string(" true");
 				else
-					NodesTXTOut << std::string("false");
+					NodesTXTOut << std::string(" false");
+
+				if (element->getIsFolder())
+					NodesTXTOut << std::string(" true");
+				else NodesTXTOut << std::string(" false");
 
 				NodesTXTOut << std::endl;
 			}
@@ -286,15 +299,25 @@ void DropDownListWidget::ReplaceDropDownListElement(DropDownListElementWidget* e
 			else 
 				StringToWrite += " false";
 
+			if (elem->getIsFolder())
+				StringToWrite += " true";
+			else StringToWrite += " false";
+
 			MovingNodes.push_back(StringToWrite);
 		}
 		else
 		{
 			StringToWrite = elem->getFullPath() + " " + elem->getName();
+
 			if (elem->getIsDropDownListElementOpen())
 				StringToWrite += " true";
 			else
 				StringToWrite += " false";
+
+			if (elem->getIsFolder())
+				StringToWrite += " true";
+			else StringToWrite += " false";
+
 			StaticNodes.push_back(StringToWrite);
 		}
 	}
@@ -368,6 +391,10 @@ void DropDownListWidget::RenameDropDownListElement(DropDownListElementWidget* el
 			else
 				StringToWrite += "false";
 
+			if (element->getIsFolder())
+				StringToWrite += " true";
+			else StringToWrite += " false";
+
 			MovingNodes.push_back(StringToWrite);
 		}
 	else
@@ -377,6 +404,10 @@ void DropDownListWidget::RenameDropDownListElement(DropDownListElementWidget* el
 				StringToWrite += "true";
 			else
 				StringToWrite += "false";
+
+			if (element->getIsFolder())
+				StringToWrite += " true";
+			else StringToWrite += " false";
 
 			StaticNodes.push_back(StringToWrite);
 		}
@@ -401,11 +432,15 @@ void DropDownListWidget::DeleteDropDownListElement(DropDownListElementWidget* el
 			//std::cout << element->getFullPath().find(elementToRename->getFullPath()) << std::endl;
 			if (element->getFullPath().find(elementToDelete->getFullPath()) == -1)
 			{
-				NodesTXTOut << element->getFullPath() << " " << element->getName() << " ";
+				NodesTXTOut << element->getFullPath() << " " << element->getName();
 				if (element->getIsDropDownListElementOpen())
-					NodesTXTOut << "true" << std::endl;
+					NodesTXTOut << " true";
 				else
-					NodesTXTOut << "false" << std::endl;
+					NodesTXTOut << " false";
+
+				if (element->getIsFolder())
+					NodesTXTOut << " true" << std::endl;
+				else NodesTXTOut << " false" << std::endl;
 			}
 		}
 	}

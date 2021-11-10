@@ -15,7 +15,6 @@ DropDownListElementWidget::DropDownListElementWidget(DropDownListWidget* dropDow
 	font.loadFromFile("Font.ttf");
 
 	MainDropDownListElementShape = new sf::RectangleShape();
-	//MainDropDownListElementShape->setSize(sf::Vector2f(380 - 20 * CountInStr(FullPath, "/"), 40));
 	MainDropDownListElementShape->setSize(sf::Vector2f(8000, 40));
 
 	MainDropDownListElementText = new sf::Text;
@@ -54,7 +53,9 @@ void DropDownListElementWidget::Tick()
 	{
 		DropDownListElementWidgetDropDownListWidgetTexture->draw(*MainDropDownListElementShape);
 		DropDownListElementWidgetDropDownListWidgetTexture->draw(*MainDropDownListElementText);
-		DropDownListElementWidgetDropDownListWidgetTexture->draw(*DropDownListElementOpenClosedConditionTriangle);
+
+		if (IsFolder)
+			DropDownListElementWidgetDropDownListWidgetTexture->draw(*DropDownListElementOpenClosedConditionTriangle);
 	}
 }
 
@@ -103,22 +104,25 @@ void DropDownListElementWidget::InputHandler(sf::Event event)
 				// в классе DragAndDroр. Операция началась, но перетаскивания не было. Поэтому нам надо сравнивать координаты
 				if (IsMouseOnShape && DropDownListElementDragAndDropWidget->getDragStartCoords() == CurrentMouseCoords)
 				{
-					if (IsDropDownListElementOpen)
+					if (IsFolder)
 					{
-						IsDropDownListElementOpen = false;
-						DropDownListParent->CloseDropDownListElement(this);
-						DropDownListElementOpenClosedConditionTriangle->setRotation(90);
-					}
-					else
-					{
-						IsDropDownListElementOpen = true;
-						DropDownListParent->OpenDropDownListElement(this);
-						DropDownListElementOpenClosedConditionTriangle->setRotation(180);
+						if (IsDropDownListElementOpen)
+						{
+							IsDropDownListElementOpen = false;
+							DropDownListParent->CloseDropDownListElement(this);
+							DropDownListElementOpenClosedConditionTriangle->setRotation(90);
+						}
+						else
+						{
+							IsDropDownListElementOpen = true;
+							DropDownListParent->OpenDropDownListElement(this);
+							DropDownListElementOpenClosedConditionTriangle->setRotation(180);
+						}
 					}
 				}
 				// Отработка отпускания клавиши на нашем элементе
 				if (IsMouseOnShape && DropDownListElementDragAndDropWidget->getIsDragAndDropInProcess()
-					&& DropDownListElementDragAndDropWidget->getCurrentDropDownListElement() != this)
+					&& DropDownListElementDragAndDropWidget->getCurrentDropDownListElement() != this && IsFolder)
 				{
 					DropDownListParent->ReplaceDropDownListElement(
 						DropDownListElementDragAndDropWidget->getCurrentDropDownListElement(),

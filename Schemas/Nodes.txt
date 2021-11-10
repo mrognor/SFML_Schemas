@@ -1,16 +1,5 @@
-A/ A true
-A/AAA/ AAA true
-A/aaa/ aaa true
-A/adsgvfhnj/ adsgvfhnj true
-A/asf/ asf true
-A/asfA/ asfA true
-A/B/ B true
-A/Ba/ Ba true
-A/bd/ bd true
-A/C/ C true
-A/C/CC/ CC true
-A/C/CC/dg/ dg true
-A/Dsaf/ Dsaf true
-A/dva/ dva true
-A/FFG/ FFG true
-A/zzz/ zzz true
+ProjectName/ ProjectName true true
+ProjectName/BaseNodes/ BaseNodes true true
+ProjectName/BaseNodes/And/ And false false
+ProjectName/BaseNodes/Not/ Not true false
+ProjectName/BaseNodes/Or/ Or true false

@@ -173,7 +173,7 @@ void TextInputWidget::InputHandler(sf::Event event)
 			{
 				// Кнопка удаления
 			case 8:
-				if (TextInputWidgetMainText.getString().getSize() != 0 && CursorPosition > 0 && CursorPosition == HighliteStartPosition)
+				if (TextInputWidgetMainText.getString().getSize() != 0 && CursorPosition <= TextInputWidgetMainText.getString().getSize() &&  CursorPosition > 0 && CursorPosition == HighliteStartPosition)
 				{
 					TextInputWidgetMainText.setString(TextInputWidgetMainText.getString().substring(0, CursorPosition - 1) + TextInputWidgetMainText.getString().substring(CursorPosition));
 					CursorPosition--;

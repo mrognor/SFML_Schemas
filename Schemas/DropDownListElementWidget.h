@@ -59,6 +59,9 @@ private:
 	/// True - все дети должны отрисовываться(IsRendering = true)
 	bool IsDropDownListElementOpen = true;
 
+	/// Является данный элемент папкой
+	bool IsFolder = true;
+
 public:
 	/// Создает объект RectangleShape для тела данного виджета. Вызывает функцию UpdateDropDownListElementPosition.
 	/// UpdateDropDownListElementPosition перемещает тело виджета и текст в правильную позицию. Позиция устанавливается 
@@ -90,8 +93,13 @@ public:
 
 	/// Сеттер для переменной для закрытия папки 
 	void setIsDropDownListElementOpen(bool f);
-	// Геттер для переменной для закрытия папки
+	/// Геттер для переменной для закрытия папки
 	bool getIsDropDownListElementOpen() { return IsDropDownListElementOpen; }
+
+	/// Сеттер для перемонной IsFolder
+	void setIsFolder(bool f) { IsFolder = f; }
+	/// Геттер для переменной IsFolder
+	bool getIsFolder() { return IsFolder; }
 
 	/// Возвращает getGlobalBounds() тела шейпа. left и width не имеет смысла рассматривать т.к тело очень длинное
 	sf::FloatRect getGlobalBounds() { return MainDropDownListElementShape->getGlobalBounds(); }
