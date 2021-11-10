@@ -349,12 +349,14 @@ void DropDownListWidget::ReplaceDropDownListElement(DropDownListElementWidget* e
 	LoadElementsFromFile();
 }
 
-void DropDownListWidget::AddNewDropDownListElement(DropDownListElementWidget* parentElementToNewElement, std::string newname)
+void DropDownListWidget::AddNewDropDownListElement(DropDownListElementWidget* parentElementToNewElement, std::string newname, bool IsFolder)
 {
 	// —оздаю новый элемент и добавл€ю его в конец вектора
 	DropDownListElementWidget* F = new DropDownListElementWidget(this, DropDownListWindow, DropDownListElementWidgetTexture, DropDownListDragAndDropWidget,
 		DropDownListContextMenuWidget, newname, DropDownListElementsVector[0]->getFullPath() + newname + "/", DropDownListElementsVector.size());
 	F->setIsDropDownListElementOpen(true);
+	F->setIsFolder(IsFolder);
+
 	DropDownListElementsVector.push_back(F);
 
 	// »спользую функцию дл€ перемещени€ созданного элемента

@@ -2,20 +2,30 @@
 
 ContextMenuWidget::ContextMenuWidget(sf::RenderWindow* contextMenuWidgetWindow) : ContextMenuWidgetWindow(contextMenuWidgetWindow)
 {
-	ContextMenuWidgetShape = new sf::RectangleShape(sf::Vector2f(305, 140));
+	ContextMenuWidgetShape = new sf::RectangleShape(sf::Vector2f(305, 185));
 	ContextMenuWidgetShape->setFillColor(sf::Color::Magenta);
 
 	font.loadFromFile("Font.ttf");
 
-	/// Кнопка добавления нод
-	ContextMenuWidgetAddButton = new sf::RectangleShape(sf::Vector2f(295, 40));
-	ContextMenuWidgetAddButton->setFillColor(sf::Color::Black);
+	/// Кнопка добавления логического элемента
+	ContextMenuWidgetAddLogicalElementButton = new sf::RectangleShape(sf::Vector2f(295, 40));
+	ContextMenuWidgetAddLogicalElementButton->setFillColor(sf::Color::Black);
 
-	ContextMenuWidgetAddButtonText = new sf::Text;
-	ContextMenuWidgetAddButtonText->setFont(font);
-	ContextMenuWidgetAddButtonText->setFillColor(sf::Color::Green);
-	ContextMenuWidgetAddButtonText->setString("Add logical element");
-	ContextMenuWidgetAddButtonText->setCharacterSize(25);
+	ContextMenuWidgetAddLogicalElementButtonText = new sf::Text;
+	ContextMenuWidgetAddLogicalElementButtonText->setFont(font);
+	ContextMenuWidgetAddLogicalElementButtonText->setFillColor(sf::Color::Green);
+	ContextMenuWidgetAddLogicalElementButtonText->setString("Add logical element");
+	ContextMenuWidgetAddLogicalElementButtonText->setCharacterSize(25);
+
+	/// Кнопка для добавления папки
+	ContextMenuWidgetAddFolderButton = new sf::RectangleShape(sf::Vector2f(295, 40));
+	ContextMenuWidgetAddFolderButton->setFillColor(sf::Color::Black);
+
+	ContextMenuWidgetAddFolderButtonText = new sf::Text;
+	ContextMenuWidgetAddFolderButtonText->setFont(font);
+	ContextMenuWidgetAddFolderButtonText->setFillColor(sf::Color::Green);
+	ContextMenuWidgetAddFolderButtonText->setString("Add folder");
+	ContextMenuWidgetAddFolderButtonText->setCharacterSize(25);
 
 	/// Кнопка переименования нод
 	ContextMenuWidgetRenameButton = new sf::RectangleShape(sf::Vector2f(295, 40));
@@ -58,11 +68,19 @@ void ContextMenuWidget::Tick()
 	{
 		ContextMenuWidgetWindow->draw(*ContextMenuWidgetShape);
 
-		ContextMenuWidgetWindow->draw(*ContextMenuWidgetAddButton);
+		if (IsMenuCreatedToFolder)
+		{
+			ContextMenuWidgetWindow->draw(*ContextMenuWidgetAddLogicalElementButton);
+			ContextMenuWidgetWindow->draw(*ContextMenuWidgetAddFolderButton);
+		}
 		ContextMenuWidgetWindow->draw(*ContextMenuWidgetRenameButton);
 		ContextMenuWidgetWindow->draw(*ContextMenuWidgetDeleteButton);
 
-		ContextMenuWidgetWindow->draw(*ContextMenuWidgetAddButtonText);
+		if (IsMenuCreatedToFolder)
+		{
+			ContextMenuWidgetWindow->draw(*ContextMenuWidgetAddLogicalElementButtonText);
+			ContextMenuWidgetWindow->draw(*ContextMenuWidgetAddFolderButtonText);
+		}
 		ContextMenuWidgetWindow->draw(*ContextMenuWidgetRenameButtonText);
 		ContextMenuWidgetWindow->draw(*ContextMenuWidgetDeleteButtonText);
 
@@ -115,18 +133,18 @@ void ContextMenuWidget::InputHandler(sf::Event event)
 			CurrentButton = None;
 		}
 
-		// Обработка кнопки добавить
-		if (ContextMenuWidgetAddButton->getGlobalBounds().contains(CurrentMouseCoords))
+		// Обработка кнопки добавить логический элемент
+		if (IsMenuCreatedToFolder && ContextMenuWidgetAddLogicalElementButton->getGlobalBounds().contains(CurrentMouseCoords))
 		{
 			if (IsConfirmWidgetRendering == false)
-				ContextMenuWidgetAddButton->setFillColor(sf::Color::Blue);
+				ContextMenuWidgetAddLogicalElementButton->setFillColor(sf::Color::Blue);
 			else
 			{
 				if (ContextMenuWidgetConfirmWidgetShape->getGlobalBounds().contains(CurrentMouseCoords) == false)
-					ContextMenuWidgetAddButton->setFillColor(sf::Color::Blue);
+					ContextMenuWidgetAddLogicalElementButton->setFillColor(sf::Color::Blue);
 				else
 				{
-					ContextMenuWidgetAddButton->setFillColor(sf::Color::Black);
+					ContextMenuWidgetAddLogicalElementButton->setFillColor(sf::Color::Black);
 				}
 			}
 
@@ -138,7 +156,7 @@ void ContextMenuWidget::InputHandler(sf::Event event)
 					ContextMenuWidgetConfirmMenuWidgetTextInputWidget->SetString("");
 					ContextMenuWidgetConfirmMenuWidgetTextInputWidget->SetHintString("Insert name");
 					OpenConfirmWidget();
-					CurrentButton = Add;
+					CurrentButton = AddLogicalElement;
 				}
 				else
 				{
@@ -148,14 +166,57 @@ void ContextMenuWidget::InputHandler(sf::Event event)
 						ContextMenuWidgetConfirmMenuWidgetTextInputWidget->SetString("");
 						ContextMenuWidgetConfirmMenuWidgetTextInputWidget->SetHintString("Insert name");
 						OpenConfirmWidget();
-						CurrentButton = Add;
+						CurrentButton = AddLogicalElement;
 					}
 				}
 			}
 		}
 		else
 		{
-			ContextMenuWidgetAddButton->setFillColor(sf::Color::Black);
+			ContextMenuWidgetAddLogicalElementButton->setFillColor(sf::Color::Black);
+		}
+
+		// Обработка кнопки добавить папку
+		if (IsMenuCreatedToFolder && ContextMenuWidgetAddFolderButton->getGlobalBounds().contains(CurrentMouseCoords))
+		{
+			if (IsConfirmWidgetRendering == false)
+				ContextMenuWidgetAddFolderButton->setFillColor(sf::Color::Blue);
+			else
+			{
+				if (ContextMenuWidgetConfirmWidgetShape->getGlobalBounds().contains(CurrentMouseCoords) == false)
+					ContextMenuWidgetAddFolderButton->setFillColor(sf::Color::Blue);
+				else
+				{
+					ContextMenuWidgetAddFolderButton->setFillColor(sf::Color::Black);
+				}
+			}
+
+			if (event.type == event.MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left && IsRendering == true)
+			{
+				if (IsConfirmWidgetRendering == false)
+				{
+					ContextMenuWidgetConfirmMenuWidgetTextInputWidget->SetIsReceiveInput(true);
+					ContextMenuWidgetConfirmMenuWidgetTextInputWidget->SetString("");
+					ContextMenuWidgetConfirmMenuWidgetTextInputWidget->SetHintString("Insert name");
+					OpenConfirmWidget();
+					CurrentButton = AddFolder;
+				}
+				else
+				{
+					if (ContextMenuWidgetConfirmWidgetShape->getGlobalBounds().contains(CurrentMouseCoords) != true)
+					{
+						ContextMenuWidgetConfirmMenuWidgetTextInputWidget->SetIsReceiveInput(true);
+						ContextMenuWidgetConfirmMenuWidgetTextInputWidget->SetString("");
+						ContextMenuWidgetConfirmMenuWidgetTextInputWidget->SetHintString("Insert name");
+						OpenConfirmWidget();
+						CurrentButton = AddLogicalElement;
+					}
+				}
+			}
+		}
+		else
+		{
+			ContextMenuWidgetAddFolderButton->setFillColor(sf::Color::Black);
 		}
 
 		// Обработка кнопки удалить
@@ -257,9 +318,18 @@ void ContextMenuWidget::InputHandler(sf::Event event)
 			case None:
 				break;
 
-			case Add:
+			case AddLogicalElement:
 				if (ContextMenuWidgetConfirmMenuWidgetTextInputWidget->GetString() != "")
 				{ 
+					ContextMenuWidgetDropDownList->AddNewDropDownListElement(ContextMenuWidgetDropDownListElement,
+						ContextMenuWidgetConfirmMenuWidgetTextInputWidget->GetString(), false);
+				}
+				CloseContextMenu();
+				break;
+
+			case AddFolder:
+				if (ContextMenuWidgetConfirmMenuWidgetTextInputWidget->GetString() != "")
+				{
 					ContextMenuWidgetDropDownList->AddNewDropDownListElement(ContextMenuWidgetDropDownListElement,
 						ContextMenuWidgetConfirmMenuWidgetTextInputWidget->GetString());
 				}
@@ -287,25 +357,46 @@ void ContextMenuWidget::InputHandler(sf::Event event)
 void ContextMenuWidget::OpenContextMenu(DropDownListElementWidget* contextMenuWidgetDropDownListElement)
 {
 	IsRendering = true;
+	IsMenuCreatedToFolder = contextMenuWidgetDropDownListElement->getIsFolder();
+
+	if (IsMenuCreatedToFolder == true)
+		ContextMenuWidgetShape->setSize(sf::Vector2f(305, 185));
+	else
+		ContextMenuWidgetShape->setSize(sf::Vector2f(305, 95));
 
 	ContextMenuWidgetDropDownListElement = contextMenuWidgetDropDownListElement;
 
 	/// Локальная переменная для отслеживания позиции курсора в окне
 	sf::Vector2f CurrentMouseCoords = FindMouseCoords(ContextMenuWidgetWindow);
+	/// Сдвиг меню подтверждения в нижней части экрана
 	float VerticalShift = 0;
 	if (CurrentMouseCoords.y > ContextMenuWidgetWindow->getSize().y / 2)
 		VerticalShift = ContextMenuWidgetShape->getSize().y;
 
 	ContextMenuWidgetShape->setPosition(sf::Vector2f(CurrentMouseCoords.x, CurrentMouseCoords.y - VerticalShift));
 	
-	ContextMenuWidgetAddButton->setPosition(sf::Vector2f(CurrentMouseCoords.x + 5, CurrentMouseCoords.y + 5 - VerticalShift));
-	ContextMenuWidgetAddButtonText->setPosition(sf::Vector2f(CurrentMouseCoords.x + 5, CurrentMouseCoords.y + 5 - VerticalShift));
+	if (IsMenuCreatedToFolder == true)
+	{
+		ContextMenuWidgetAddLogicalElementButton->setPosition(sf::Vector2f(CurrentMouseCoords.x + 5, CurrentMouseCoords.y + 5 - VerticalShift));
+		ContextMenuWidgetAddLogicalElementButtonText->setPosition(sf::Vector2f(CurrentMouseCoords.x + 5, CurrentMouseCoords.y + 5 - VerticalShift));
 
-	ContextMenuWidgetRenameButton->setPosition(sf::Vector2f(CurrentMouseCoords.x + 5, CurrentMouseCoords.y + 50 - VerticalShift));
-	ContextMenuWidgetRenameButtonText->setPosition(sf::Vector2f(CurrentMouseCoords.x + 5, CurrentMouseCoords.y + 50 - VerticalShift));
+		ContextMenuWidgetAddFolderButton->setPosition(sf::Vector2f(CurrentMouseCoords.x + 5, CurrentMouseCoords.y + 50 - VerticalShift));
+		ContextMenuWidgetAddFolderButtonText->setPosition(sf::Vector2f(CurrentMouseCoords.x + 5, CurrentMouseCoords.y + 50 - VerticalShift));
 
-	ContextMenuWidgetDeleteButton->setPosition(sf::Vector2f(CurrentMouseCoords.x + 5, CurrentMouseCoords.y + 95 - VerticalShift));
-	ContextMenuWidgetDeleteButtonText->setPosition(sf::Vector2f(CurrentMouseCoords.x + 5, CurrentMouseCoords.y + 95 - VerticalShift));
+		ContextMenuWidgetRenameButton->setPosition(sf::Vector2f(CurrentMouseCoords.x + 5, CurrentMouseCoords.y + 95 - VerticalShift));
+		ContextMenuWidgetRenameButtonText->setPosition(sf::Vector2f(CurrentMouseCoords.x + 5, CurrentMouseCoords.y + 95 - VerticalShift));
+
+		ContextMenuWidgetDeleteButton->setPosition(sf::Vector2f(CurrentMouseCoords.x + 5, CurrentMouseCoords.y + 140 - VerticalShift));
+		ContextMenuWidgetDeleteButtonText->setPosition(sf::Vector2f(CurrentMouseCoords.x + 5, CurrentMouseCoords.y + 140 - VerticalShift));
+	}
+	else
+	{
+		ContextMenuWidgetRenameButton->setPosition(sf::Vector2f(CurrentMouseCoords.x + 5, CurrentMouseCoords.y + 5 - VerticalShift));
+		ContextMenuWidgetRenameButtonText->setPosition(sf::Vector2f(CurrentMouseCoords.x + 5, CurrentMouseCoords.y + 5 - VerticalShift));
+
+		ContextMenuWidgetDeleteButton->setPosition(sf::Vector2f(CurrentMouseCoords.x + 5, CurrentMouseCoords.y + 50 - VerticalShift));
+		ContextMenuWidgetDeleteButtonText->setPosition(sf::Vector2f(CurrentMouseCoords.x + 5, CurrentMouseCoords.y + 50 - VerticalShift));
+	}
 }
 
 void ContextMenuWidget::CloseContextMenu()
@@ -343,11 +434,13 @@ ContextMenuWidget::~ContextMenuWidget()
 {
 	delete ContextMenuWidgetShape;
 
-	delete ContextMenuWidgetAddButton;
+	delete ContextMenuWidgetAddLogicalElementButton;
+	delete ContextMenuWidgetAddFolderButton;
 	delete ContextMenuWidgetDeleteButton;
 	delete ContextMenuWidgetRenameButton;
 
-	delete ContextMenuWidgetAddButtonText;
+	delete ContextMenuWidgetAddLogicalElementButtonText;
+	delete ContextMenuWidgetAddFolderButtonText;
 	delete ContextMenuWidgetDeleteButtonText;
 	delete ContextMenuWidgetRenameButtonText;
 

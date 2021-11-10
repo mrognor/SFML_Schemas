@@ -77,7 +77,7 @@ public:
 	void ReplaceDropDownListElement(DropDownListElementWidget* elementToMove, DropDownListElementWidget* destinationElement);
 
 	/// Функция для добавления нового DropDownListElement
-	void AddNewDropDownListElement(DropDownListElementWidget* parentElementToNewElement, std::string newname);
+	void AddNewDropDownListElement(DropDownListElementWidget* parentElementToNewElement, std::string newname, bool IsFolder=true);
 
 	/// Функция для переименования DropDownListElement
 	void RenameDropDownListElement(DropDownListElementWidget* elementToRename, std::string newname);

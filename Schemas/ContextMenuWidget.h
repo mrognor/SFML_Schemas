@@ -22,11 +22,17 @@ private:
 	/// Переменная-указатель(RectangleShape) для отображения объекта при вызове контекстного меню
 	sf::RectangleShape* ContextMenuWidgetShape;
 
-	/// Переменная-указатель(RectangleShape) для отображения кнопки для добавления нод
-	sf::RectangleShape* ContextMenuWidgetAddButton;
+	/// Переменная-указатель(RectangleShape) для отображения кнопки для добавления логического элемента
+	sf::RectangleShape* ContextMenuWidgetAddLogicalElementButton;
 
-	/// Переменная-указатель(Text) для отображения кнопки для добавления нод
-	sf::Text* ContextMenuWidgetAddButtonText;
+	/// Переменная-указатель(Text) для отображения кнопки для добавления логического элемента
+	sf::Text* ContextMenuWidgetAddLogicalElementButtonText;
+
+	/// Переменная-указатель(RectangleShape) для отображения кнопки для удаления нод
+	sf::RectangleShape* ContextMenuWidgetAddFolderButton;
+
+	/// Переменная-указатель(Text)  для отображения кнопки для удаления нод
+	sf::Text* ContextMenuWidgetAddFolderButtonText;
 
 	/// Переменная-указатель(RectangleShape) для отображения кнопки для переименования нод
 	sf::RectangleShape* ContextMenuWidgetRenameButton;
@@ -66,11 +72,15 @@ private:
 
 	bool IsConfirmWidgetRendering = false;
 
+	/// Переменная для отслеживания типа элемента списка к которому открыто меню
+	bool IsMenuCreatedToFolder = true;
+
 	// Перечисление для типа кнопки
 	enum Buttons
 	{
 		None,
-		Add,
+		AddLogicalElement,
+		AddFolder,
 		Rename,
 		Delete
 	};
