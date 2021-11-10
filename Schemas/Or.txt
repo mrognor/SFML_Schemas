@@ -1,0 +1,3 @@
+InputLine: A/B
+OutputLine: A
+FormulaLine: A:or(A,B)

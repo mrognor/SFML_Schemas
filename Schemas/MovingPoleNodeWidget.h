@@ -78,11 +78,11 @@ private:
 	sf::Text MovingPoleNodeWidgetText;
 	sf::Font font;
 
-	std::string NodeName = "";
-	std::string InputLine = "A/B/C";
-	std::string OutputLine = "A/B/C/D";
+	std::string NodeName;
+	std::string InputLine;
+	std::string OutputLine;
 	/// Ограничение на входы и выходы!!! Они могут быть только односимвольными
-	std::string FormulaLine = "A:or(A,B)/B:and(A,B)/C:or(and(A,not(B)),and(not(A),B))/D:not(C)";
+	std::string FormulaLine;
 
 	std::map<std::string, InputNode> InputNodesMap;
 	std::map<std::string, OutputNode> OutputNodesMap;
@@ -101,7 +101,7 @@ private:
 	void UpdateLogicalOutputs();
 
 public:
-	MovingPoleNodeWidget(sf::RenderWindow* window, MovingPoleWidget* movingPoleWidget, float posX = 0, float posY = 0);
+	MovingPoleNodeWidget(sf::RenderWindow* window, MovingPoleWidget* movingPoleWidget, std::string nodeName, float posX = 0, float posY = 0);
 
 	void InputHandler(sf::Event event);
 

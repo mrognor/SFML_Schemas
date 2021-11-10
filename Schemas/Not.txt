@@ -1,0 +1,3 @@
+InputLine: A
+OutputLine: A
+FormulaLine: A:not(A)

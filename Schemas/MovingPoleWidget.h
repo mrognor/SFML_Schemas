@@ -14,10 +14,10 @@ private:
 
 	/// Указатель на DropDown список
 	DropDownListWidget* MovingPoleDropDownListWidget;
-	
-	MovingPoleNodeWidget* TestPoleWidget1;
 
 	DragAndDropWidget* MovingPoleDragAndDropWidget;
+
+	std::vector<MovingPoleNodeWidget*> MovingPoleNodeVector;
 
 	/// Переменная для последних координат мыши
 	sf::Vector2f LastMouseCoords;

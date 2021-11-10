@@ -154,7 +154,11 @@
     <ClCompile Include="TextInputWidget.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="And.txt" />
+    <Text Include="FileInformation.txt" />
     <Text Include="Nodes.txt" />
+    <Text Include="Not.txt" />
+    <Text Include="Or.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ContextMenuWidget.h" />

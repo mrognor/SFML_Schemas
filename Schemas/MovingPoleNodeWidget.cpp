@@ -1,15 +1,30 @@
 #include "MovingPoleNodeWidget.h"
 
 
-MovingPoleNodeWidget::MovingPoleNodeWidget(sf::RenderWindow* window, MovingPoleWidget* movingPoleWidget, float posX, float posY) :
-	MovingPoleNodeWidgetWindow(window), ParentMovingPoleWidget(movingPoleWidget)
+MovingPoleNodeWidget::MovingPoleNodeWidget(sf::RenderWindow* window, MovingPoleWidget* movingPoleWidget, std::string nodeName, float posX, float posY) :
+	MovingPoleNodeWidgetWindow(window), ParentMovingPoleWidget(movingPoleWidget), NodeName(nodeName)
 {
 	MovingPoleNodeWidgetBody.setPosition({ posX, posY });
 	MovingPoleNodeWidgetBody.setFillColor(sf::Color::White);
 
-	CreateGraphicalRepresentationOfElement();
+	std::ifstream NodeTXT;
+	NodeTXT.open(NodeName + ".txt");
 
-	UpdateLogicalOutputs();
+	std::string Line;
+
+	if (NodeTXT.is_open())
+	{
+		getline(NodeTXT, Line);
+		InputLine = Split(Line, " ")[1];
+
+		getline(NodeTXT, Line);
+		OutputLine = Split(Line, " ")[1];
+
+		getline(NodeTXT, Line);
+		FormulaLine = Split(Line, " ")[1];
+	}
+
+	CreateGraphicalRepresentationOfElement();
 }
 
 

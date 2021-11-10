@@ -9,15 +9,14 @@ MovingPoleWidget::MovingPoleWidget(sf::RenderWindow* movingPoleWidgetWindow, Dro
 
 	MovingPoleWidgetSprite = new sf::Sprite;
 	MovingPoleWidgetSprite->setTexture(MovingPoleWidgetTexture->getTexture());
-
-	TestPoleWidget1 = new MovingPoleNodeWidget(MovingPoleWidgetWindow, this, 600, 200);
-	TestPoleWidget1->CreateGraphicalRepresentationOfElement();
-	TestPoleWidget1->DrawElementToTexture();
 }
 
 void MovingPoleWidget::Tick()
 {
-	TestPoleWidget1->DrawElementToTexture();
+	for (MovingPoleNodeWidget* widget : MovingPoleNodeVector)
+	{
+		widget->DrawElementToTexture();
+	}
 
 	MovingPoleWidgetWindow->draw(*MovingPoleWidgetSprite);
 }
@@ -26,7 +25,10 @@ void MovingPoleWidget::InputHandler(sf::Event event)
 {
 	sf::Vector2f MouseCoords = FindMouseCoords(MovingPoleWidgetWindow);
 
-	TestPoleWidget1->InputHandler(event);
+	for (MovingPoleNodeWidget* widget : MovingPoleNodeVector)
+	{
+		widget->InputHandler(event);
+	}
 
 	if (event.type == event.MouseButtonPressed && event.mouseButton.button == sf::Mouse::Right)
 	{
@@ -38,10 +40,17 @@ void MovingPoleWidget::InputHandler(sf::Event event)
 
 	if (IsDragStarted)
 	{
-		TestPoleWidget1->Move(MouseCoords - LastMouseCoords);
+		for (MovingPoleNodeWidget* widget : MovingPoleNodeVector)
+		{
+			widget->Move(MouseCoords - LastMouseCoords);
+		}
 
 		MovingPoleWidgetTexture->clear(sf::Color(0, 0, 0, 0));
-		TestPoleWidget1->DrawElementToTexture();
+
+		for (MovingPoleNodeWidget* widget : MovingPoleNodeVector)
+		{
+			widget->DrawElementToTexture();
+		}
 
 		MovingPoleWidgetTexture->display();
 
@@ -53,7 +62,13 @@ void MovingPoleWidget::InputHandler(sf::Event event)
 		if (MovingPoleDragAndDropWidget != nullptr && MovingPoleDragAndDropWidget->getIsDragAndDropInProcess() &&
 			MovingPoleDragAndDropWidget->getCurrentDropDownListElement()->getIsFolder() == false)
 		{
-			std::cout << "GF" << std::endl;
+			sf::Vector2f MouseCoords = FindMouseCoords(MovingPoleWidgetTexture, MovingPoleWidgetWindow);
+
+			MovingPoleNodeWidget* NewNode = new MovingPoleNodeWidget(MovingPoleWidgetWindow, this,
+				MovingPoleDragAndDropWidget->getCurrentDropDownListElement()->getName(), MouseCoords.x, MouseCoords.y);
+			NewNode->CreateGraphicalRepresentationOfElement();
+			NewNode->DrawElementToTexture();
+			MovingPoleNodeVector.push_back(NewNode);
 		}
 	}
 
@@ -73,7 +88,11 @@ void MovingPoleWidget::InputHandler(sf::Event event)
 		view.zoom(multiplayer);
 		MovingPoleWidgetTexture->setView(view);
 
-		TestPoleWidget1->DrawElementToTexture();
+		for (MovingPoleNodeWidget* widget : MovingPoleNodeVector)
+		{
+			widget->DrawElementToTexture();
+		}
+
 		MovingPoleWidgetTexture->display();
 	}
 }
@@ -83,5 +102,8 @@ MovingPoleWidget::~MovingPoleWidget()
 	delete MovingPoleWidgetTexture;
 	delete MovingPoleWidgetSprite;
 
-	delete TestPoleWidget1;
+	for (MovingPoleNodeWidget* widget : MovingPoleNodeVector)
+	{
+		delete widget;
+	}
 }

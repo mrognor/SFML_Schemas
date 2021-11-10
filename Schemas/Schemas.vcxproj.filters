@@ -44,6 +44,18 @@
     <Text Include="Nodes.txt">
       <Filter>Файлы ресурсов</Filter>
     </Text>
+    <Text Include="And.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
+    <Text Include="Or.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
+    <Text Include="Not.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
+    <Text Include="FileInformation.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SchemasFunctions.h">
