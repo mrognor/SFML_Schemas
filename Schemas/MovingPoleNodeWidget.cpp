@@ -68,6 +68,15 @@ void MovingPoleNodeWidget::InputHandler(sf::Event event)
 				}
 			}
 		}
+
+		for (auto it = InputNodesMap.begin(); it != InputNodesMap.end(); it++)
+		{
+			if (IsShapeInSpriteContain(*ParentMovingPoleWidget->GetMovingPoleWidgetSprite(), *it->second.Circle, MouseCoords))
+			{
+				ParentMovingPoleWidget->CreateConnection(&(it->second));
+			}
+		}
+
 		for (auto it = OutputNodesMap.begin(); it != OutputNodesMap.end(); it++)
 		{
 			if (IsShapeInSpriteContain(*ParentMovingPoleWidget->GetMovingPoleWidgetSprite(), *it->second.Circle, MouseCoords))
@@ -82,10 +91,22 @@ void MovingPoleNodeWidget::InputHandler(sf::Event event)
 		for (auto it = InputNodesMap.begin(); it != InputNodesMap.end(); it++)
 		{
 			if (IsShapeInSpriteContain(*ParentMovingPoleWidget->GetMovingPoleWidgetSprite(), *it->second.Circle, MouseCoords) &&
-				ParentMovingPoleWidget->getCurrentConnectionWidget() != nullptr)
+				ParentMovingPoleWidget->getCurrentConnectionWidget() != nullptr && 
+				ParentMovingPoleWidget->getCurrentConnectionWidget()->getConnectionType() == OutputInput)
 			{
 				ParentMovingPoleWidget->getCurrentConnectionWidget()->setExitNode(&it->second);
 				it->second.InputConnection = ParentMovingPoleWidget->getCurrentConnectionWidget();
+				ParentMovingPoleWidget->ResetCurrentConnectionWidget(); 
+			}
+		}
+		for (auto it = OutputNodesMap.begin(); it != OutputNodesMap.end(); it++)
+		{
+			if (IsShapeInSpriteContain(*ParentMovingPoleWidget->GetMovingPoleWidgetSprite(), *it->second.Circle, MouseCoords) &&
+				ParentMovingPoleWidget->getCurrentConnectionWidget() != nullptr && 
+				ParentMovingPoleWidget->getCurrentConnectionWidget()->getConnectionType() == InputOutput)
+			{
+				ParentMovingPoleWidget->getCurrentConnectionWidget()->setExitNode(&it->second);
+				it->second.OutputConnection = ParentMovingPoleWidget->getCurrentConnectionWidget();
 				ParentMovingPoleWidget->ResetCurrentConnectionWidget();
 			}
 		}

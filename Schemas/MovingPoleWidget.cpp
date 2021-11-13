@@ -103,13 +103,6 @@ void MovingPoleWidget::InputHandler(sf::Event event)
 	}
 }
 
-void MovingPoleWidget::CreateConnection(OutputNode* outputNode)
-{
-	MovingPoleConnectionWidget* widget = new MovingPoleConnectionWidget(MovingPoleWidgetWindow, this, outputNode);
-	CurrentConnectionWidget = widget;
-	MovingPoleConnectionVector.push_back(widget);
-}
-
 void MovingPoleWidget::DeleteConnection(MovingPoleConnectionWidget* widgetToRemove)
 {
 	for (int i = 0 ; i < MovingPoleConnectionVector.size(); i++)

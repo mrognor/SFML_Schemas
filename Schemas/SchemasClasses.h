@@ -29,3 +29,9 @@ struct OutputNode
 	std::string Formula;
 	MovingPoleConnectionWidget* OutputConnection = nullptr;
 };
+
+enum ConnectionTypes
+{
+	InputOutput,
+	OutputInput
+};

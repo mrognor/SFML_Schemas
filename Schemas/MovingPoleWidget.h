@@ -47,7 +47,8 @@ public:
 	void InputHandler(sf::Event event);
 
 	/// Функция для создания объекта соединения нод на поле
-	void CreateConnection(OutputNode* outputNode);
+	template <class T>
+	void CreateConnection(T* outputNode);
 
 	void DeleteConnection(MovingPoleConnectionWidget* widgetToRemove);
 
@@ -64,3 +65,11 @@ public:
 	~MovingPoleWidget();
 };
 
+
+template <class T>
+void MovingPoleWidget::CreateConnection(T* outputNode)
+{
+	MovingPoleConnectionWidget* widget = new MovingPoleConnectionWidget(MovingPoleWidgetWindow, this, outputNode);
+	CurrentConnectionWidget = widget;
+	MovingPoleConnectionVector.push_back(widget);
+}

@@ -1,12 +1,26 @@
 #include "MovingPoleConnectionWidget.h"
 
 MovingPoleConnectionWidget::MovingPoleConnectionWidget(sf::RenderWindow* window, MovingPoleWidget* parentMovingPoleWidget, OutputNode* entryNode) :
-	Window(window), ParentMovingPoleWidget(parentMovingPoleWidget), EntryNode(entryNode)
+	Window(window), ParentMovingPoleWidget(parentMovingPoleWidget), EntryNode_Output(entryNode)
 {
+	ConnectionType = OutputInput;
+
 	ConnectionBody.setFillColor(sf::Color::Blue);
 	ConnectionBody.setOrigin({ ConnectionThickness / 2, 0 });
 
-	Start = EntryNode->Circle->getPosition();
+	Start = EntryNode_Output->Circle->getPosition();
+	ConnectionBody.setPosition(Start);
+}
+
+MovingPoleConnectionWidget::MovingPoleConnectionWidget(sf::RenderWindow* window, MovingPoleWidget* parentMovingPoleWidget, InputNode* entryNode) :
+	Window(window), ParentMovingPoleWidget(parentMovingPoleWidget), EntryNode_Input(entryNode)
+{
+	ConnectionType = InputOutput;
+
+	ConnectionBody.setFillColor(sf::Color::Blue);
+	ConnectionBody.setOrigin({ ConnectionThickness / 2, 0 });
+
+	Start = EntryNode_Input->Circle->getPosition();
 	ConnectionBody.setPosition(Start);
 }
 
@@ -25,7 +39,7 @@ void MovingPoleConnectionWidget::DrawElementToTexture()
 		ConnectionBody.setRotation(angle);
 	}
 
-	//ConnectionBody.setFillColor(EntryNode->Circle->getFillColor());
+	//ConnectionBody.setFillColor(EntryNode_Output->Circle->getFillColor());
 	ParentMovingPoleWidget->GetMovingPoleWidgetTexture()->draw(ConnectionBody);
 }
 
@@ -33,19 +47,37 @@ void MovingPoleConnectionWidget::InputHandler(sf::Event event)
 {
 	if (event.type == event.MouseButtonReleased && IsConnectionNodePlaced == false)
 	{
-		if (ExitNode == nullptr)
+		if ((ConnectionType == OutputInput && ExitNode_Input == nullptr) ||
+			(ConnectionType == InputOutput && ExitNode_Output == nullptr))
 			ParentMovingPoleWidget->DeleteConnection(this);
 		else
 		{
-			ConnectionBody.setSize({ ConnectionThickness, float(sqrt(pow(ExitNode->Circle->getPosition().x - Start.x, 2) +
-				pow(ExitNode->Circle->getPosition().y - Start.y, 2))) });
+			if (ConnectionType == OutputInput)
+			{
+				ConnectionBody.setSize({ ConnectionThickness, float(sqrt(pow(ExitNode_Input->Circle->getPosition().x - Start.x, 2) +
+					pow(ExitNode_Input->Circle->getPosition().y - Start.y, 2))) });
 
-			float angle = atan((ExitNode->Circle->getPosition().y - Start.y) / (ExitNode->Circle->getPosition().x - Start.x)) * 180.0 / PI;
-			if (ExitNode->Circle->getPosition().x > Start.x)
-				angle += 270;
-			else angle += 90;
+				float angle = atan((ExitNode_Input->Circle->getPosition().y - Start.y) / (ExitNode_Input->Circle->getPosition().x - Start.x)) * 180.0 / PI;
+				if (ExitNode_Input->Circle->getPosition().x > Start.x)
+					angle += 270;
+				else angle += 90;
 
-			ConnectionBody.setRotation(angle);
+				ConnectionBody.setRotation(angle);
+			}
+
+			if (ConnectionType == InputOutput)
+			{
+				ConnectionBody.setSize({ ConnectionThickness, float(sqrt(pow(ExitNode_Output->Circle->getPosition().x - Start.x, 2) +
+					pow(ExitNode_Output->Circle->getPosition().y - Start.y, 2))) });
+
+				float angle = atan((ExitNode_Output->Circle->getPosition().y - Start.y) / (ExitNode_Output->Circle->getPosition().x - Start.x)) * 180.0 / PI;
+				if (ExitNode_Output->Circle->getPosition().x > Start.x)
+					angle += 270;
+				else angle += 90;
+
+				ConnectionBody.setRotation(angle);
+			}
+			
 
 			IsConnectionNodePlaced = true;
 		}

@@ -21,11 +21,19 @@ private:
 
 	bool IsConnectionNodePlaced = false;
 
-	OutputNode* EntryNode;
-	InputNode* ExitNode = nullptr;
+	ConnectionTypes ConnectionType;
+
+	InputNode* EntryNode_Input;
+	OutputNode* EntryNode_Output;
+	InputNode* ExitNode_Input = nullptr;
+	OutputNode* ExitNode_Output = nullptr;
 
 public:
+	///  онструктор в котором начало соединени€ находитс€ в выходе ноды
 	MovingPoleConnectionWidget(sf::RenderWindow* window, MovingPoleWidget* parentMovingPoleWidget, OutputNode* entryNode);
+
+	///  онструктор в котором начало соединени€ находитс€ во входе ноды
+	MovingPoleConnectionWidget(sf::RenderWindow* window, MovingPoleWidget* parentMovingPoleWidget, InputNode* entryNode);
 
 	void DrawElementToTexture();
 
@@ -33,7 +41,11 @@ public:
 	
 	void Move(sf::Vector2f vec);
 
-	void setExitNode(InputNode* exitNode) { ExitNode = exitNode; }
+	void setExitNode(InputNode* exitNode) { ExitNode_Input = exitNode; }
+
+	void setExitNode(OutputNode* exitNode) { ExitNode_Output = exitNode; }
+
+	ConnectionTypes getConnectionType() { return ConnectionType; }
 
 	~MovingPoleConnectionWidget();
 };
