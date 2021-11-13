@@ -51,7 +51,11 @@ public:
 
 	void DeleteConnection(MovingPoleConnectionWidget* widgetToRemove);
 
+	/// Функция возвращает текущий объект соединения 
 	MovingPoleConnectionWidget* getCurrentConnectionWidget() { return CurrentConnectionWidget; }
+
+	/// Функция сбрасывает текущий объект соединения. Должна ввызываться в случае удачного соединения
+	void ResetCurrentConnectionWidget() { CurrentConnectionWidget = nullptr; }
 
 	sf::RenderTexture* GetMovingPoleWidgetTexture() { return MovingPoleWidgetTexture; }
 

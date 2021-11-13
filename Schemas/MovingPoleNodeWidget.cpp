@@ -51,7 +51,8 @@ void MovingPoleNodeWidget::InputHandler(sf::Event event)
 	{
 		for (auto it = InputNodesMap.begin(); it != InputNodesMap.end(); it++)
 		{
-			if (IsShapeInSpriteContain(*ParentMovingPoleWidget->GetMovingPoleWidgetSprite(), *it->second.Circle, MouseCoords))
+			if (IsShapeInSpriteContain(*ParentMovingPoleWidget->GetMovingPoleWidgetSprite(), *it->second.Circle, MouseCoords) &&
+				it->second.InputConnection == nullptr)
 			{
 				if (it->second.Value == 0)
 				{
@@ -84,6 +85,8 @@ void MovingPoleNodeWidget::InputHandler(sf::Event event)
 				ParentMovingPoleWidget->getCurrentConnectionWidget() != nullptr)
 			{
 				ParentMovingPoleWidget->getCurrentConnectionWidget()->setExitNode(&it->second);
+				it->second.InputConnection = ParentMovingPoleWidget->getCurrentConnectionWidget();
+				ParentMovingPoleWidget->ResetCurrentConnectionWidget();
 			}
 		}
 	}

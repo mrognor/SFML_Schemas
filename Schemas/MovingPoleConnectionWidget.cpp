@@ -25,7 +25,7 @@ void MovingPoleConnectionWidget::DrawElementToTexture()
 		ConnectionBody.setRotation(angle);
 	}
 
-	ConnectionBody.setFillColor(EntryNode->Circle->getFillColor());
+	//ConnectionBody.setFillColor(EntryNode->Circle->getFillColor());
 	ParentMovingPoleWidget->GetMovingPoleWidgetTexture()->draw(ConnectionBody);
 }
 
