@@ -8,6 +8,16 @@
 #include <fstream>
 #include "SchemasFunctions.h"
 
+struct InputNode
+{
+	sf::CircleShape* Circle;
+	bool Value;
+};
+struct OutputNode
+{
+	sf::CircleShape* Circle;
+	std::string Formula;
+};
 
 class DropDownListWidget;
 class DropDownListElementWidget;
@@ -16,3 +26,4 @@ class ContextMenuWidget;
 class TextInputWidget;
 class MovingPoleWidget;
 class MovingPoleNodeWidget;
+class MovingPoleConnectionWidget;

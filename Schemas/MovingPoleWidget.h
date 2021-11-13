@@ -5,6 +5,7 @@
 #include "DropDownListWidget.h"
 #include "MovingPoleNodeWidget.h"
 #include "DragAndDropWidget.h"
+#include "MovingPoleConnectionWidget.h"
 
 class MovingPoleWidget
 {
@@ -15,9 +16,14 @@ private:
 	/// Указатель на DropDown список
 	DropDownListWidget* MovingPoleDropDownListWidget;
 
+	/// Указатель на драг и дроп виджет
 	DragAndDropWidget* MovingPoleDragAndDropWidget;
 
+	/// Вектор нод поля
 	std::vector<MovingPoleNodeWidget*> MovingPoleNodeVector;
+
+	/// Вектор соединений поля
+	std::vector<MovingPoleConnectionWidget*> MovingPoleConnectionVector;
 
 	/// Переменная для последних координат мыши
 	sf::Vector2f LastMouseCoords;
@@ -31,12 +37,21 @@ private:
 	/// Переменная для фиксации начала перетаскивания
 	bool IsDragStarted = false;
 
+	MovingPoleConnectionWidget* CurrentConnectionWidget = nullptr;
+
 public:
 	MovingPoleWidget(sf::RenderWindow* movingPoleWidgetWindow, DropDownListWidget* movingPoleDropDownListWidget, DragAndDropWidget* movingPoleDragAndDropWidget);
 
 	void Tick();
 
 	void InputHandler(sf::Event event);
+
+	/// Функция для создания объекта соединения нод на поле
+	void CreateConnection(OutputNode* outputNode);
+
+	void DeleteConnection(MovingPoleConnectionWidget* widgetToRemove);
+
+	MovingPoleConnectionWidget* getCurrentConnectionWidget() { return CurrentConnectionWidget; }
 
 	sf::RenderTexture* GetMovingPoleWidgetTexture() { return MovingPoleWidgetTexture; }
 

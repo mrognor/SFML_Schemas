@@ -148,6 +148,7 @@
     <ClCompile Include="DragAndDropWidget.cpp" />
     <ClCompile Include="DropDownListWidget.cpp" />
     <ClCompile Include="DropDownListElementWidget.cpp" />
+    <ClCompile Include="MovingPoleConnectionWidget.cpp" />
     <ClCompile Include="MovingPoleNodeWidget.cpp" />
     <ClCompile Include="MovingPoleWidget.cpp" />
     <ClCompile Include="Schemas.cpp" />
@@ -159,12 +160,14 @@
     <Text Include="Nodes.txt" />
     <Text Include="Not.txt" />
     <Text Include="Or.txt" />
+    <Text Include="Xor.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ContextMenuWidget.h" />
     <ClInclude Include="DragAndDropWidget.h" />
     <ClInclude Include="DropDownListWidget.h" />
     <ClInclude Include="DropDownListElementWidget.h" />
+    <ClInclude Include="MovingPoleConnectionWidget.h" />
     <ClInclude Include="MovingPoleNodeWidget.h" />
     <ClInclude Include="MovingPoleWidget.h" />
     <ClInclude Include="SchemasClasses.h" />

@@ -31,7 +31,6 @@ MovingPoleNodeWidget::MovingPoleNodeWidget(sf::RenderWindow* window, MovingPoleW
 void MovingPoleNodeWidget::DrawElementToTexture()
 {
 	ParentMovingPoleWidget->GetMovingPoleWidgetTexture()->draw(MovingPoleNodeWidgetBody);
-	//MovingPoleNodeWidgetTexture->draw(MovingPoleNodeWidgetText);
 
 	for (sf::CircleShape* circle : InputShapes)
 	{
@@ -66,6 +65,25 @@ void MovingPoleNodeWidget::InputHandler(sf::Event event)
 					it->second.Value = 0;
 					UpdateLogicalOutputs();
 				}
+			}
+		}
+		for (auto it = OutputNodesMap.begin(); it != OutputNodesMap.end(); it++)
+		{
+			if (IsShapeInSpriteContain(*ParentMovingPoleWidget->GetMovingPoleWidgetSprite(), *it->second.Circle, MouseCoords))
+			{
+				ParentMovingPoleWidget->CreateConnection(&(it->second));
+			}
+		}
+	}
+
+	if (event.type == event.MouseButtonReleased)
+	{
+		for (auto it = InputNodesMap.begin(); it != InputNodesMap.end(); it++)
+		{
+			if (IsShapeInSpriteContain(*ParentMovingPoleWidget->GetMovingPoleWidgetSprite(), *it->second.Circle, MouseCoords) &&
+				ParentMovingPoleWidget->getCurrentConnectionWidget() != nullptr)
+			{
+				ParentMovingPoleWidget->getCurrentConnectionWidget()->setExitNode(&it->second);
 			}
 		}
 	}

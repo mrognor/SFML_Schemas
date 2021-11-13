@@ -13,10 +13,17 @@ MovingPoleWidget::MovingPoleWidget(sf::RenderWindow* movingPoleWidgetWindow, Dro
 
 void MovingPoleWidget::Tick()
 {
+	MovingPoleWidgetTexture->clear(sf::Color(0, 0, 0, 0));
+
 	for (MovingPoleNodeWidget* widget : MovingPoleNodeVector)
 	{
 		widget->DrawElementToTexture();
 	}
+	for (MovingPoleConnectionWidget* widget : MovingPoleConnectionVector)
+	{
+		widget->DrawElementToTexture();
+	}
+	MovingPoleWidgetTexture->display();
 
 	MovingPoleWidgetWindow->draw(*MovingPoleWidgetSprite);
 }
@@ -26,6 +33,11 @@ void MovingPoleWidget::InputHandler(sf::Event event)
 	sf::Vector2f MouseCoords = FindMouseCoords(MovingPoleWidgetWindow);
 
 	for (MovingPoleNodeWidget* widget : MovingPoleNodeVector)
+	{
+		widget->InputHandler(event);
+	}
+
+	for (MovingPoleConnectionWidget* widget : MovingPoleConnectionVector)
 	{
 		widget->InputHandler(event);
 	}
@@ -45,13 +57,12 @@ void MovingPoleWidget::InputHandler(sf::Event event)
 			widget->Move(MouseCoords - LastMouseCoords);
 		}
 
-		MovingPoleWidgetTexture->clear(sf::Color(0, 0, 0, 0));
-
-		for (MovingPoleNodeWidget* widget : MovingPoleNodeVector)
+		for (MovingPoleConnectionWidget* widget : MovingPoleConnectionVector)
 		{
-			widget->DrawElementToTexture();
+			widget->Move(MouseCoords - LastMouseCoords);
 		}
 
+		MovingPoleWidgetTexture->clear(sf::Color(0, 0, 0, 0));
 		MovingPoleWidgetTexture->display();
 
 		LastMouseCoords = MouseCoords;
@@ -88,13 +99,24 @@ void MovingPoleWidget::InputHandler(sf::Event event)
 		view.zoom(multiplayer);
 		MovingPoleWidgetTexture->setView(view);
 
-		for (MovingPoleNodeWidget* widget : MovingPoleNodeVector)
-		{
-			widget->DrawElementToTexture();
-		}
-
 		MovingPoleWidgetTexture->display();
 	}
+}
+
+void MovingPoleWidget::CreateConnection(OutputNode* outputNode)
+{
+	MovingPoleConnectionWidget* widget = new MovingPoleConnectionWidget(MovingPoleWidgetWindow, this, outputNode);
+	CurrentConnectionWidget = widget;
+	MovingPoleConnectionVector.push_back(widget);
+}
+
+void MovingPoleWidget::DeleteConnection(MovingPoleConnectionWidget* widgetToRemove)
+{
+	for (int i = 0 ; i < MovingPoleConnectionVector.size(); i++)
+		if (MovingPoleConnectionVector[i] == widgetToRemove)
+			MovingPoleConnectionVector.erase(MovingPoleConnectionVector.begin() + i);
+
+	CurrentConnectionWidget = nullptr;
 }
 
 MovingPoleWidget::~MovingPoleWidget()
@@ -103,6 +125,11 @@ MovingPoleWidget::~MovingPoleWidget()
 	delete MovingPoleWidgetSprite;
 
 	for (MovingPoleNodeWidget* widget : MovingPoleNodeVector)
+	{
+		delete widget;
+	}
+
+	for (MovingPoleConnectionWidget* widget : MovingPoleConnectionVector)
 	{
 		delete widget;
 	}

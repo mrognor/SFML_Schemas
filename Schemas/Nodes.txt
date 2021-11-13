@@ -3,3 +3,4 @@ ProjectName/BaseNodes/ BaseNodes true true
 ProjectName/BaseNodes/And/ And false false
 ProjectName/BaseNodes/Not/ Not true false
 ProjectName/BaseNodes/Or/ Or true false
+ProjectName/BaseNodes/Xor/ Xor true false

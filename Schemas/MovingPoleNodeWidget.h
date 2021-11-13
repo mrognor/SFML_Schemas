@@ -3,17 +3,6 @@
 #include "SchemasClasses.h"
 #include "MovingPoleWidget.h"
 
-struct InputNode
-{
-	sf::CircleShape* Circle;
-	bool Value;
-};
-struct OutputNode
-{
-	sf::CircleShape* Circle;
-	std::string Formula;
-};
-
 inline bool InterpretLine(std::string Line)
 {
 	while (Line.size() != 1)
@@ -70,10 +59,6 @@ class MovingPoleNodeWidget
 private:
 	sf::RenderWindow* MovingPoleNodeWidgetWindow;
 	MovingPoleWidget* ParentMovingPoleWidget;
-
-	sf::RenderTexture* MovingPoleNodeWidgetTexture;
-	sf::Sprite* MovingPoleNodeWidgetSprite;
-
 
 	sf::Text MovingPoleNodeWidgetText;
 	sf::Font font;

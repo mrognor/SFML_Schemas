@@ -1,0 +1,3 @@
+InputLine: A/B
+OutputLine: A
+FormulaLine: A:or(and(A,not(B)),and(not(A),B))
