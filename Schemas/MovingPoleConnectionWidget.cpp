@@ -5,7 +5,14 @@ MovingPoleConnectionWidget::MovingPoleConnectionWidget(sf::RenderWindow* window,
 {
 	ConnectionType = OutputInput;
 
-	ConnectionBody.setFillColor(sf::Color::Blue);
+	EntryNode_Output->OutputConnection = this;
+
+	Value = EntryNode_Output->Value;
+	if (Value == true)
+		ConnectionBody.setFillColor(sf::Color::Blue);
+	else
+		ConnectionBody.setFillColor(sf::Color::Magenta);
+
 	ConnectionBody.setOrigin({ ConnectionThickness / 2, 0 });
 
 	Start = EntryNode_Output->Circle->getPosition();
@@ -17,7 +24,14 @@ MovingPoleConnectionWidget::MovingPoleConnectionWidget(sf::RenderWindow* window,
 {
 	ConnectionType = InputOutput;
 
-	ConnectionBody.setFillColor(sf::Color::Blue);
+	EntryNode_Input->InputConnection = this;
+
+	Value = EntryNode_Input->Value;
+	if (Value == true)
+		ConnectionBody.setFillColor(sf::Color::Blue);
+	else
+		ConnectionBody.setFillColor(sf::Color::Magenta);
+
 	ConnectionBody.setOrigin({ ConnectionThickness / 2, 0 });
 
 	Start = EntryNode_Input->Circle->getPosition();
@@ -49,7 +63,15 @@ void MovingPoleConnectionWidget::InputHandler(sf::Event event)
 	{
 		if ((ConnectionType == OutputInput && ExitNode_Input == nullptr) ||
 			(ConnectionType == InputOutput && ExitNode_Output == nullptr))
+		{
+			if (EntryNode_Output != nullptr)
+				EntryNode_Output->OutputConnection = nullptr;
+
+			if(EntryNode_Input != nullptr)
+				EntryNode_Input->InputConnection = nullptr;
+
 			ParentMovingPoleWidget->DeleteConnection(this);
+		}
 		else
 		{
 			if (ConnectionType == OutputInput)
@@ -89,6 +111,35 @@ void MovingPoleConnectionWidget::Move(sf::Vector2f vec)
 	ConnectionBody.move(vec);
 }
 
+
+void MovingPoleConnectionWidget::UpdateConnectionElement()
+{
+	if (ConnectionType == InputOutput)
+	{
+		Value = ExitNode_Output->Value;
+
+		if (Value == true)
+			ConnectionBody.setFillColor(sf::Color::Blue);
+		else
+			ConnectionBody.setFillColor(sf::Color::Magenta);
+
+		EntryNode_Input->Value = ExitNode_Output->Value;
+		EntryNode_Input->ParentNodeWidget->UpdateLogicalOutputs();
+	}
+
+	if (ConnectionType == OutputInput)
+	{
+
+		Value = EntryNode_Output->Value;
+		if (Value == true)
+			ConnectionBody.setFillColor(sf::Color::Blue);
+		else
+			ConnectionBody.setFillColor(sf::Color::Magenta);
+
+		ExitNode_Input->Value = EntryNode_Output->Value;
+		ExitNode_Input->ParentNodeWidget->UpdateLogicalOutputs();
+	}
+}
 
 MovingPoleConnectionWidget::~MovingPoleConnectionWidget()
 {

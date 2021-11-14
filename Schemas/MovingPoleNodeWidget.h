@@ -82,9 +82,6 @@ private:
 
 	float BodyWidth = 200;
 
-	/// Функция для обновления логических выходов
-	void UpdateLogicalOutputs();
-
 public:
 	MovingPoleNodeWidget(sf::RenderWindow* window, MovingPoleWidget* movingPoleWidget, std::string nodeName, float posX = 0, float posY = 0);
 
@@ -97,6 +94,9 @@ public:
 
 	/// Функция для создания графической интерпретации данной ноды
 	void CreateGraphicalRepresentationOfElement();
+
+	/// Функция для обновления логических выходов
+	void UpdateLogicalOutputs();
 
 	~MovingPoleNodeWidget();
 };

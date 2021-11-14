@@ -22,6 +22,7 @@ struct InputNode
 	sf::CircleShape* Circle;
 	bool Value;
 	MovingPoleConnectionWidget* InputConnection = nullptr;
+	MovingPoleNodeWidget* ParentNodeWidget;
 };
 struct OutputNode
 {

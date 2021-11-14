@@ -28,6 +28,8 @@ private:
 	InputNode* ExitNode_Input = nullptr;
 	OutputNode* ExitNode_Output = nullptr;
 
+	bool Value = false;
+
 public:
 	/// Конструктор в котором начало соединения находится в выходе ноды
 	MovingPoleConnectionWidget(sf::RenderWindow* window, MovingPoleWidget* parentMovingPoleWidget, OutputNode* entryNode);
@@ -44,6 +46,8 @@ public:
 	void setExitNode(InputNode* exitNode) { ExitNode_Input = exitNode; }
 
 	void setExitNode(OutputNode* exitNode) { ExitNode_Output = exitNode; }
+
+	void UpdateConnectionElement();
 
 	ConnectionTypes getConnectionType() { return ConnectionType; }
 

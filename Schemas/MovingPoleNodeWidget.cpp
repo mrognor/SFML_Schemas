@@ -27,7 +27,6 @@ MovingPoleNodeWidget::MovingPoleNodeWidget(sf::RenderWindow* window, MovingPoleW
 	CreateGraphicalRepresentationOfElement();
 }
 
-
 void MovingPoleNodeWidget::DrawElementToTexture()
 {
 	ParentMovingPoleWidget->GetMovingPoleWidgetTexture()->draw(MovingPoleNodeWidgetBody);
@@ -71,7 +70,8 @@ void MovingPoleNodeWidget::InputHandler(sf::Event event)
 
 		for (auto it = InputNodesMap.begin(); it != InputNodesMap.end(); it++)
 		{
-			if (IsShapeInSpriteContain(*ParentMovingPoleWidget->GetMovingPoleWidgetSprite(), *it->second.Circle, MouseCoords))
+			if (IsShapeInSpriteContain(*ParentMovingPoleWidget->GetMovingPoleWidgetSprite(), *it->second.Circle, MouseCoords) 
+				&& it->second.InputConnection == nullptr)
 			{
 				ParentMovingPoleWidget->CreateConnection(&(it->second));
 			}
@@ -92,11 +92,15 @@ void MovingPoleNodeWidget::InputHandler(sf::Event event)
 		{
 			if (IsShapeInSpriteContain(*ParentMovingPoleWidget->GetMovingPoleWidgetSprite(), *it->second.Circle, MouseCoords) &&
 				ParentMovingPoleWidget->getCurrentConnectionWidget() != nullptr && 
+				it->second.InputConnection == nullptr &&
 				ParentMovingPoleWidget->getCurrentConnectionWidget()->getConnectionType() == OutputInput)
 			{
 				ParentMovingPoleWidget->getCurrentConnectionWidget()->setExitNode(&it->second);
 				it->second.InputConnection = ParentMovingPoleWidget->getCurrentConnectionWidget();
 				ParentMovingPoleWidget->ResetCurrentConnectionWidget(); 
+
+				if (it->second.InputConnection != nullptr)
+					it->second.InputConnection->UpdateConnectionElement();
 			}
 		}
 		for (auto it = OutputNodesMap.begin(); it != OutputNodesMap.end(); it++)
@@ -108,6 +112,9 @@ void MovingPoleNodeWidget::InputHandler(sf::Event event)
 				ParentMovingPoleWidget->getCurrentConnectionWidget()->setExitNode(&it->second);
 				it->second.OutputConnection = ParentMovingPoleWidget->getCurrentConnectionWidget();
 				ParentMovingPoleWidget->ResetCurrentConnectionWidget();
+
+				if (it->second.OutputConnection != nullptr)
+					it->second.OutputConnection->UpdateConnectionElement();
 			}
 		}
 	}
@@ -152,6 +159,7 @@ void MovingPoleNodeWidget::CreateGraphicalRepresentationOfElement()
 		InputNode A;
 		A.Circle = circle;
 		A.Value = false;
+		A.ParentNodeWidget = this;
 		InputNodesMap[InputNames[i]] = A;
 	}
 
@@ -185,6 +193,14 @@ void MovingPoleNodeWidget::CreateGraphicalRepresentationOfElement()
 
 void MovingPoleNodeWidget::UpdateLogicalOutputs()
 {
+	for (auto it = InputNodesMap.begin(); it != InputNodesMap.end(); it++)
+	{
+		if (it->second.Value == true)
+			it->second.Circle->setFillColor(sf::Color::Blue);
+		else 
+			it->second.Circle->setFillColor(sf::Color::Magenta);
+	}
+
 	for (auto it = OutputNodesMap.begin(); it != OutputNodesMap.end(); it++)
 	{
 		std::string newstr = SwapLetter(it->second.Formula, InputNodesMap);
@@ -194,8 +210,11 @@ void MovingPoleNodeWidget::UpdateLogicalOutputs()
 			if (InterpretLine(newstr) == true)
 				it->second.Circle->setFillColor(sf::Color::Blue);
 			else it->second.Circle->setFillColor(sf::Color::Magenta);
-
+			
 			it->second.Value = InterpretLine(newstr);
+
+			if (it->second.OutputConnection != nullptr)
+				it->second.OutputConnection->UpdateConnectionElement();
 		}
 	}
 }
