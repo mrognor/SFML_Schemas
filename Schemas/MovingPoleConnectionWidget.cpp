@@ -5,7 +5,7 @@ MovingPoleConnectionWidget::MovingPoleConnectionWidget(sf::RenderWindow* window,
 {
 	ConnectionType = OutputInput;
 
-	EntryNode_Output->OutputConnection = this;
+	EntryNode_Output->OutputConnections.push_back(this);
 
 	Value = EntryNode_Output->Value;
 	if (Value == true)
@@ -65,7 +65,7 @@ void MovingPoleConnectionWidget::InputHandler(sf::Event event)
 			(ConnectionType == InputOutput && ExitNode_Output == nullptr))
 		{
 			if (EntryNode_Output != nullptr)
-				EntryNode_Output->OutputConnection = nullptr;
+				EntryNode_Output->OutputConnections.clear();
 
 			if(EntryNode_Input != nullptr)
 				EntryNode_Input->InputConnection = nullptr;

@@ -29,7 +29,7 @@ struct OutputNode
 	sf::CircleShape* Circle;
 	bool Value;
 	std::string Formula;
-	MovingPoleConnectionWidget* OutputConnection = nullptr;
+	std::vector<MovingPoleConnectionWidget*> OutputConnections;
 };
 
 enum ConnectionTypes

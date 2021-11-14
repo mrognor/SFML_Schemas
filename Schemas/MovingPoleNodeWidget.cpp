@@ -110,11 +110,14 @@ void MovingPoleNodeWidget::InputHandler(sf::Event event)
 				ParentMovingPoleWidget->getCurrentConnectionWidget()->getConnectionType() == InputOutput)
 			{
 				ParentMovingPoleWidget->getCurrentConnectionWidget()->setExitNode(&it->second);
-				it->second.OutputConnection = ParentMovingPoleWidget->getCurrentConnectionWidget();
+
+				if (ParentMovingPoleWidget->getCurrentConnectionWidget() != nullptr)
+					it->second.OutputConnections.push_back(ParentMovingPoleWidget->getCurrentConnectionWidget());
+
 				ParentMovingPoleWidget->ResetCurrentConnectionWidget();
 
-				if (it->second.OutputConnection != nullptr)
-					it->second.OutputConnection->UpdateConnectionElement();
+				for (MovingPoleConnectionWidget* widget : it->second.OutputConnections)
+					widget->UpdateConnectionElement();
 			}
 		}
 	}
@@ -213,8 +216,8 @@ void MovingPoleNodeWidget::UpdateLogicalOutputs()
 			
 			it->second.Value = InterpretLine(newstr);
 
-			if (it->second.OutputConnection != nullptr)
-				it->second.OutputConnection->UpdateConnectionElement();
+			for (MovingPoleConnectionWidget* widget : it->second.OutputConnections)
+				widget->UpdateConnectionElement();
 		}
 	}
 }
