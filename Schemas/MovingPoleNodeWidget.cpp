@@ -188,9 +188,15 @@ void MovingPoleNodeWidget::UpdateLogicalOutputs()
 	for (auto it = OutputNodesMap.begin(); it != OutputNodesMap.end(); it++)
 	{
 		std::string newstr = SwapLetter(it->second.Formula, InputNodesMap);
-		if (InterpretLine(newstr))
-			it->second.Circle->setFillColor(sf::Color::Blue);
-		else it->second.Circle->setFillColor(sf::Color::Magenta);
+
+		if (InterpretLine(newstr) != it->second.Value)
+		{
+			if (InterpretLine(newstr) == true)
+				it->second.Circle->setFillColor(sf::Color::Blue);
+			else it->second.Circle->setFillColor(sf::Color::Magenta);
+
+			it->second.Value = InterpretLine(newstr);
+		}
 	}
 }
 
