@@ -35,12 +35,17 @@ private:
 	/// Переменная для отслеживания объекта(ContextMenuWidget)
 	ContextMenuWidget* DropDownListContextMenuWidget;
 
+	/// Переменная для отслеживания изменения размера списка по горизонтали
 	bool IsHorizontalMoving = false;
 
+	/// Переменная для проверки размеров списка и окна.
+	/// Тру если список больше размеров окна
 	bool IsCanVerticalmoving = false;
 
+	/// Переменная для движения вертикального слайдера
 	bool IsVerticalMoving = false;
 
+	/// Переменная для фиксации места нажатия на слайдер
 	float VerticalSliderClickPosition;
 
 	/// Функция для записи движимых нод в файл. Алфавитный порядок соблюдается

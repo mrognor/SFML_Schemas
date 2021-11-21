@@ -53,6 +53,7 @@ inline std::string SwapLetter(std::string str, std::map<std::string, InputNode> 
 	return str;
 }
 
+/// Класс для нод на поле
 /// Для отрисовки класса нужно использовать метод Draw
 class MovingPoleNodeWidget
 {

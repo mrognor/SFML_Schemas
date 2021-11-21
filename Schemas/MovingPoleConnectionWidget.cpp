@@ -54,7 +54,7 @@ void MovingPoleConnectionWidget::DrawElementToTexture()
 	}
 
 	//ConnectionBody.setFillColor(EntryNode_Output->Circle->getFillColor());
-	ParentMovingPoleWidget->GetMovingPoleWidgetTexture()->draw(ConnectionBody);
+	//ParentMovingPoleWidget->GetMovingPoleWidgetTexture()->draw(ConnectionBody);
 }
 
 void MovingPoleConnectionWidget::InputHandler(sf::Event event)
@@ -110,7 +110,6 @@ void MovingPoleConnectionWidget::Move(sf::Vector2f vec)
 {
 	ConnectionBody.move(vec);
 }
-
 
 void MovingPoleConnectionWidget::UpdateConnectionElement()
 {

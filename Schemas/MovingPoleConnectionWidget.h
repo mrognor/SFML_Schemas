@@ -5,20 +5,26 @@
 
 #define PI 3.14159265  
 
-
+/// Класс для объектов соединения нод на поле
 class MovingPoleConnectionWidget
 {
 private:
+	/// Переменная-указатель для родительского поля
 	MovingPoleWidget* ParentMovingPoleWidget;
 
+	/// Тело объекта соединения
 	sf::RectangleShape ConnectionBody;
 
+	/// Окно в котором рисуется объект
 	sf::RenderWindow* Window;
 
+	/// Переменная для начальной точки тела
 	sf::Vector2f Start;
 
+	/// Толщина соединения
 	float ConnectionThickness = 10;
 
+	/// Переменная для фиксации установки соединения
 	bool IsConnectionNodePlaced = false;
 
 	ConnectionTypes ConnectionType;
